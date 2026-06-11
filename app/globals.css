@@ -5,26 +5,121 @@
 :root {
   --emerald: #2ec98e;
   --emerald-deep: #10b981;
+  --amber: #ffb14d;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 html {
   scroll-behavior: smooth;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
+/* ---------- Blueprint grid (hero) ---------- */
+.blueprint {
+  background-image:
+    linear-gradient(rgba(46, 201, 142, 0.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(46, 201, 142, 0.055) 1px, transparent 1px),
+    linear-gradient(rgba(46, 201, 142, 0.028) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(46, 201, 142, 0.028) 1px, transparent 1px);
+  background-size: 96px 96px, 96px 96px, 24px 24px, 24px 24px;
 }
 
-/* Signature: chevron shapes built with clip-path */
+/* ---------- Hero entrance ---------- */
+@keyframes rise-in {
+  from { opacity: 0; transform: translateY(26px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.rise {
+  opacity: 0;
+  animation: rise-in 0.9s var(--ease-out) both;
+}
+
+/* ---------- Isometric tower assembly ---------- */
+@keyframes floor-drop {
+  0% { opacity: 0; transform: translateY(-46px); }
+  60% { opacity: 1; }
+  100% { opacity: 1; transform: translateY(0); }
+}
+.floor {
+  opacity: 0;
+  animation: floor-drop 0.85s var(--ease-out) both;
+}
+
+@keyframes callout-in {
+  from { opacity: 0; transform: translateX(-10px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+.callout {
+  opacity: 0;
+  animation: callout-in 0.7s var(--ease-out) both;
+}
+
+@keyframes crane-sway {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(1.6deg); }
+}
+.crane-arm {
+  transform-origin: 0px 0px;
+  animation: crane-sway 9s ease-in-out infinite;
+}
+
+@keyframes hook-bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(9px); }
+}
+.hook {
+  animation: hook-bob 5.5s ease-in-out infinite;
+}
+
+@keyframes chip-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-9px); }
+}
+.chip-float {
+  animation: chip-float 6s ease-in-out infinite;
+}
+
+@keyframes pulse-glow {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 0.85; }
+}
+.glow-pulse {
+  animation: pulse-glow 7s ease-in-out infinite;
+}
+
+/* ---------- 3D tilt scene ---------- */
+.scene {
+  perspective: 1300px;
+}
+.scene-inner {
+  transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+  transition: transform 0.35s ease-out;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+/* ---------- Scroll reveal (staggered) ---------- */
+.reveal {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity 0.7s var(--ease-out), transform 0.7s var(--ease-out);
+  transition-delay: var(--d, 0s);
+}
+.reveal.in {
+  opacity: 1;
+  transform: none;
+}
+
+/* ---------- Scorecard bars: grow when revealed ---------- */
+.bar {
+  width: 0;
+  transition: width 1.2s var(--ease-out);
+  transition-delay: var(--d, 0s);
+}
+.in .bar {
+  width: var(--w);
+}
+
+/* ---------- Chevron signature shapes ---------- */
 .chev {
   clip-path: polygon(0 0, calc(100% - 26px) 0, 100% 50%, calc(100% - 26px) 100%, 0 100%, 26px 50%);
 }
@@ -32,7 +127,6 @@ html {
   clip-path: polygon(0 0, calc(100% - 26px) 0, 100% 50%, calc(100% - 26px) 100%, 0 100%);
 }
 
-/* Chevron marquee divider */
 @keyframes chevron-flow {
   from { transform: translateX(0); }
   to { transform: translateX(-50%); }
@@ -41,23 +135,38 @@ html {
   animation: chevron-flow 22s linear infinite;
 }
 
-/* Scorecard bars grow on load */
-@keyframes grow-bar {
-  from { width: 0; }
+/* ---------- Card micro-interactions ---------- */
+.lift {
+  transition: transform 0.45s var(--ease-out), box-shadow 0.45s var(--ease-out), border-color 0.3s ease;
 }
-.bar-anim {
-  animation: grow-bar 1.2s cubic-bezier(0.16, 1, 0.3, 1) both;
+.lift:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 22px 48px -20px rgba(22, 32, 42, 0.28);
+  border-color: rgba(46, 201, 142, 0.45);
+}
+.lift-dark:hover {
+  box-shadow: 0 22px 48px -18px rgba(46, 201, 142, 0.22);
+  border-color: rgba(46, 201, 142, 0.45);
 }
 
-/* Scroll reveal */
-.reveal {
-  opacity: 0;
-  transform: translateY(18px);
-  transition: opacity 0.6s ease, transform 0.6s ease;
+.btn-glow {
+  transition: transform 0.35s var(--ease-out), box-shadow 0.35s var(--ease-out), background-color 0.25s ease, color 0.25s ease;
 }
-.reveal.in {
-  opacity: 1;
-  transform: none;
+.btn-glow:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 34px -10px rgba(46, 201, 142, 0.55);
+}
+
+/* ---------- Reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .floor, .rise, .callout, .reveal { opacity: 1 !important; transform: none !important; }
+  .bar { width: var(--w) !important; }
 }
 
 ::selection {
