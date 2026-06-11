@@ -1,0 +1,72 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --emerald: #2ec98e;
+  --emerald-deep: #10b981;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Signature: chevron shapes built with clip-path */
+.chev {
+  clip-path: polygon(0 0, calc(100% - 26px) 0, 100% 50%, calc(100% - 26px) 100%, 0 100%, 26px 50%);
+}
+.chev-first {
+  clip-path: polygon(0 0, calc(100% - 26px) 0, 100% 50%, calc(100% - 26px) 100%, 0 100%);
+}
+
+/* Chevron marquee divider */
+@keyframes chevron-flow {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.chevron-track {
+  animation: chevron-flow 22s linear infinite;
+}
+
+/* Scorecard bars grow on load */
+@keyframes grow-bar {
+  from { width: 0; }
+}
+.bar-anim {
+  animation: grow-bar 1.2s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* Scroll reveal */
+.reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.reveal.in {
+  opacity: 1;
+  transform: none;
+}
+
+::selection {
+  background: var(--emerald);
+  color: #16202a;
+}
+
+:focus-visible {
+  outline: 2px solid var(--emerald-deep);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
