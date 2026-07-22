@@ -169,6 +169,84 @@ html {
   .bar { width: var(--w) !important; }
 }
 
+/* ---------- Aurora / gradient field (hero) ---------- */
+@keyframes aurora-drift {
+  0%   { transform: translate3d(0, 0, 0) scale(1); }
+  50%  { transform: translate3d(4%, -3%, 0) scale(1.12); }
+  100% { transform: translate3d(0, 0, 0) scale(1); }
+}
+.aurora { animation: aurora-drift 18s ease-in-out infinite; }
+.aurora-2 { animation: aurora-drift 24s ease-in-out infinite reverse; }
+
+/* ---------- Gradient text ---------- */
+.grad-text {
+  background: linear-gradient(100deg, #2EC98E 0%, #6EE7B7 45%, #2EC98E 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* ---------- Terminal (hero signature) ---------- */
+@keyframes term-line-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.term-line {
+  opacity: 0;
+  animation: term-line-in 0.5s var(--ease-out) both;
+  animation-delay: var(--d, 0s);
+}
+@keyframes caret-blink { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
+.caret {
+  display: inline-block;
+  width: 8px;
+  height: 1em;
+  translate: 0 2px;
+  background: var(--emerald);
+  animation: caret-blink 1.05s steps(1) infinite;
+}
+
+/* ---------- Marquee (logos / stack) ---------- */
+@keyframes marquee-flow { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+.marquee-track { animation: marquee-flow 34s linear infinite; }
+.marquee-slow  { animation: marquee-flow 55s linear infinite; }
+.marquee-mask {
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+
+/* ---------- Browser frame gloss ---------- */
+.frame-shadow { box-shadow: 0 40px 90px -40px rgba(11, 92, 68, 0.55), 0 8px 24px -12px rgba(22, 32, 42, 0.4); }
+
+/* ---------- Product screens: Ken Burns + crossfade ---------- */
+@keyframes kenburns {
+  0%   { transform: scale(1.02) translate(0, 0); }
+  50%  { transform: scale(1.11) translate(-1.6%, -2.4%); }
+  100% { transform: scale(1.02) translate(0, 0); }
+}
+.kenburns { animation: kenburns 22s ease-in-out infinite; }
+.screen-fade { transition: opacity 0.8s var(--ease-out); }
+
+@media (prefers-reduced-motion: reduce) {
+  .kenburns { animation: none !important; }
+}
+
+/* ---------- Number counter shimmer ---------- */
+@keyframes sheen { to { background-position: 200% center; } }
+.sheen {
+  background: linear-gradient(90deg, #16202A 0%, #2EC98E 50%, #16202A 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: sheen 5s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .aurora, .aurora-2, .marquee-track, .marquee-slow, .caret, .sheen { animation: none !important; }
+  .term-line { opacity: 1 !important; transform: none !important; }
+}
+
 ::selection {
   background: var(--emerald);
   color: #16202a;
