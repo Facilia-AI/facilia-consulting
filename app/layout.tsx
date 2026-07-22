@@ -28,18 +28,20 @@ export const metadata: Metadata = {
   },
 };
 
+const themeScript = `try{var t=localStorage.getItem('facilia-theme')||'dark';var d=document.documentElement;d.classList.toggle('dark',t!=='light');d.classList.toggle('light',t==='light');}catch(e){document.documentElement.classList.add('dark');}`;
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" className="dark" suppressHydrationWarning>
       <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+        <link rel="preconnect" href="https://api.fontshare.com" crossOrigin="anonymous" />
         <link
-          href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Instrument+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap"
+          href="https://api.fontshare.com/v2/css?f[]=general-sans@300,400,500,600,700&display=swap"
           rel="stylesheet"
         />
       </head>
-      <body className="font-body bg-paper text-ink antialiased">{children}</body>
+      <body className="font-sans bg-background text-foreground antialiased">{children}</body>
     </html>
   );
 }

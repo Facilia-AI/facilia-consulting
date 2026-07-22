@@ -2,94 +2,96 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --emerald: #2ec98e;
-  --emerald-deep: #10b981;
-  --amber: #ffb14d;
+/* ================= Theme tokens (21st.dev-style minimalism) ================= */
+:root,
+.light {
+  --bg: 255 255 255;
+  --card: 250 250 250;
+  --fg: 17 17 19;
+  --muted: 113 113 122;
+  --border: 228 228 231;
+  --accent: 5 150 105;        /* emerald-600 — deeper for contrast on light */
+  --accent-contrast: 255 255 255;
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.dark {
+  --bg: 9 9 11;               /* zinc-950 / #09090B */
+  --card: 18 18 21;
+  --fg: 245 245 246;
+  --muted: 150 150 159;
+  --border: 38 38 43;
+  --accent: 46 201 142;       /* Facilia brand green */
+  --accent-contrast: 9 20 15;
 }
 
 html {
   scroll-behavior: smooth;
 }
-
-/* ---------- Blueprint grid (hero) ---------- */
-.blueprint {
-  background-image:
-    linear-gradient(rgba(46, 201, 142, 0.055) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(46, 201, 142, 0.055) 1px, transparent 1px),
-    linear-gradient(rgba(46, 201, 142, 0.028) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(46, 201, 142, 0.028) 1px, transparent 1px);
-  background-size: 96px 96px, 96px 96px, 24px 24px, 24px 24px;
+body {
+  background: rgb(var(--bg));
+  color: rgb(var(--fg));
+  transition: background-color 0.3s var(--ease-out), color 0.3s var(--ease-out);
 }
 
-/* ---------- Hero entrance ---------- */
+/* ---------- Subtle grid backdrop (very low contrast) ---------- */
+.grid-bg {
+  background-image:
+    linear-gradient(rgb(var(--border) / 0.5) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(var(--border) / 0.5) 1px, transparent 1px);
+  background-size: 64px 64px;
+  -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 40%, transparent 100%);
+  mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 40%, transparent 100%);
+}
+
+/* ---------- Entrance ---------- */
 @keyframes rise-in {
-  from { opacity: 0; transform: translateY(26px); }
+  from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }
 }
-.rise {
+.rise { opacity: 0; animation: rise-in 0.8s var(--ease-out) both; }
+
+/* ---------- Scroll reveal ---------- */
+.reveal {
   opacity: 0;
-  animation: rise-in 0.9s var(--ease-out) both;
+  transform: translateY(18px);
+  transition: opacity 0.7s var(--ease-out), transform 0.7s var(--ease-out);
+  transition-delay: var(--d, 0s);
+}
+.reveal.in { opacity: 1; transform: none; }
+
+/* ---------- Terminal (hero) ---------- */
+@keyframes term-line-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.term-line { opacity: 0; animation: term-line-in 0.5s var(--ease-out) both; animation-delay: var(--d, 0s); }
+@keyframes caret-blink { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
+.caret { display: inline-block; width: 8px; height: 1em; translate: 0 2px; background: rgb(var(--accent)); animation: caret-blink 1.05s steps(1) infinite; }
+
+@keyframes chip-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+.chip-float { animation: chip-float 6s ease-in-out infinite; }
+
+/* ---------- Marquee ---------- */
+@keyframes marquee-flow { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+.marquee-track { animation: marquee-flow 34s linear infinite; }
+.marquee-slow { animation: marquee-flow 55s linear infinite; }
+.marquee-mask {
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
 }
 
-/* ---------- Isometric tower assembly ---------- */
-@keyframes floor-drop {
-  0% { opacity: 0; transform: translateY(-46px); }
-  60% { opacity: 1; }
-  100% { opacity: 1; transform: translateY(0); }
+/* ---------- Product screens: Ken Burns + crossfade ---------- */
+@keyframes kenburns {
+  0% { transform: scale(1.02) translate(0, 0); }
+  50% { transform: scale(1.11) translate(-1.6%, -2.4%); }
+  100% { transform: scale(1.02) translate(0, 0); }
 }
-.floor {
-  opacity: 0;
-  animation: floor-drop 0.85s var(--ease-out) both;
-}
+.kenburns { animation: kenburns 22s ease-in-out infinite; }
+.screen-fade { transition: opacity 0.8s var(--ease-out); }
 
-@keyframes callout-in {
-  from { opacity: 0; transform: translateX(-10px); }
-  to { opacity: 1; transform: translateX(0); }
-}
-.callout {
-  opacity: 0;
-  animation: callout-in 0.7s var(--ease-out) both;
-}
-
-@keyframes crane-sway {
-  0%, 100% { transform: rotate(0deg); }
-  50% { transform: rotate(1.6deg); }
-}
-.crane-arm {
-  transform-origin: 0px 0px;
-  animation: crane-sway 9s ease-in-out infinite;
-}
-
-@keyframes hook-bob {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(9px); }
-}
-.hook {
-  animation: hook-bob 5.5s ease-in-out infinite;
-}
-
-@keyframes chip-float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-9px); }
-}
-.chip-float {
-  animation: chip-float 6s ease-in-out infinite;
-}
-
-@keyframes pulse-glow {
-  0%, 100% { opacity: 0.5; }
-  50% { opacity: 0.85; }
-}
-.glow-pulse {
-  animation: pulse-glow 7s ease-in-out infinite;
-}
-
-/* ---------- 3D tilt scene ---------- */
-.scene {
-  perspective: 1300px;
-}
+/* ---------- 3D tilt ---------- */
+.scene { perspective: 1300px; }
 .scene-inner {
   transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
   transition: transform 0.35s ease-out;
@@ -97,65 +99,15 @@ html {
   will-change: transform;
 }
 
-/* ---------- Scroll reveal (staggered) ---------- */
-.reveal {
-  opacity: 0;
-  transform: translateY(22px);
-  transition: opacity 0.7s var(--ease-out), transform 0.7s var(--ease-out);
-  transition-delay: var(--d, 0s);
-}
-.reveal.in {
-  opacity: 1;
-  transform: none;
-}
+/* ---------- Chevron shapes (agent loop) ---------- */
+.chev { clip-path: polygon(0 0, calc(100% - 22px) 0, 100% 50%, calc(100% - 22px) 100%, 0 100%, 22px 50%); }
+.chev-first { clip-path: polygon(0 0, calc(100% - 22px) 0, 100% 50%, calc(100% - 22px) 100%, 0 100%); }
 
-/* ---------- Scorecard bars: grow when revealed ---------- */
-.bar {
-  width: 0;
-  transition: width 1.2s var(--ease-out);
-  transition-delay: var(--d, 0s);
-}
-.in .bar {
-  width: var(--w);
-}
-
-/* ---------- Chevron signature shapes ---------- */
-.chev {
-  clip-path: polygon(0 0, calc(100% - 26px) 0, 100% 50%, calc(100% - 26px) 100%, 0 100%, 26px 50%);
-}
-.chev-first {
-  clip-path: polygon(0 0, calc(100% - 26px) 0, 100% 50%, calc(100% - 26px) 100%, 0 100%);
-}
-
-@keyframes chevron-flow {
-  from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
-}
-.chevron-track {
-  animation: chevron-flow 22s linear infinite;
-}
-
-/* ---------- Card micro-interactions ---------- */
-.lift {
-  transition: transform 0.45s var(--ease-out), box-shadow 0.45s var(--ease-out), border-color 0.3s ease;
-}
-.lift:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 22px 48px -20px rgba(22, 32, 42, 0.28);
-  border-color: rgba(46, 201, 142, 0.45);
-}
-.lift-dark:hover {
-  box-shadow: 0 22px 48px -18px rgba(46, 201, 142, 0.22);
-  border-color: rgba(46, 201, 142, 0.45);
-}
-
-.btn-glow {
-  transition: transform 0.35s var(--ease-out), box-shadow 0.35s var(--ease-out), background-color 0.25s ease, color 0.25s ease;
-}
-.btn-glow:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 14px 34px -10px rgba(46, 201, 142, 0.55);
-}
+/* ---------- Micro-interactions ---------- */
+.lift { transition: transform 0.4s var(--ease-out), border-color 0.3s ease, background-color 0.3s ease; }
+.lift:hover { transform: translateY(-3px); border-color: rgb(var(--accent) / 0.5); }
+.btn-min { transition: transform 0.25s var(--ease-out), opacity 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease; }
+.btn-min:hover { transform: translateY(-1px); }
 
 /* ---------- Reduced motion ---------- */
 @media (prefers-reduced-motion: reduce) {
@@ -165,95 +117,9 @@ html {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
-  .floor, .rise, .callout, .reveal { opacity: 1 !important; transform: none !important; }
-  .bar { width: var(--w) !important; }
-}
-
-/* ---------- Aurora / gradient field (hero) ---------- */
-@keyframes aurora-drift {
-  0%   { transform: translate3d(0, 0, 0) scale(1); }
-  50%  { transform: translate3d(4%, -3%, 0) scale(1.12); }
-  100% { transform: translate3d(0, 0, 0) scale(1); }
-}
-.aurora { animation: aurora-drift 18s ease-in-out infinite; }
-.aurora-2 { animation: aurora-drift 24s ease-in-out infinite reverse; }
-
-/* ---------- Gradient text ---------- */
-.grad-text {
-  background: linear-gradient(100deg, #2EC98E 0%, #6EE7B7 45%, #2EC98E 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
-
-/* ---------- Terminal (hero signature) ---------- */
-@keyframes term-line-in {
-  from { opacity: 0; transform: translateY(6px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-.term-line {
-  opacity: 0;
-  animation: term-line-in 0.5s var(--ease-out) both;
-  animation-delay: var(--d, 0s);
-}
-@keyframes caret-blink { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
-.caret {
-  display: inline-block;
-  width: 8px;
-  height: 1em;
-  translate: 0 2px;
-  background: var(--emerald);
-  animation: caret-blink 1.05s steps(1) infinite;
-}
-
-/* ---------- Marquee (logos / stack) ---------- */
-@keyframes marquee-flow { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-.marquee-track { animation: marquee-flow 34s linear infinite; }
-.marquee-slow  { animation: marquee-flow 55s linear infinite; }
-.marquee-mask {
-  -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
-  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
-}
-
-/* ---------- Browser frame gloss ---------- */
-.frame-shadow { box-shadow: 0 40px 90px -40px rgba(11, 92, 68, 0.55), 0 8px 24px -12px rgba(22, 32, 42, 0.4); }
-
-/* ---------- Product screens: Ken Burns + crossfade ---------- */
-@keyframes kenburns {
-  0%   { transform: scale(1.02) translate(0, 0); }
-  50%  { transform: scale(1.11) translate(-1.6%, -2.4%); }
-  100% { transform: scale(1.02) translate(0, 0); }
-}
-.kenburns { animation: kenburns 22s ease-in-out infinite; }
-.screen-fade { transition: opacity 0.8s var(--ease-out); }
-
-@media (prefers-reduced-motion: reduce) {
+  .rise, .reveal, .term-line { opacity: 1 !important; transform: none !important; }
   .kenburns { animation: none !important; }
 }
 
-/* ---------- Number counter shimmer ---------- */
-@keyframes sheen { to { background-position: 200% center; } }
-.sheen {
-  background: linear-gradient(90deg, #16202A 0%, #2EC98E 50%, #16202A 100%);
-  background-size: 200% auto;
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  animation: sheen 5s linear infinite;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .aurora, .aurora-2, .marquee-track, .marquee-slow, .caret, .sheen { animation: none !important; }
-  .term-line { opacity: 1 !important; transform: none !important; }
-}
-
-::selection {
-  background: var(--emerald);
-  color: #16202a;
-}
-
-:focus-visible {
-  outline: 2px solid var(--emerald-deep);
-  outline-offset: 3px;
-  border-radius: 4px;
-}
+::selection { background: rgb(var(--accent)); color: rgb(var(--accent-contrast)); }
+:focus-visible { outline: 2px solid rgb(var(--accent)); outline-offset: 3px; border-radius: 4px; }

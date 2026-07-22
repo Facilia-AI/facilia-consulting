@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 
 /* ========================================================================
    Facilia Dev — AI-native software studio, built in Latin America
+   Minimalist theme (21st.dev-inspired) · General Sans · light/dark
    ===================================================================== */
 
 const CAL = "https://cal.com/javier-cristancho-oa5zrb";
@@ -130,7 +131,8 @@ const T = {
       btn: "Book a call",
       alt: "or email us",
     },
-    footer: { line: "© 2026 Facilia Dev · AI-native software studio · Built in Latin America", rights: "Products" },
+    footer: { line: "© 2026 Facilia Dev · AI-native software studio · Built in Latin America" },
+    theme: { light: "Light", dark: "Dark" },
   },
 
   es: {
@@ -248,7 +250,8 @@ const T = {
       btn: "Agendar llamada",
       alt: "o escríbenos",
     },
-    footer: { line: "© 2026 Facilia Dev · Estudio de software AI-native · Hecho en Latinoamérica", rights: "Productos" },
+    footer: { line: "© 2026 Facilia Dev · Estudio de software AI-native · Hecho en Latinoamérica" },
+    theme: { light: "Claro", dark: "Oscuro" },
   },
 } as const;
 
@@ -267,7 +270,7 @@ const FILMSTRIP = [
   { src: "shelv.png", label: "Shelv" },
 ];
 
-const TERM: { k: "cmd" | "run" | "ok" | "out"; t: string }[] = [
+const TERM: { k: "cmd" | "run" | "ok"; t: string }[] = [
   { k: "cmd", t: "facilia dev --new clinck.io" },
   { k: "run", t: "claude code · opus 4.8 → planning architecture" },
   { k: "ok", t: "supabase: 14 tables · RLS policies generated" },
@@ -292,22 +295,54 @@ function useReveal() {
   }, []);
 }
 
-function ChevronDivider() {
-  const row = Array.from({ length: 28 });
+function Logo({ w = 116, h = 23 }: { w?: number; h?: number }) {
   return (
-    <div className="overflow-hidden bg-ink py-3" aria-hidden>
-      <div className="marquee-track flex w-max gap-4">
-        {[0, 1].map((g) => (
-          <div key={g} className="flex gap-4 pr-4">
-            {row.map((_, i) => (
-              <svg key={i} width="22" height="22" viewBox="0 0 24 24" fill="none">
-                <path d="M7 4l8 8-8 8" stroke={i % 4 === 0 ? "#2EC98E" : "#2A3A47"} strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            ))}
-          </div>
-        ))}
-      </div>
-    </div>
+    <>
+      <Image src="/facilia_dark.png" alt="Facilia" width={w} height={h} priority className="hidden dark:block" />
+      <Image src="/facilia_light.png" alt="Facilia" width={w} height={h} priority className="block dark:hidden" />
+    </>
+  );
+}
+
+function SunIcon() {
+  return (
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden>
+      <circle cx="12" cy="12" r="4" />
+      <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" />
+    </svg>
+  );
+}
+function MoonIcon() {
+  return (
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+      <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" />
+    </svg>
+  );
+}
+
+function ThemeToggle({ labels }: { labels: { light: string; dark: string } }) {
+  const [theme, setTheme] = useState<"dark" | "light">("dark");
+  useEffect(() => {
+    const t = (typeof window !== "undefined" ? window.localStorage.getItem("facilia-theme") : null) as "dark" | "light" | null;
+    setTheme(t === "light" ? "light" : "dark");
+  }, []);
+  const toggle = () => {
+    const nt = theme === "dark" ? "light" : "dark";
+    setTheme(nt);
+    const r = document.documentElement;
+    r.classList.toggle("dark", nt === "dark");
+    r.classList.toggle("light", nt === "light");
+    try { window.localStorage.setItem("facilia-theme", nt); } catch {}
+  };
+  return (
+    <button
+      onClick={toggle}
+      className="btn-min inline-flex items-center gap-2 rounded-lg border border-border px-3 py-2 text-sm text-muted hover:text-foreground hover:border-foreground/30"
+      aria-label="Toggle color theme"
+    >
+      {theme === "dark" ? <SunIcon /> : <MoonIcon />}
+      <span>{theme === "dark" ? labels.light : labels.dark}</span>
+    </button>
   );
 }
 
@@ -316,48 +351,42 @@ function ChevronDivider() {
 function Terminal({ title }: { title: string }) {
   return (
     <div className="scene relative">
-      <div className="frame-shadow relative overflow-hidden rounded-2xl border border-white/12 bg-ink2/95">
-        {/* title bar */}
-        <div className="flex items-center gap-2 border-b border-white/10 bg-white/5 px-4 py-3">
+      <div className="relative overflow-hidden rounded-xl border border-border bg-card shadow-2xl shadow-black/20">
+        <div className="flex items-center gap-2 border-b border-border px-4 py-3">
           <span className="h-3 w-3 rounded-full bg-[#FF5F57]" />
           <span className="h-3 w-3 rounded-full bg-[#FEBC2E]" />
           <span className="h-3 w-3 rounded-full bg-[#28C840]" />
-          <span className="ml-3 font-mono text-[11px] text-white/40">{title}</span>
+          <span className="ml-3 font-mono text-[11px] text-muted">{title}</span>
         </div>
-        {/* body */}
         <div className="space-y-1.5 px-5 py-5 font-mono text-[12.5px] leading-relaxed sm:text-[13px]">
           {TERM.map((l, i) => (
             <div key={i} className="term-line flex gap-2" style={{ "--d": `${0.5 + i * 0.42}s` } as React.CSSProperties}>
-              {l.k === "cmd" && <span className="shrink-0 text-emerald2">$</span>}
-              {l.k === "run" && <span className="shrink-0 text-amber-300">»</span>}
-              {l.k === "ok" && <span className="shrink-0 text-emerald2">✓</span>}
-              {l.k === "out" && <span className="shrink-0 text-white/30"> </span>}
-              <span className={l.k === "cmd" ? "text-white" : l.k === "ok" ? "text-white/70" : l.k === "run" ? "text-white/80" : "text-white/40"}>
-                {l.t}
-              </span>
+              {l.k === "cmd" && <span className="shrink-0 text-accent">$</span>}
+              {l.k === "run" && <span className="shrink-0 text-accent/70">»</span>}
+              {l.k === "ok" && <span className="shrink-0 text-accent">✓</span>}
+              <span className={l.k === "cmd" ? "text-foreground" : "text-muted"}>{l.t}</span>
             </div>
           ))}
           <div className="term-line flex gap-2 pt-1" style={{ "--d": `${0.5 + TERM.length * 0.42}s` } as React.CSSProperties}>
-            <span className="shrink-0 text-emerald2">$</span>
+            <span className="shrink-0 text-accent">$</span>
             <span className="caret" />
           </div>
         </div>
       </div>
-      {/* floating tech chips */}
-      <div className="chip-float absolute -left-4 top-[22%] hidden rounded-lg border border-emerald2/30 bg-ink/90 px-3 py-1.5 font-mono text-[11px] text-emerald2 shadow-lg backdrop-blur sm:block" style={{ animationDelay: "0.6s" }}>
+      <div className="chip-float absolute -left-4 top-[22%] hidden rounded-lg border border-border bg-background/90 px-3 py-1.5 font-mono text-[11px] text-accent shadow-lg backdrop-blur sm:block" style={{ animationDelay: "0.6s" }}>
         Claude · Opus 4.8
       </div>
-      <div className="chip-float absolute -right-4 top-[52%] hidden rounded-lg border border-white/15 bg-ink/90 px-3 py-1.5 font-mono text-[11px] text-white/85 shadow-lg backdrop-blur sm:block" style={{ animationDelay: "1.8s" }}>
+      <div className="chip-float absolute -right-4 top-[52%] hidden rounded-lg border border-border bg-background/90 px-3 py-1.5 font-mono text-[11px] text-muted shadow-lg backdrop-blur sm:block" style={{ animationDelay: "1.8s" }}>
         Supabase · Postgres
       </div>
-      <div className="chip-float absolute -left-2 bottom-[8%] hidden rounded-lg border border-amber-300/30 bg-ink/90 px-3 py-1.5 font-mono text-[11px] text-amber-200 shadow-lg backdrop-blur sm:block" style={{ animationDelay: "2.6s" }}>
+      <div className="chip-float absolute -left-2 bottom-[8%] hidden rounded-lg border border-border bg-background/90 px-3 py-1.5 font-mono text-[11px] text-muted shadow-lg backdrop-blur sm:block" style={{ animationDelay: "2.6s" }}>
         Codex · tests
       </div>
     </div>
   );
 }
 
-/* ---------- Dynamic product showcase (tilt · browser frame · Ken Burns · auto-rotate) ---------- */
+/* ---------- Dynamic product showcase ---------- */
 
 function Tilt({ children }: { children: React.ReactNode }) {
   const ref = useRef<HTMLDivElement>(null);
@@ -410,9 +439,9 @@ function ScreenImg({ src, name, active, kb }: { src: string; name: string; activ
           loading="lazy"
         />
       ) : (
-        <div className="flex h-full w-full flex-col items-center justify-center gap-2 bg-gradient-to-br from-ink2 to-ink">
-          <span className="font-display text-2xl font-extrabold text-emerald2">{name}</span>
-          <span className="font-mono text-[11px] text-white/40">/projects/{src}</span>
+        <div className="flex h-full w-full flex-col items-center justify-center gap-2 bg-card">
+          <span className="text-2xl font-semibold text-accent">{name}</span>
+          <span className="font-mono text-[11px] text-muted">/projects/{src}</span>
         </div>
       )}
     </div>
@@ -436,16 +465,16 @@ function Showcase({ item }: { item: { name: string; screens: ReadonlyArray<{ src
   return (
     <div>
       <Tilt>
-        <div className="frame-shadow overflow-hidden rounded-xl border border-white/12 bg-ink2">
-          <div className="flex items-center gap-2 border-b border-white/10 bg-white/5 px-3.5 py-2.5">
+        <div className="overflow-hidden rounded-xl border border-border bg-card shadow-2xl shadow-black/20">
+          <div className="flex items-center gap-2 border-b border-border px-3.5 py-2.5">
             <span className="h-2.5 w-2.5 rounded-full bg-[#FF5F57]" />
             <span className="h-2.5 w-2.5 rounded-full bg-[#FEBC2E]" />
             <span className="h-2.5 w-2.5 rounded-full bg-[#28C840]" />
-            <span className="ml-2 flex-1 truncate rounded-md bg-white/[0.06] px-3 py-1 text-center font-mono text-[11px] text-white/45">
+            <span className="ml-2 flex-1 truncate rounded-md bg-foreground/[0.04] px-3 py-1 text-center font-mono text-[11px] text-muted">
               {cur.path}
             </span>
           </div>
-          <div className="relative aspect-[16/10] w-full overflow-hidden bg-ink">
+          <div className="relative aspect-[16/10] w-full overflow-hidden bg-background">
             {item.screens.map((s, idx) => (
               <ScreenImg key={s.src} src={s.src} name={item.name} active={idx === i} kb={idx === i} />
             ))}
@@ -459,7 +488,7 @@ function Showcase({ item }: { item: { name: string; screens: ReadonlyArray<{ src
               key={s.src}
               onClick={() => setI(idx)}
               aria-pressed={idx === i}
-              className={`rounded-lg border px-3 py-1.5 font-mono text-[11.5px] transition ${idx === i ? "border-emerald2/50 bg-emerald2/15 text-emerald2" : "border-white/12 text-white/50 hover:text-white"}`}
+              className={`rounded-lg border px-3 py-1.5 font-mono text-[11.5px] transition ${idx === i ? "border-accent/50 bg-accent/10 text-accent" : "border-border text-muted hover:text-foreground"}`}
             >
               {s.label}
             </button>
@@ -473,20 +502,20 @@ function Showcase({ item }: { item: { name: string; screens: ReadonlyArray<{ src
 function MiniShot({ src, label }: { src: string; label: string }) {
   const { ref, ok, onError } = useImgStatus();
   return (
-    <div className="w-[300px] shrink-0 overflow-hidden rounded-lg border border-white/10 bg-ink2 sm:w-[360px]">
-      <div className="flex items-center gap-1.5 border-b border-white/10 bg-white/5 px-3 py-1.5">
-        <span className="h-2 w-2 rounded-full bg-white/20" />
-        <span className="h-2 w-2 rounded-full bg-white/20" />
-        <span className="h-2 w-2 rounded-full bg-white/20" />
-        <span className="ml-1.5 font-mono text-[10px] text-white/40">{label}</span>
+    <div className="w-[300px] shrink-0 overflow-hidden rounded-lg border border-border bg-card sm:w-[360px]">
+      <div className="flex items-center gap-1.5 border-b border-border px-3 py-1.5">
+        <span className="h-2 w-2 rounded-full bg-muted/40" />
+        <span className="h-2 w-2 rounded-full bg-muted/40" />
+        <span className="h-2 w-2 rounded-full bg-muted/40" />
+        <span className="ml-1.5 font-mono text-[10px] text-muted">{label}</span>
       </div>
-      <div className="relative aspect-[16/10] w-full overflow-hidden bg-ink">
+      <div className="relative aspect-[16/10] w-full overflow-hidden bg-background">
         {ok ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img ref={ref} src={`/projects/${src}`} alt={label} onError={onError} className="h-full w-full object-cover object-top" loading="lazy" />
         ) : (
-          <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-ink2 to-ink">
-            <span className="font-display text-sm font-bold text-emerald2/80">{label}</span>
+          <div className="flex h-full w-full items-center justify-center bg-card">
+            <span className="text-sm font-semibold text-accent/80">{label}</span>
           </div>
         )}
       </div>
@@ -510,6 +539,12 @@ function ScreenStrip() {
   );
 }
 
+/* Shared bits */
+const eyebrow = "font-mono text-xs uppercase tracking-[0.2em] text-accent";
+const h2cls = "mt-3 text-3xl font-medium tracking-[-0.02em] sm:text-4xl";
+const subcls = "mt-4 max-w-2xl text-muted";
+const btnPrimary = "btn-min rounded-lg bg-foreground px-5 py-3 text-sm font-medium text-background hover:opacity-90";
+
 /* ================= page ================= */
 
 export default function Page() {
@@ -529,34 +564,34 @@ export default function Page() {
   const t = T[lang];
 
   return (
-    <main>
+    <main className="bg-background">
       {/* ===================== NAV ===================== */}
-      <header className="sticky top-0 z-50 border-b border-white/10 bg-ink/85 backdrop-blur">
+      <header className="sticky top-0 z-50 border-b border-border bg-background/80 backdrop-blur">
         <nav className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-5 py-3.5">
           <a href="#top" className="flex items-center gap-2" aria-label="Facilia Dev">
-            <Image src="/facilia_dark.png" alt="Facilia" width={116} height={23} priority />
-            <span className="rounded-full bg-emerald2/15 px-2.5 py-0.5 font-mono text-[11px] font-semibold text-emerald2">dev</span>
+            <Logo />
+            <span className="rounded-full border border-accent/25 bg-accent/10 px-2.5 py-0.5 font-mono text-[11px] font-medium text-accent">dev</span>
           </a>
-          <div className="hidden items-center gap-7 text-sm font-medium text-white/70 md:flex">
-            <a href="#work" className="transition hover:text-white">{t.nav.work}</a>
-            <a href="#expertise" className="transition hover:text-white">{t.nav.expertise}</a>
-            <a href="#stack" className="transition hover:text-white">{t.nav.stack}</a>
-            <a href="#why" className="transition hover:text-white">{t.nav.why}</a>
+          <div className="hidden items-center gap-7 text-sm text-muted md:flex">
+            <a href="#work" className="transition hover:text-foreground">{t.nav.work}</a>
+            <a href="#expertise" className="transition hover:text-foreground">{t.nav.expertise}</a>
+            <a href="#stack" className="transition hover:text-foreground">{t.nav.stack}</a>
+            <a href="#why" className="transition hover:text-foreground">{t.nav.why}</a>
           </div>
           <div className="flex items-center gap-3">
-            <div className="flex rounded-lg border border-white/15 p-0.5" role="group" aria-label="Language / Idioma">
+            <div className="flex rounded-lg border border-border p-0.5" role="group" aria-label="Language / Idioma">
               {(["en", "es"] as const).map((k) => (
                 <button
                   key={k}
                   onClick={() => setLang(k)}
                   aria-pressed={lang === k}
-                  className={`rounded-md px-2.5 py-1 font-mono text-xs font-semibold uppercase transition ${lang === k ? "bg-emerald2 text-ink" : "text-white/55 hover:text-white"}`}
+                  className={`rounded-md px-2.5 py-1 font-mono text-xs font-medium uppercase transition ${lang === k ? "bg-foreground text-background" : "text-muted hover:text-foreground"}`}
                 >
                   {k}
                 </button>
               ))}
             </div>
-            <a href={CAL} target="_blank" rel="noopener" className="btn-glow hidden rounded-lg bg-emerald2 px-4 py-2 text-sm font-semibold text-ink sm:block">
+            <a href={CAL} target="_blank" rel="noopener" className="btn-min hidden rounded-lg bg-foreground px-4 py-2 text-sm font-medium text-background hover:opacity-90 sm:block">
               {t.nav.cta}
             </a>
           </div>
@@ -564,33 +599,32 @@ export default function Page() {
       </header>
 
       {/* ===================== HERO ===================== */}
-      <section id="top" className="blueprint relative overflow-hidden bg-ink text-white">
-        <div className="aurora pointer-events-none absolute -right-40 -top-52 h-[560px] w-[560px] rounded-full bg-emerald2/12 blur-[130px]" aria-hidden />
-        <div className="aurora-2 pointer-events-none absolute -left-40 top-40 h-[420px] w-[420px] rounded-full bg-deep/25 blur-[120px]" aria-hidden />
-        <div className="mx-auto grid max-w-6xl items-center gap-14 px-5 pb-20 pt-16 lg:grid-cols-[1.05fr_0.95fr] lg:pb-28 lg:pt-24">
+      <section id="top" className="relative overflow-hidden">
+        <div className="grid-bg pointer-events-none absolute inset-0 opacity-70" aria-hidden />
+        <div className="relative mx-auto grid max-w-6xl items-center gap-14 px-5 pb-20 pt-16 lg:grid-cols-[1.05fr_0.95fr] lg:pb-28 lg:pt-24">
           <div>
-            <p className="rise mb-5 inline-flex items-center gap-2 rounded-full border border-emerald2/30 bg-emerald2/10 px-3.5 py-1.5 font-mono text-xs font-medium text-emerald2" style={{ animationDelay: "0.05s" }}>
-              <span aria-hidden>»</span> {t.hero.eyebrow}
+            <p className="rise mb-5 inline-flex items-center gap-2 rounded-full border border-border bg-card px-3.5 py-1.5 font-mono text-xs text-muted" style={{ animationDelay: "0.05s" }}>
+              <span className="text-accent" aria-hidden>»</span> {t.hero.eyebrow}
             </p>
-            <h1 className="rise font-display text-4xl leading-[1.05] tracking-tight sm:text-5xl lg:text-[3.7rem]" style={{ fontWeight: 800, animationDelay: "0.15s" }}>
-              {t.hero.h1a} <span className="grad-text">{t.hero.h1b}</span>
+            <h1 className="rise text-4xl font-medium leading-[1.05] tracking-[-0.03em] sm:text-5xl lg:text-[3.7rem]" style={{ animationDelay: "0.15s" }}>
+              {t.hero.h1a} <span className="text-accent">{t.hero.h1b}</span>
             </h1>
-            <p className="rise mt-6 max-w-xl text-lg leading-relaxed text-white/65" style={{ animationDelay: "0.3s" }}>
+            <p className="rise mt-6 max-w-xl text-lg leading-relaxed text-muted" style={{ animationDelay: "0.3s" }}>
               {t.hero.sub}
             </p>
             <div className="rise mt-8 flex flex-wrap items-center gap-4" style={{ animationDelay: "0.45s" }}>
-              <a href={CAL} target="_blank" rel="noopener" className="btn-glow rounded-xl bg-emerald2 px-6 py-3.5 font-semibold text-ink">
+              <a href={CAL} target="_blank" rel="noopener" className="btn-min rounded-lg bg-foreground px-6 py-3.5 font-medium text-background hover:opacity-90">
                 {t.hero.cta1}
               </a>
-              <a href="#work" className="font-semibold text-emerald2 underline decoration-emerald2/50 decoration-2 underline-offset-4 transition hover:text-white">
-                {t.hero.cta2} »
+              <a href="#work" className="font-medium text-foreground/80 transition hover:text-foreground">
+                {t.hero.cta2} <span className="text-accent">»</span>
               </a>
             </div>
-            <div className="rise mt-12 grid max-w-lg grid-cols-3 gap-6 border-t border-white/10 pt-7" style={{ animationDelay: "0.6s" }}>
+            <div className="rise mt-12 grid max-w-lg grid-cols-3 gap-6 border-t border-border pt-7" style={{ animationDelay: "0.6s" }}>
               {t.hero.stats.map(([n, l]) => (
                 <div key={l}>
-                  <p className="font-display text-3xl font-extrabold text-emerald2">{n}</p>
-                  <p className="mt-1 text-[12.5px] leading-snug text-white/50">{l}</p>
+                  <p className="text-3xl font-medium tracking-tight text-foreground">{n}</p>
+                  <p className="mt-1 text-[12.5px] leading-snug text-muted">{l}</p>
                 </div>
               ))}
             </div>
@@ -603,14 +637,14 @@ export default function Page() {
       </section>
 
       {/* ===================== TECH MARQUEE ===================== */}
-      <div className="border-y border-white/10 bg-ink py-6">
-        <p className="mb-4 text-center font-mono text-[11px] uppercase tracking-[0.25em] text-white/35">{t.marquee}</p>
+      <div className="border-y border-border py-6">
+        <p className="mb-4 text-center font-mono text-[11px] uppercase tracking-[0.25em] text-muted">{t.marquee}</p>
         <div className="marquee-mask overflow-hidden">
           <div className="marquee-slow flex w-max gap-3">
             {[0, 1].map((g) => (
               <div key={g} className="flex gap-3 pr-3">
                 {TECH.map((tech, i) => (
-                  <span key={g + tech + i} className="whitespace-nowrap rounded-lg border border-white/10 bg-white/[0.04] px-4 py-2 font-mono text-[12.5px] text-white/70">
+                  <span key={g + tech + i} className="whitespace-nowrap rounded-lg border border-border bg-card px-4 py-2 font-mono text-[12.5px] text-muted">
                     {tech}
                   </span>
                 ))}
@@ -622,37 +656,32 @@ export default function Page() {
 
       {/* ===================== WHAT WE BUILD ===================== */}
       <section id="expertise" className="mx-auto max-w-6xl px-5 py-24">
-        <p className="reveal font-mono text-xs font-medium uppercase tracking-[0.2em] text-deep">{t.expertise.eyebrow}</p>
-        <h2 className="reveal mt-3 max-w-3xl font-display text-3xl font-bold tracking-tight sm:text-4xl" style={{ "--d": "0.08s" } as React.CSSProperties}>
-          {t.expertise.title}
-        </h2>
-        <p className="reveal mt-4 max-w-2xl text-ink/60" style={{ "--d": "0.16s" } as React.CSSProperties}>{t.expertise.sub}</p>
+        <p className={`reveal ${eyebrow}`}>{t.expertise.eyebrow}</p>
+        <h2 className={`reveal ${h2cls} max-w-3xl`} style={{ "--d": "0.08s" } as React.CSSProperties}>{t.expertise.title}</h2>
+        <p className={`reveal ${subcls}`} style={{ "--d": "0.16s" } as React.CSSProperties}>{t.expertise.sub}</p>
         <div className="mt-12 grid gap-5 md:grid-cols-2">
           {t.expertise.items.map((it, i) => (
-            <div key={it.tag} className="reveal lift group relative overflow-hidden rounded-2xl border border-ink/8 bg-white p-7" style={{ "--d": `${0.06 * i}s` } as React.CSSProperties}>
+            <div key={it.tag} className="reveal lift group relative overflow-hidden rounded-xl border border-border bg-card p-7" style={{ "--d": `${0.06 * i}s` } as React.CSSProperties}>
               <div className="flex items-center justify-between">
-                <span className="rounded-md bg-ink px-2.5 py-1 font-mono text-[11px] font-semibold text-emerald2">{it.tag}</span>
-                {it.ref && <span className="font-mono text-[11px] text-ink/35">↳ {it.ref}</span>}
+                <span className="rounded-md border border-accent/20 bg-accent/10 px-2.5 py-1 font-mono text-[11px] font-medium text-accent">{it.tag}</span>
+                {it.ref && <span className="font-mono text-[11px] text-muted">↳ {it.ref}</span>}
               </div>
-              <h3 className="mt-5 font-display text-xl font-bold">{it.name}</h3>
-              <p className="mt-2 text-[14px] leading-relaxed text-ink/60">{it.desc}</p>
-              <div className="pointer-events-none absolute -right-8 -top-8 text-[7rem] font-display font-black text-ink/[0.03] transition-transform duration-500 group-hover:scale-110" aria-hidden>»</div>
+              <h3 className="mt-5 text-xl font-semibold tracking-tight">{it.name}</h3>
+              <p className="mt-2 text-[14px] leading-relaxed text-muted">{it.desc}</p>
+              <div className="pointer-events-none absolute -right-8 -top-8 text-[7rem] font-semibold text-foreground/[0.03] transition-transform duration-500 group-hover:scale-110" aria-hidden>»</div>
             </div>
           ))}
         </div>
       </section>
 
       {/* ===================== WORK ===================== */}
-      <section id="work" className="bg-ink py-24 text-white">
+      <section id="work" className="border-t border-border py-24">
         <div className="mx-auto max-w-6xl px-5">
-          <p className="reveal font-mono text-xs font-medium uppercase tracking-[0.2em] text-emerald2">{t.work.eyebrow}</p>
-          <h2 className="reveal mt-3 font-display text-3xl font-bold tracking-tight sm:text-4xl" style={{ "--d": "0.08s" } as React.CSSProperties}>
-            {t.work.title}
-          </h2>
-          <p className="reveal mt-4 max-w-2xl text-white/60" style={{ "--d": "0.16s" } as React.CSSProperties}>{t.work.sub}</p>
+          <p className={`reveal ${eyebrow}`}>{t.work.eyebrow}</p>
+          <h2 className={`reveal ${h2cls}`} style={{ "--d": "0.08s" } as React.CSSProperties}>{t.work.title}</h2>
+          <p className={`reveal ${subcls}`} style={{ "--d": "0.16s" } as React.CSSProperties}>{t.work.sub}</p>
         </div>
 
-        {/* dynamic filmstrip of all product screens */}
         <div className="reveal mt-12">
           <ScreenStrip />
         </div>
@@ -666,23 +695,23 @@ export default function Page() {
                 </div>
                 <div className="reveal" style={{ "--d": "0.12s" } as React.CSSProperties}>
                   <div className="flex flex-wrap items-center gap-3">
-                    <span className="font-display text-2xl font-extrabold">{p.name}</span>
-                    <span className="rounded-full border border-emerald2/30 bg-emerald2/10 px-2.5 py-0.5 font-mono text-[11px] text-emerald2">{p.sector}</span>
+                    <span className="text-2xl font-semibold tracking-tight">{p.name}</span>
+                    <span className="rounded-full border border-accent/25 bg-accent/10 px-2.5 py-0.5 font-mono text-[11px] text-accent">{p.sector}</span>
                   </div>
-                  <p className="mt-1.5 font-mono text-sm text-emerald2/80">{p.tagline}</p>
-                  <p className="mt-4 leading-relaxed text-white/65">{p.desc}</p>
-                  <p className="mt-5 font-mono text-[12px] uppercase tracking-wider text-white/40">{p.role}</p>
+                  <p className="mt-1.5 font-mono text-sm text-accent/80">{p.tagline}</p>
+                  <p className="mt-4 leading-relaxed text-muted">{p.desc}</p>
+                  <p className="mt-5 font-mono text-[12px] uppercase tracking-wider text-muted/80">{p.role}</p>
                   <div className="mt-3 flex flex-wrap gap-2">
                     {p.stack.map((s) => (
-                      <span key={s} className="rounded-md border border-white/12 bg-white/[0.04] px-2.5 py-1 font-mono text-[11.5px] text-white/70">{s}</span>
+                      <span key={s} className="rounded-md border border-border bg-card px-2.5 py-1 font-mono text-[11.5px] text-muted">{s}</span>
                     ))}
                   </div>
                   {p.url ? (
-                    <a href={p.url} target="_blank" rel="noopener" className="btn-glow mt-6 inline-flex items-center gap-1.5 rounded-lg border border-emerald2/40 px-4 py-2 text-sm font-semibold text-emerald2 hover:bg-emerald2 hover:text-ink">
+                    <a href={p.url} target="_blank" rel="noopener" className="btn-min mt-6 inline-flex items-center gap-1.5 rounded-lg border border-border px-4 py-2 text-sm font-medium text-foreground hover:border-accent/50 hover:text-accent">
                       {t.work.cta} {p.host} »
                     </a>
                   ) : (
-                    <span className="mt-6 inline-flex items-center gap-1.5 rounded-lg border border-white/15 px-4 py-2 text-sm font-semibold text-white/50">
+                    <span className="mt-6 inline-flex items-center gap-1.5 rounded-lg border border-border px-4 py-2 text-sm font-medium text-muted">
                       {p.host} · {t.work.soon}
                     </span>
                   )}
@@ -694,41 +723,40 @@ export default function Page() {
       </section>
 
       {/* ===================== HOW WE BUILD / STACK ===================== */}
-      <section id="stack" className="mx-auto max-w-6xl px-5 py-24">
-        <p className="reveal font-mono text-xs font-medium uppercase tracking-[0.2em] text-deep">{t.stack.eyebrow}</p>
-        <h2 className="reveal mt-3 font-display text-3xl font-bold tracking-tight sm:text-4xl" style={{ "--d": "0.08s" } as React.CSSProperties}>
-          {t.stack.title}
-        </h2>
-        <p className="reveal mt-4 max-w-2xl text-ink/60" style={{ "--d": "0.16s" } as React.CSSProperties}>{t.stack.sub}</p>
+      <section id="stack" className="mx-auto max-w-6xl border-t border-border px-5 py-24">
+        <p className={`reveal ${eyebrow}`}>{t.stack.eyebrow}</p>
+        <h2 className={`reveal ${h2cls}`} style={{ "--d": "0.08s" } as React.CSSProperties}>{t.stack.title}</h2>
+        <p className={`reveal ${subcls}`} style={{ "--d": "0.16s" } as React.CSSProperties}>{t.stack.sub}</p>
 
-        {/* agent loop */}
         <div className="reveal mt-10 flex flex-col gap-2" style={{ "--d": "0.2s" } as React.CSSProperties}>
           <div className="flex flex-wrap gap-1.5">
             {t.stack.loop.map((step, i) => (
               <div
                 key={step}
-                className={`${i === 0 ? "chev-first" : "chev"} flex h-14 min-w-[9rem] flex-1 items-center justify-center font-display text-lg font-extrabold transition-transform duration-300 hover:-translate-y-1`}
-                style={{ background: i === 3 ? "#2EC98E" : `rgba(46,201,142,${0.18 + i * 0.2})`, color: i === 3 ? "#16202A" : "#16202A" }}
+                className={`${i === 0 ? "chev-first" : "chev"} flex h-14 min-w-[9rem] flex-1 items-center justify-center text-lg font-medium transition-transform duration-300 hover:-translate-y-1`}
+                style={{
+                  background: i === 3 ? "rgb(var(--accent))" : `rgb(var(--accent) / ${0.12 + i * 0.14})`,
+                  color: i === 3 ? "rgb(var(--accent-contrast))" : "rgb(var(--fg))",
+                }}
               >
                 {step}
               </div>
             ))}
           </div>
-          <p className="font-mono text-[11.5px] text-ink/40">{t.stack.loopNote}</p>
+          <p className="font-mono text-[11.5px] text-muted">{t.stack.loopNote}</p>
         </div>
 
-        {/* layers */}
         <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {t.stack.layers.map((layer, i) => (
-            <div key={layer.l} className="reveal lift rounded-2xl border border-ink/8 bg-white p-6" style={{ "--d": `${0.06 * i}s` } as React.CSSProperties}>
+            <div key={layer.l} className="reveal lift rounded-xl border border-border bg-card p-6" style={{ "--d": `${0.06 * i}s` } as React.CSSProperties}>
               <div className="flex items-center gap-2">
-                <span className="font-mono text-[11px] text-deep">0{i + 1}</span>
-                <h3 className="font-display text-[15px] font-bold">{layer.l}</h3>
+                <span className="font-mono text-[11px] text-accent">0{i + 1}</span>
+                <h3 className="text-[15px] font-semibold tracking-tight">{layer.l}</h3>
               </div>
               <ul className="mt-4 space-y-2.5">
                 {layer.items.map((it) => (
-                  <li key={it} className="flex gap-2 text-[13px] leading-snug text-ink/65">
-                    <span className="text-emerald2" aria-hidden>»</span>
+                  <li key={it} className="flex gap-2 text-[13px] leading-snug text-muted">
+                    <span className="text-accent" aria-hidden>»</span>
                     <span>{it}</span>
                   </li>
                 ))}
@@ -738,24 +766,20 @@ export default function Page() {
         </div>
       </section>
 
-      <ChevronDivider />
-
       {/* ===================== WHY LATAM ===================== */}
-      <section id="why" className="blueprint bg-ink py-24 text-white">
+      <section id="why" className="border-t border-border py-24">
         <div className="mx-auto grid max-w-6xl items-start gap-12 px-5 lg:grid-cols-[0.85fr_1.15fr]">
           <div className="lg:sticky lg:top-24">
-            <p className="reveal font-mono text-xs font-medium uppercase tracking-[0.2em] text-emerald2">{t.why.eyebrow}</p>
-            <h2 className="reveal mt-3 font-display text-3xl font-bold tracking-tight sm:text-4xl" style={{ "--d": "0.08s" } as React.CSSProperties}>
-              {t.why.title}
-            </h2>
-            <p className="reveal mt-4 leading-relaxed text-white/60" style={{ "--d": "0.16s" } as React.CSSProperties}>{t.why.sub}</p>
+            <p className={`reveal ${eyebrow}`}>{t.why.eyebrow}</p>
+            <h2 className={`reveal ${h2cls}`} style={{ "--d": "0.08s" } as React.CSSProperties}>{t.why.title}</h2>
+            <p className="reveal mt-4 leading-relaxed text-muted" style={{ "--d": "0.16s" } as React.CSSProperties}>{t.why.sub}</p>
           </div>
           <div className="grid gap-5 sm:grid-cols-2">
             {t.why.points.map(([ti, d], i) => (
-              <div key={ti} className="reveal lift lift-dark rounded-2xl border border-white/10 bg-ink2 p-6" style={{ "--d": `${0.06 * i}s` } as React.CSSProperties}>
-                <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-emerald2/15 font-display font-bold text-emerald2">0{i + 1}</span>
-                <h3 className="mt-4 font-display text-base font-bold">{ti}</h3>
-                <p className="mt-2 text-[13.5px] leading-relaxed text-white/55">{d}</p>
+              <div key={ti} className="reveal lift rounded-xl border border-border bg-card p-6" style={{ "--d": `${0.06 * i}s` } as React.CSSProperties}>
+                <span className="flex h-9 w-9 items-center justify-center rounded-lg border border-accent/20 bg-accent/10 font-medium text-accent">0{i + 1}</span>
+                <h3 className="mt-4 text-base font-semibold tracking-tight">{ti}</h3>
+                <p className="mt-2 text-[13.5px] leading-relaxed text-muted">{d}</p>
               </div>
             ))}
           </div>
@@ -763,29 +787,22 @@ export default function Page() {
       </section>
 
       {/* ===================== ENGAGEMENT MODELS ===================== */}
-      <section className="mx-auto max-w-6xl px-5 py-24">
-        <p className="reveal font-mono text-xs font-medium uppercase tracking-[0.2em] text-deep">{t.models.eyebrow}</p>
-        <h2 className="reveal mt-3 font-display text-3xl font-bold tracking-tight sm:text-4xl" style={{ "--d": "0.08s" } as React.CSSProperties}>
-          {t.models.title}
-        </h2>
-        <p className="reveal mt-3 max-w-xl text-ink/60" style={{ "--d": "0.16s" } as React.CSSProperties}>{t.models.sub}</p>
+      <section className="mx-auto max-w-6xl border-t border-border px-5 py-24">
+        <p className={`reveal ${eyebrow}`}>{t.models.eyebrow}</p>
+        <h2 className={`reveal ${h2cls}`} style={{ "--d": "0.08s" } as React.CSSProperties}>{t.models.title}</h2>
+        <p className="reveal mt-3 max-w-xl text-muted" style={{ "--d": "0.16s" } as React.CSSProperties}>{t.models.sub}</p>
 
         <div className="mt-12 grid gap-6 lg:grid-cols-3">
           {t.models.items.map((m, i) => (
             <div
               key={m.name}
-              className={`reveal lift relative flex flex-col rounded-2xl border p-7 ${m.featured ? "lift-dark border-deep bg-ink text-white shadow-[0_28px_70px_-28px_rgba(11,92,68,0.55)]" : "border-ink/8 bg-white"}`}
+              className={`reveal lift relative flex flex-col rounded-xl border p-7 ${m.featured ? "border-accent/40 bg-accent/[0.04]" : "border-border bg-card"}`}
               style={{ "--d": `${0.08 * i}s` } as React.CSSProperties}
             >
-              <p className={`font-mono text-[11px] uppercase tracking-wider ${m.featured ? "text-emerald2" : "text-deep"}`}>{m.tag}</p>
-              <h3 className="mt-2 font-display text-xl font-bold">{m.name}</h3>
-              <p className={`mt-4 flex-1 text-[14px] leading-relaxed ${m.featured ? "text-white/70" : "text-ink/65"}`}>{m.desc}</p>
-              <a
-                href={CAL}
-                target="_blank"
-                rel="noopener"
-                className={`btn-glow mt-7 rounded-xl px-5 py-3 text-center font-semibold ${m.featured ? "bg-emerald2 text-ink hover:bg-white" : "bg-ink text-white hover:bg-deep"}`}
-              >
+              <p className="font-mono text-[11px] uppercase tracking-wider text-accent">{m.tag}</p>
+              <h3 className="mt-2 text-xl font-semibold tracking-tight">{m.name}</h3>
+              <p className="mt-4 flex-1 text-[14px] leading-relaxed text-muted">{m.desc}</p>
+              <a href={CAL} target="_blank" rel="noopener" className={`${btnPrimary} mt-7 text-center`}>
                 {t.models.cta}
               </a>
             </div>
@@ -794,32 +811,36 @@ export default function Page() {
       </section>
 
       {/* ===================== FINAL CTA ===================== */}
-      <section className="blueprint bg-ink">
-        <div className="mx-auto max-w-6xl px-5 py-24 text-center">
-          <Image src="/facilia_dark.png" alt="" width={150} height={30} className="mx-auto" />
-          <h2 className="reveal mx-auto mt-6 max-w-2xl font-display text-3xl font-bold tracking-tight text-white sm:text-4xl">
-            {t.final.title}
-          </h2>
-          <p className="reveal mx-auto mt-4 max-w-xl text-white/55" style={{ "--d": "0.1s" } as React.CSSProperties}>{t.final.sub}</p>
+      <section className="relative overflow-hidden border-t border-border">
+        <div className="grid-bg pointer-events-none absolute inset-0 opacity-60" aria-hidden />
+        <div className="relative mx-auto max-w-6xl px-5 py-24 text-center">
+          <div className="mx-auto flex w-fit items-center gap-2">
+            <Logo w={150} h={30} />
+            <span className="rounded-full border border-accent/25 bg-accent/10 px-2.5 py-0.5 font-mono text-[11px] font-medium text-accent">dev</span>
+          </div>
+          <h2 className="reveal mx-auto mt-6 max-w-2xl text-3xl font-medium tracking-[-0.02em] sm:text-4xl">{t.final.title}</h2>
+          <p className="reveal mx-auto mt-4 max-w-xl text-muted" style={{ "--d": "0.1s" } as React.CSSProperties}>{t.final.sub}</p>
           <div className="reveal mt-9 flex flex-wrap items-center justify-center gap-4" style={{ "--d": "0.2s" } as React.CSSProperties}>
-            <a href={CAL} target="_blank" rel="noopener" className="btn-glow inline-block rounded-xl bg-emerald2 px-8 py-4 font-semibold text-ink">
+            <a href={CAL} target="_blank" rel="noopener" className="btn-min inline-block rounded-lg bg-foreground px-8 py-4 font-medium text-background hover:opacity-90">
               {t.final.btn} »
             </a>
-            <a href={`mailto:${MAIL}`} className="font-semibold text-emerald2 underline decoration-emerald2/50 decoration-2 underline-offset-4 transition hover:text-white">
+            <a href={`mailto:${MAIL}`} className="font-medium text-accent transition hover:text-foreground">
               {t.final.alt}: {MAIL}
             </a>
           </div>
         </div>
       </section>
 
-      <footer className="border-t border-white/10 bg-ink">
-        <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4 px-5 py-8 text-sm text-white/45">
+      {/* ===================== FOOTER ===================== */}
+      <footer className="border-t border-border">
+        <div className="mx-auto flex max-w-6xl flex-col gap-6 px-5 py-8 text-sm text-muted md:flex-row md:items-center md:justify-between">
           <p>{t.footer.line}</p>
-          <div className="flex gap-6">
-            <a href="https://facilia.app" target="_blank" rel="noopener" className="transition hover:text-white">facilia.app</a>
-            <a href="https://clinck.io" target="_blank" rel="noopener" className="transition hover:text-white">clinck.io</a>
-            <a href="https://shelv.io" target="_blank" rel="noopener" className="transition hover:text-white">shelv.io</a>
-            <a href={`mailto:${MAIL}`} className="transition hover:text-white">{MAIL}</a>
+          <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
+            <a href="https://facilia.app" target="_blank" rel="noopener" className="transition hover:text-foreground">facilia.app</a>
+            <a href="https://clinck.io" target="_blank" rel="noopener" className="transition hover:text-foreground">clinck.io</a>
+            <a href="https://shelv.io" target="_blank" rel="noopener" className="transition hover:text-foreground">shelv.io</a>
+            <a href={`mailto:${MAIL}`} className="transition hover:text-foreground">{MAIL}</a>
+            <ThemeToggle labels={t.theme} />
           </div>
         </div>
       </footer>

@@ -1,20 +1,25 @@
 import type { Config } from "tailwindcss";
+
 const config: Config = {
+  darkMode: "class",
   content: ["./app/**/*.{ts,tsx}", "./components/**/*.{ts,tsx}"],
   theme: {
     extend: {
       colors: {
-        ink: "#16202A",
-        ink2: "#1D2C38",
-        emerald2: "#2EC98E",
-        deep: "#0B5C44",
-        mint: "#D9F5EA",
-        paper: "#F7FAF8",
+        background: "rgb(var(--bg) / <alpha-value>)",
+        card: "rgb(var(--card) / <alpha-value>)",
+        foreground: "rgb(var(--fg) / <alpha-value>)",
+        muted: "rgb(var(--muted) / <alpha-value>)",
+        border: "rgb(var(--border) / <alpha-value>)",
+        accent: "rgb(var(--accent) / <alpha-value>)",
+        "accent-contrast": "rgb(var(--accent-contrast) / <alpha-value>)",
       },
       fontFamily: {
-        display: ["Sora", "ui-sans-serif", "system-ui", "sans-serif"],
-        body: ["Instrument Sans", "ui-sans-serif", "system-ui", "sans-serif"],
-        mono: ["IBM Plex Mono", "ui-monospace", "monospace"],
+        sans: ["General Sans", "ui-sans-serif", "system-ui", "-apple-system", "Segoe UI", "sans-serif"],
+        mono: ["ui-monospace", "SFMono-Regular", "Menlo", "Consolas", "monospace"],
+      },
+      borderRadius: {
+        DEFAULT: "0.5rem",
       },
     },
   },
