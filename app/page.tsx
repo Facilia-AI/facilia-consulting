@@ -348,8 +348,11 @@ const STACK_ITEMS: string[][] = [
 const FILMSTRIP = [
   { src: "facilia-cotizador.png", label: "Facilia · Cotizador" },
   { src: "clinck.png", label: "Clinck" },
+  { src: "clix.png", label: "CLIX" },
   { src: "facilia-gantt.png", label: "Facilia · Gantt" },
+  { src: "loncho.png", label: "Loncho" },
   { src: "goquipo.png", label: "GoQuipo" },
+  { src: "lama.png", label: "Lama" },
   { src: "facilia-finanzas.png", label: "Facilia · Finanzas" },
   { src: "shelv.png", label: "Shelv" },
 ];
