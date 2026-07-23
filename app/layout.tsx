@@ -1,9 +1,16 @@
 import type { Metadata } from "next";
 import "./globals.css";
 
-const url = process.env.VERCEL_PROJECT_PRODUCTION_URL
-  ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
-  : "https://facilia.dev";
+// Canonical marketing domain. In production we always resolve share URLs
+// (og:url, og:image, canonical) to facilia.dev so link previews are stable
+// regardless of the Vercel-assigned domain; preview deploys use their own URL.
+const CANONICAL_URL = "https://facilia.dev";
+const url =
+  process.env.VERCEL_ENV === "production"
+    ? CANONICAL_URL
+    : process.env.VERCEL_PROJECT_PRODUCTION_URL
+      ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+      : CANONICAL_URL;
 
 export const metadata: Metadata = {
   metadataBase: new URL(url),
@@ -14,6 +21,9 @@ export const metadata: Metadata = {
     "software development", "AI-native", "ConTech", "PropTech", "InsurTech",
     "Latin America", "Claude Code", "Next.js", "Supabase", "nearshore engineering",
   ],
+  alternates: {
+    canonical: "/",
+  },
   openGraph: {
     title: "Facilia Dev — AI-native software studio",
     description:
@@ -21,6 +31,7 @@ export const metadata: Metadata = {
     url,
     siteName: "Facilia Dev",
     locale: "en_US",
+    alternateLocale: ["es_ES"],
     type: "website",
   },
   twitter: {
