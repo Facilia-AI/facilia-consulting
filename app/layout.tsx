@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import "./globals.css";
 
-const url = "https://facilia.dev";
+const url = process.env.VERCEL_PROJECT_PRODUCTION_URL
+  ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+  : "https://facilia.dev";
 
 export const metadata: Metadata = {
   metadataBase: new URL(url),
