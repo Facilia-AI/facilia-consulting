@@ -23,7 +23,7 @@ const T = {
       eyebrow: "AI-native software studio · Built in Latin America",
       h1a: "World-class software,",
       h1b: "engineered in Latam.",
-      sub: "Facilia Dev designs, builds and ships production software for ConTech, PropTech and InsurTech — pairing senior Latin American engineers with agentic tools like Claude Code and Codex to move fast without cutting corners.",
+      sub: "Facilia.dev helps ambitious teams ship AI-native products in weeks, not months. By combining senior Latin American engineers with agentic development, we turn ideas into production-ready software with remarkable speed and quality.",
       cta1: "Book a call",
       cta2: "See our work",
       trust: "In production today",
@@ -34,7 +34,7 @@ const T = {
       ],
       termTitle: "facilia-dev — zsh",
     },
-    marquee: "Products engineered by Facilia Dev",
+    marquee: "The modern stack we build on",
     expertise: {
       eyebrow: "What we build",
       title: "We go deep where the real economy meets software",
@@ -110,15 +110,11 @@ const T = {
     stack: {
       eyebrow: "How we build",
       title: "An AI-native engineering stack",
-      sub: "We put frontier models in the loop of everyday engineering — planning, generating, reviewing and shipping with agents, on a modern stack that's boring exactly where it should be.",
+      sub: "We put frontier models in the loop of everyday engineering — planning, generating, reviewing and shipping with agents. Modern, secure and scalable, with last-generation tooling across the whole stack.",
       loop: ["Plan", "Generate", "Review", "Ship"],
       loopNote: "The agent loop we run on every feature.",
-      layers: [
-        { l: "AI & Agents", items: ["Claude Code — Opus 4.8 · Sonnet 5 · Haiku 4.5", "OpenAI Codex", "MCP tool servers", "RAG, evals & guardrails"] },
-        { l: "Frontend", items: ["Next.js 14 · App Router", "React 18 · TypeScript", "Tailwind CSS", "Server components & edge"] },
-        { l: "Backend & Data", items: ["Supabase", "PostgreSQL · Row-Level Security", "Edge functions", "Type-safe ORM (Drizzle / Prisma)"] },
-        { l: "Delivery", items: ["Vercel", "CI/CD & preview deploys", "Observability", "End-to-end type safety"] },
-      ],
+      layers: ["AI & Intelligent Systems", "Frontend", "Backend & Data", "Infrastructure & DevOps", "Quality Engineering", "Integrations", "Security", "Performance"],
+      foot: "A modern, secure and scalable stack — AI-native by default, not a traditional software factory.",
     },
     why: {
       eyebrow: "Why Latam",
@@ -164,7 +160,7 @@ const T = {
       eyebrow: "Estudio de software AI-native · Hecho en Latinoamérica",
       h1a: "Software de clase mundial,",
       h1b: "hecho en Latam.",
-      sub: "Facilia Dev diseña, construye y despliega software en producción para ConTech, PropTech e InsurTech — combinando ingenieros senior latinoamericanos con herramientas agénticas como Claude Code y Codex para ir rápido sin bajar la calidad.",
+      sub: "Facilia.dev ayuda a equipos ambiciosos a lanzar productos AI-native en semanas, no meses. Combinando ingenieros senior latinoamericanos con desarrollo agéntico, convertimos ideas en software listo para producción con velocidad y calidad excepcionales.",
       cta1: "Agendar llamada",
       cta2: "Ver proyectos",
       trust: "Hoy en producción",
@@ -175,7 +171,7 @@ const T = {
       ],
       termTitle: "facilia-dev — zsh",
     },
-    marquee: "Productos construidos por Facilia Dev",
+    marquee: "El stack moderno con el que construimos",
     expertise: {
       eyebrow: "Qué hacemos",
       title: "Vamos a fondo donde la economía real se encuentra con el software",
@@ -251,15 +247,11 @@ const T = {
     stack: {
       eyebrow: "Cómo construimos",
       title: "Un stack de ingeniería AI-native",
-      sub: "Ponemos modelos de frontera dentro del ciclo diario de ingeniería — planear, generar, revisar y desplegar con agentes, sobre un stack moderno que es aburrido justo donde debe serlo.",
+      sub: "Ponemos modelos de frontera dentro del ciclo diario de ingeniería — planear, generar, revisar y desplegar con agentes. Moderno, seguro y escalable, con herramientas de última generación en todo el stack.",
       loop: ["Planear", "Generar", "Revisar", "Desplegar"],
       loopNote: "El ciclo de agentes que corremos en cada feature.",
-      layers: [
-        { l: "IA y Agentes", items: ["Claude Code — Opus 4.8 · Sonnet 5 · Haiku 4.5", "OpenAI Codex", "Servidores de herramientas MCP", "RAG, evals y guardrails"] },
-        { l: "Frontend", items: ["Next.js 14 · App Router", "React 18 · TypeScript", "Tailwind CSS", "Server components y edge"] },
-        { l: "Backend y Datos", items: ["Supabase", "PostgreSQL · Row-Level Security", "Edge functions", "ORM type-safe (Drizzle / Prisma)"] },
-        { l: "Entrega", items: ["Vercel", "CI/CD y preview deploys", "Observabilidad", "Type safety de punta a punta"] },
-      ],
+      layers: ["IA y sistemas inteligentes", "Frontend", "Backend y datos", "Infraestructura y DevOps", "Ingeniería de calidad", "Integraciones", "Seguridad", "Rendimiento"],
+      foot: "Un stack moderno, seguro y escalable — AI-native por defecto, no una software factory tradicional.",
     },
     why: {
       eyebrow: "Por qué Latam",
@@ -301,9 +293,56 @@ const T = {
 } as const;
 
 const TECH = [
-  "Claude Code", "Opus 4.8", "Sonnet 5", "Haiku 4.5", "OpenAI Codex", "Next.js",
-  "React", "TypeScript", "Tailwind CSS", "Supabase", "PostgreSQL", "Vercel",
-  "MCP", "RAG", "Edge Functions", "Row-Level Security",
+  "Claude Code", "OpenAI Codex", "Cursor", "Windsurf", "MCP", "Supabase",
+  "Next.js", "React", "TypeScript", "Vercel", "PostgreSQL", "Drizzle",
+  "Tailwind CSS", "shadcn/ui", "LangGraph", "Playwright", "Cloudflare",
+  "Stripe", "Resend", "Upstash", "GitHub Actions",
+];
+
+// Shared across languages — tech names are universal; only category titles are localized.
+const STACK_ITEMS: string[][] = [
+  [
+    "Claude Code (Fable 5 · Opus 4.8 · Sonnet 5 · Haiku 4.5)", "OpenAI (GPT-5.5 · Codex)", "Gemini 2.5",
+    "MCP (Model Context Protocol)", "AI Agents & Multi-Agent Systems", "Agentic Workflows",
+    "RAG (Retrieval-Augmented Generation)", "Semantic Search", "Vector Databases", "Prompt Engineering",
+    "AI Evaluations (Evals)", "AI Guardrails", "Structured Outputs", "Tool Calling", "Function Calling",
+    "LLM Orchestration", "LangGraph", "LangChain", "AI Automation", "Computer Vision", "OCR",
+    "Speech-to-Text & Text-to-Speech",
+  ],
+  [
+    "Next.js 15 (App Router)", "React 19", "TypeScript", "Tailwind CSS", "shadcn/ui", "Radix UI",
+    "Framer Motion", "React Query (TanStack Query)", "Zustand", "React Hook Form", "Zod",
+    "Server Components", "Edge Rendering", "SSG", "SSR", "ISR", "Progressive Web Apps (PWA)",
+  ],
+  [
+    "Supabase", "PostgreSQL", "Row-Level Security (RLS)", "Edge Functions", "Realtime", "Authentication",
+    "Storage", "Drizzle ORM", "Prisma", "Redis", "Upstash", "pgvector", "Vector Search",
+    "Background Jobs", "Queues", "Webhooks", "REST APIs", "GraphQL", "tRPC", "OpenAPI", "Database Migrations",
+  ],
+  [
+    "Vercel", "Cloudflare", "Docker", "GitHub Actions", "CI/CD", "Preview Deployments", "Edge Network",
+    "CDN", "Environment Management", "Secrets Management", "Infrastructure as Code", "Automatic Rollbacks",
+    "Performance Monitoring", "Error Tracking", "Logging", "Uptime Monitoring",
+  ],
+  [
+    "Playwright", "Cypress", "Vitest", "Jest", "Testing Library", "End-to-End Testing", "Integration Testing",
+    "Unit Testing", "API Testing", "Accessibility Testing", "Lighthouse", "Performance Audits",
+    "Type Safety", "Code Quality", "ESLint", "Prettier",
+  ],
+  [
+    "Stripe", "Resend", "Twilio", "WhatsApp Business API", "Clerk", "Auth0", "Google Workspace",
+    "Microsoft 365", "Slack", "Discord", "HubSpot", "Salesforce", "Shopify", "Notion", "Airtable",
+    "Zapier", "Make", "n8n", "GitHub API",
+  ],
+  [
+    "OAuth", "JWT", "Passkeys", "Multi-Factor Authentication", "Encryption at Rest", "Encryption in Transit",
+    "Secrets Management", "Role-Based Access Control", "Row-Level Security", "OWASP Best Practices",
+    "Rate Limiting", "Audit Logs", "Secure API Design",
+  ],
+  [
+    "Edge Computing", "CDN", "Image Optimization", "Code Splitting", "Lazy Loading", "Streaming SSR",
+    "Caching Strategies", "Incremental Rendering", "Bundle Optimization", "Database Optimization",
+  ],
 ];
 
 const FILMSTRIP = [
@@ -319,7 +358,7 @@ const TERM: { k: "cmd" | "run" | "ok"; t: string }[] = [
   { k: "cmd", t: "facilia dev --new clinck.io" },
   { k: "run", t: "claude code · opus 4.8 → planning architecture" },
   { k: "ok", t: "supabase: 14 tables · RLS policies generated" },
-  { k: "ok", t: "next.js 14 · app router · edge runtime" },
+  { k: "ok", t: "next.js 15 · app router · edge runtime" },
   { k: "run", t: "codex → inspection engine + unit tests" },
   { k: "ok", t: "218 tests passing · types clean" },
   { k: "cmd", t: "git push → vercel" },
@@ -864,24 +903,24 @@ export default function Page() {
           <p className="font-mono text-[11.5px] text-muted">{t.stack.loopNote}</p>
         </div>
 
-        <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          {t.stack.layers.map((layer, i) => (
-            <div key={layer.l} className="reveal lift rounded-xl border border-border bg-card p-6" style={{ "--d": `${0.06 * i}s` } as React.CSSProperties}>
+        <div className="mt-10 grid items-start gap-5 sm:grid-cols-2">
+          {t.stack.layers.map((title, i) => (
+            <div key={title} className="reveal lift rounded-xl border border-border bg-card p-6" style={{ "--d": `${0.05 * i}s` } as React.CSSProperties}>
               <div className="flex items-center gap-2">
                 <span className="font-mono text-[11px] text-accent">0{i + 1}</span>
-                <h3 className="text-[15px] font-semibold tracking-tight">{layer.l}</h3>
+                <h3 className="text-[15px] font-semibold tracking-tight">{title}</h3>
               </div>
-              <ul className="mt-4 space-y-2.5">
-                {layer.items.map((it) => (
-                  <li key={it} className="flex gap-2 text-[13px] leading-snug text-muted">
-                    <span className="text-accent" aria-hidden>»</span>
-                    <span>{it}</span>
-                  </li>
+              <div className="mt-4 flex flex-wrap gap-1.5">
+                {STACK_ITEMS[i].map((it) => (
+                  <span key={it} className="rounded-md border border-border bg-background/50 px-2 py-1 font-mono text-[11px] text-muted">
+                    {it}
+                  </span>
                 ))}
-              </ul>
+              </div>
             </div>
           ))}
         </div>
+        <p className="reveal mt-8 max-w-2xl text-sm text-muted" style={{ "--d": "0.1s" } as React.CSSProperties}>{t.stack.foot}</p>
       </section>
 
       {/* ===================== WHY LATAM ===================== */}
