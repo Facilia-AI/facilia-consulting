@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
+import { DottedSurface } from "@/components/ui/dotted-surface";
 
 /* ========================================================================
    Facilia Dev — AI-native software studio, built in Latin America
@@ -88,6 +89,22 @@ const T = {
           stack: ["Next.js", "Supabase", "PostgreSQL", "Stripe"],
           screens: [{ src: "goquipo.png", label: "", path: "goquipo.co" }],
         },
+      ],
+    },
+    mobile: {
+      eyebrow: "Mobile",
+      title: "We ship mobile, too",
+      sub: "Native-feeling apps and mobile web — from consumer storefronts to field tools your team uses on site. The same AI-native engineering, in your users' pocket.",
+      caption: "Mobile commerce · built by Facilia Dev",
+      stack: ["React Native", "Expo", "iOS · Swift", "Android · Kotlin", "PWA"],
+    },
+    designwork: {
+      eyebrow: "Product & design",
+      title: "Design-led products, end to end",
+      sub: "Beyond internal tools, we create and design consumer-facing products — brand, UX and engineering together. A few we've shipped:",
+      items: [
+        { key: "clinck-gastro", name: "Clinck", host: "clinck · gastro", sector: "Hospitality · Network", tagline: "The professional network of the gastronomic sector", desc: "Connect talent, restaurants and brands in one place — profiles, jobs, menus and reviews to hire, get hired and grow.", src: "clinck-gastro.png" },
+        { key: "sentimetrik", name: "Sentimetrik", host: "sentimetrik", sector: "CX · Sentiment AI", tagline: "Feedback that turns into decisions", desc: "End-to-end feedback capture and sentiment analysis — from surveys to clear, actionable, data-driven decisions.", src: "sentimetrik.png" },
       ],
     },
     stack: {
@@ -213,6 +230,22 @@ const T = {
           stack: ["Next.js", "Supabase", "PostgreSQL", "Stripe"],
           screens: [{ src: "goquipo.png", label: "", path: "goquipo.co" }],
         },
+      ],
+    },
+    mobile: {
+      eyebrow: "Móvil",
+      title: "También desarrollamos móvil",
+      sub: "Apps con sensación nativa y web móvil — desde tiendas para consumidores hasta herramientas de campo que tu equipo usa en obra. La misma ingeniería AI-native, en el bolsillo de tus usuarios.",
+      caption: "Comercio móvil · construido por Facilia Dev",
+      stack: ["React Native", "Expo", "iOS · Swift", "Android · Kotlin", "PWA"],
+    },
+    designwork: {
+      eyebrow: "Producto y diseño",
+      title: "Productos con diseño, de punta a punta",
+      sub: "Más allá de herramientas internas, creamos y diseñamos productos de cara al consumidor — marca, UX e ingeniería juntas. Algunos que hemos lanzado:",
+      items: [
+        { key: "clinck-gastro", name: "Clinck", host: "clinck · gastro", sector: "Gastronomía · Red", tagline: "La red profesional del sector gastronómico", desc: "Conecta talento, restaurantes y marcas en un solo lugar — perfiles, empleos, menús y reseñas para contratar, ser contratado y crecer.", src: "clinck-gastro.png" },
+        { key: "sentimetrik", name: "Sentimetrik", host: "sentimetrik", sector: "CX · Sentiment AI", tagline: "Feedback que se convierte en decisiones", desc: "Captura de feedback y análisis de sentimiento de punta a punta — de las encuestas a decisiones claras, accionables y basadas en datos.", src: "sentimetrik.png" },
       ],
     },
     stack: {
@@ -559,6 +592,28 @@ function ScreenStrip() {
   );
 }
 
+function PhoneFrame({ src, label }: { src: string; label: string }) {
+  const { ref, ok, onError } = useImgStatus();
+  return (
+    <div className="relative mx-auto w-[248px] sm:w-[288px]">
+      <div className="relative overflow-hidden rounded-[2.6rem] border-[7px] border-[#111318] bg-background shadow-2xl shadow-black/40">
+        <div className="absolute left-1/2 top-0 z-10 h-5 w-24 -translate-x-1/2 rounded-b-2xl bg-[#111318]" />
+        <div className="relative aspect-[9/19] w-full overflow-hidden bg-card">
+          {ok ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img ref={ref} src={`/projects/${src}`} alt={label} onError={onError} className="h-full w-full object-cover object-top" loading="lazy" />
+          ) : (
+            <div className="flex h-full w-full flex-col items-center justify-center gap-2 bg-card px-5 text-center">
+              <span className="text-sm font-semibold text-accent">{label}</span>
+              <span className="font-mono text-[10px] text-muted">/projects/{src}</span>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 /* Shared bits */
 const eyebrow = "font-mono text-xs uppercase tracking-[0.2em] text-accent";
 const h2cls = "mt-3 text-3xl font-medium tracking-[-0.02em] sm:text-4xl";
@@ -584,7 +639,8 @@ export default function Page() {
   const t = T[lang];
 
   return (
-    <main className="bg-background">
+    <main className="relative">
+      <DottedSurface />
       {/* ===================== NAV ===================== */}
       <header className="sticky top-0 z-50 border-b border-border bg-background/80 backdrop-blur">
         <nav className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-5 py-3.5">
@@ -620,7 +676,6 @@ export default function Page() {
 
       {/* ===================== HERO ===================== */}
       <section id="top" className="relative overflow-hidden">
-        <div className="grid-bg pointer-events-none absolute inset-0 opacity-70" aria-hidden />
         <div className="relative mx-auto grid max-w-6xl items-center gap-14 px-5 pb-20 pt-16 lg:grid-cols-[1.05fr_0.95fr] lg:pb-28 lg:pt-24">
           <div>
             <p className="rise mb-5 inline-flex items-center gap-2 rounded-full border border-border bg-card px-3.5 py-1.5 font-mono text-xs text-muted" style={{ animationDelay: "0.05s" }}>
@@ -742,6 +797,49 @@ export default function Page() {
         </div>
       </section>
 
+      {/* ===================== PRODUCT & DESIGN ===================== */}
+      <section id="design" className="border-t border-border py-24">
+        <div className="mx-auto max-w-6xl px-5">
+          <p className={`reveal ${eyebrow}`}>{t.designwork.eyebrow}</p>
+          <h2 className={`reveal ${h2cls}`} style={{ "--d": "0.08s" } as React.CSSProperties}>{t.designwork.title}</h2>
+          <p className={`reveal ${subcls}`} style={{ "--d": "0.16s" } as React.CSSProperties}>{t.designwork.sub}</p>
+          <div className="mt-12 grid gap-10 md:grid-cols-2">
+            {t.designwork.items.map((it, i) => (
+              <div key={it.key} className="reveal" style={{ "--d": `${0.06 * i}s` } as React.CSSProperties}>
+                <Showcase item={{ name: it.name, screens: [{ src: it.src, label: "", path: it.host }] }} />
+                <div className="mt-5 flex flex-wrap items-center gap-3">
+                  <span className="text-xl font-semibold tracking-tight">{it.name}</span>
+                  <span className="rounded-full border border-accent/25 bg-accent/10 px-2.5 py-0.5 font-mono text-[11px] text-accent">{it.sector}</span>
+                </div>
+                <p className="mt-1.5 font-mono text-sm text-accent/80">{it.tagline}</p>
+                <p className="mt-3 leading-relaxed text-muted">{it.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ===================== MOBILE ===================== */}
+      <section id="mobile" className="border-t border-border py-24">
+        <div className="mx-auto grid max-w-6xl items-center gap-12 px-5 lg:grid-cols-2">
+          <div>
+            <p className={`reveal ${eyebrow}`}>{t.mobile.eyebrow}</p>
+            <h2 className={`reveal ${h2cls}`} style={{ "--d": "0.08s" } as React.CSSProperties}>{t.mobile.title}</h2>
+            <p className={`reveal ${subcls}`} style={{ "--d": "0.16s" } as React.CSSProperties}>{t.mobile.sub}</p>
+            <div className="reveal mt-6 flex flex-wrap gap-2" style={{ "--d": "0.22s" } as React.CSSProperties}>
+              {t.mobile.stack.map((s) => (
+                <span key={s} className="rounded-md border border-border bg-card px-2.5 py-1 font-mono text-[11.5px] text-muted">{s}</span>
+              ))}
+            </div>
+          </div>
+          <div className="reveal" style={{ "--d": "0.1s" } as React.CSSProperties}>
+            <Tilt>
+              <PhoneFrame src="mobile-store.png" label={t.mobile.caption} />
+            </Tilt>
+          </div>
+        </div>
+      </section>
+
       {/* ===================== HOW WE BUILD / STACK ===================== */}
       <section id="stack" className="mx-auto max-w-6xl border-t border-border px-5 py-24">
         <p className={`reveal ${eyebrow}`}>{t.stack.eyebrow}</p>
@@ -832,7 +930,6 @@ export default function Page() {
 
       {/* ===================== FINAL CTA ===================== */}
       <section className="relative overflow-hidden border-t border-border">
-        <div className="grid-bg pointer-events-none absolute inset-0 opacity-60" aria-hidden />
         <div className="relative mx-auto max-w-6xl px-5 py-24 text-center">
           <div className="mx-auto flex w-fit items-center gap-2">
             <Logo w={150} h={30} />
