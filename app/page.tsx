@@ -2,11 +2,10 @@
 
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
-import { DottedSurface } from "@/components/ui/dotted-surface";
 
 /* ========================================================================
-   Facilia Dev — AI-native software studio, built in Latin America
-   Minimalist theme (21st.dev-inspired) · General Sans · light/dark
+   Facilia — We build products. Some become companies.
+   Product company · venture builder · product-engineering partner
    ===================================================================== */
 
 const CAL = "https://cal.com/javier-cristancho-oa5zrb";
@@ -14,359 +13,233 @@ const MAIL = "contacto@facilia.app";
 
 type Lang = "en" | "es";
 
+/* ---------------- Ventures (data-driven — add new ones here) ---------------- */
+
+type Status = "exploring" | "building" | "launching" | "operating" | "spinning" | "partner";
+
+const STATUS: Record<Status, { en: string; es: string; tone: "active" | "live" | "quiet" | "ink" }> = {
+  exploring: { en: "Exploring", es: "Explorando", tone: "quiet" },
+  building: { en: "Building", es: "Construyendo", tone: "active" },
+  launching: { en: "Launching", es: "Lanzando", tone: "active" },
+  operating: { en: "Operating", es: "Operando", tone: "live" },
+  spinning: { en: "Spinning out", es: "Escindiéndose", tone: "ink" },
+  partner: { en: "Partner-built", es: "Con socios", tone: "ink" },
+};
+
+const VENTURES = [
+  {
+    key: "facilia",
+    name: "Facilia.app",
+    category: { en: "Construction Software", es: "Software de construcción" },
+    status: "building" as Status,
+    href: "https://facilia.app",
+    host: "facilia.app",
+    img: "facilia-cotizador.png",
+    blurb: {
+      en: "Software that helps construction contractors quote projects faster and operate with better control — from budgets to progress and cash.",
+      es: "Software que ayuda a los contratistas de construcción a cotizar obras más rápido y operar con mejor control — del presupuesto al avance y la caja.",
+    },
+  },
+  {
+    key: "decua",
+    name: "Decúa",
+    category: { en: "Construction · Home Services", es: "Construcción · Servicios para el hogar" },
+    status: "operating" as Status,
+    href: "https://decua.co",
+    host: "decua.co",
+    img: "decua.png",
+    blurb: {
+      en: "Intelligent remodeling — plan, quote and remodel a home or office from a single place, with design, estimates, execution and live project tracking.",
+      es: "Remodelación inteligente — planea, cotiza y remodela tu hogar u oficina desde un solo lugar, con diseño, cotización, ejecución y seguimiento en vivo.",
+    },
+  },
+];
+
+/* Products built with partners — proof of the build capability (real, shipped). */
+const BUILDS = [
+  { img: "clinck.png", name: "Clinck" },
+  { img: "shelv.png", name: "Shelv" },
+  { img: "goquipo.png", name: "GoQuipo" },
+  { img: "sentimetrik.png", name: "Sentimetrik" },
+  { img: "clix.png", name: "CLIX" },
+  { img: "loncho.png", name: "Loncho" },
+  { img: "lama.png", name: "Lama" },
+  { img: "clinck-gastro.png", name: "Clinck · Gastro" },
+];
+
 /* ================= i18n ================= */
 
 const T = {
   en: {
-    nav: { work: "Work", expertise: "What we build", stack: "How we build", why: "Why Latam", cta: "Book a call" },
+    nav: { build: "Build", ventures: "Ventures", partner: "Partner", about: "About", cta: "Build with us" },
     hero: {
-      eyebrow: "AI-native software studio · Built in Latin America",
-      h1a: "World-class software,",
-      h1b: "engineered in Latam.",
-      sub: "Facilia.dev helps ambitious teams ship AI-native products in weeks, not months. By combining senior Latin American engineers with agentic development, we turn ideas into production-ready software with remarkable speed and quality.",
-      cta1: "Book a call",
-      cta2: "See our work",
-      trust: "In production today",
-      stats: [
-        ["3", "products live in production"],
-        ["100%", "senior Latam engineering team"],
-        ["0→1", "from idea to shipped, AI-native"],
-      ],
-      termTitle: "facilia-dev — zsh",
+      kicker: "Product & venture builder",
+      h1a: "We build products.",
+      h1b: "Some become companies.",
+      sub: "Facilia is a product company that builds its own ventures and partners with ambitious teams to turn ideas into products, businesses and technology that scales.",
+      cta1: "Build with us",
+      cta2: "See what we're building",
     },
-    marquee: "The modern stack we build on",
-    expertise: {
-      eyebrow: "What we build",
-      title: "We go deep where the real economy meets software",
-      sub: "Not generalists-for-hire. We build for the industries that run on physical operations — and we build AI-native from day one.",
+    thesis: {
+      eyebrow: "What we do",
+      title: "We don't just build software. We build things that can become businesses.",
+      modes: [
+        { k: "Build", d: "We find problems worth solving and create products around them." },
+        { k: "Partner", d: "We work with people who know a market, customer or problem deeply, and turn that insight into a product." },
+        { k: "CTO", d: "We provide product and technical leadership for companies that need to build, launch or scale technology." },
+      ],
+    },
+    ventures: {
+      eyebrow: "Ventures",
+      title: "Things we're building.",
+      sub: "Products of our own — some operating, some just getting started.",
+      visit: "Visit",
+    },
+    builds: {
+      eyebrow: "Built with partners",
+      title: "And things we've built with others.",
+      sub: "Products we've designed and shipped alongside founders and teams.",
+    },
+    partner: {
+      eyebrow: "Partner",
+      title: "Have something worth building?",
+      sub: "We partner with founders, operators and companies that have a problem worth solving, an idea worth testing or a product worth scaling.",
+      note: "Sometimes we build our own company. Sometimes we build yours with you. Sometimes we become the team responsible for making technology happen.",
       items: [
-        { tag: "ConTech", name: "Construction & field ops", desc: "Budgets, procurement, progress and cash in one source of truth. AI that reads invoices and statements to protect margin.", ref: "facilia.app" },
-        { tag: "PropTech", name: "Real estate & the built world", desc: "Operations, maintenance and asset intelligence for buildings, portfolios and the teams that keep them running.", ref: "" },
-        { tag: "InsurTech", name: "Risk, claims & compliance", desc: "Turning inspections, audits and field records into underwriting-grade, structured, decision-ready data.", ref: "clinck.io" },
-        { tag: "AI-Native", name: "Greenfield products", desc: "Copilots, document intelligence, RAG and automation with agents in the core — products designed around AI, not bolted onto it.", ref: "" },
+        { k: "Product", d: "We help turn an idea into a clear product." },
+        { k: "Engineering", d: "We design and build the technology." },
+        { k: "CTO", d: "We provide technical and product leadership." },
+        { k: "Venture", d: "We explore building something together for the long term." },
       ],
     },
-    work: {
-      eyebrow: "Selected work",
-      title: "Products, live in production",
-      sub: "Real software our clients and thousands of users depend on every day — designed, built and operated by Facilia Dev.",
-      cta: "Visit",
-      soon: "Live soon",
-      items: [
-        {
-          key: "facilia", url: "https://facilia.app", host: "facilia.app", sector: "ConTech",
-          name: "Facilia", tagline: "The AI operating system for contractors",
-          desc: "AI agents that quote any job in minutes on APU 2026 prices, a Gantt that regenerates from the quote, and finance dashboards with cash flow and EBITDA per project — one source of truth for construction SMBs.",
-          role: "Product · Engineering · Applied AI",
-          stack: ["Next.js", "Supabase", "PostgreSQL", "Claude"],
-          screens: [
-            { src: "facilia-cotizador.png", label: "AI Quoting", path: "facilia.app/cotizador" },
-            { src: "facilia-gantt.png", label: "Gantt", path: "facilia.app/avance" },
-            { src: "facilia-finanzas.png", label: "Finance", path: "facilia.app/finanzas" },
-          ],
-        },
-        {
-          key: "clinck", url: "https://clinck.io", host: "clinck.io", sector: "InsurTech · Ops",
-          name: "Clinck", tagline: "Turn records into operational decisions",
-          desc: "An AI-native platform that turns inspections, checklists and audits into live dashboards, KPIs and smart alerts for facilities, maintenance and EHS teams. Describe the form — AI builds it.",
-          role: "Product · Engineering · Applied AI",
-          stack: ["Next.js", "Supabase", "PostgreSQL", "Claude"],
-          screens: [{ src: "clinck.png", label: "", path: "clinck.io" }],
-        },
-        {
-          key: "shelv", url: "https://shelv.io", host: "shelv.io", sector: "Community · Platform",
-          name: "Shelv", tagline: "Where creators launch the future of LATAM",
-          desc: "A launchpad and community for Latin American builders — product discovery, builder profiles, an ecosystem map and beta opportunities that connect the region's founders.",
-          role: "Product · Engineering",
-          stack: ["Next.js", "Supabase", "PostgreSQL"],
-          screens: [{ src: "shelv.png", label: "", path: "shelv.io" }],
-        },
-        {
-          key: "goquipo", url: "", host: "goquipo.co", sector: "Marketplace · Rentals",
-          name: "GoQuipo", tagline: "Buy, sell & rent professional equipment",
-          desc: "A national marketplace for professional equipment and machinery — verified sellers, escrow payments and nationwide coverage across construction, events, industrial, logistics and more.",
-          role: "Product · Engineering",
-          stack: ["Next.js", "Supabase", "PostgreSQL", "Stripe"],
-          screens: [{ src: "goquipo.png", label: "", path: "goquipo.co" }],
-        },
-      ],
-    },
-    mobile: {
-      eyebrow: "Mobile",
-      title: "We ship mobile, too",
-      sub: "Native-feeling apps and mobile web — from consumer storefronts to field tools your team uses on site. The same AI-native engineering, in your users' pocket.",
-      caption: "Mobile commerce · built by Facilia Dev",
-      stack: ["React Native", "Expo", "iOS · Swift", "Android · Kotlin", "PWA"],
-    },
-    designwork: {
-      eyebrow: "Product & design",
-      title: "Design-led products, end to end",
-      sub: "Beyond internal tools, we create and design consumer-facing products — brand, UX and engineering together. A few we've shipped:",
-      items: [
-        { key: "clinck-gastro", name: "Clinck", host: "clinck · gastro", sector: "Hospitality · Network", tagline: "The professional network of the gastronomic sector", desc: "Connect talent, restaurants and brands in one place — profiles, jobs, menus and reviews to hire, get hired and grow.", src: "clinck-gastro.png" },
-        { key: "sentimetrik", name: "Sentimetrik", host: "sentimetrik", sector: "CX · Sentiment AI", tagline: "Feedback that turns into decisions", desc: "End-to-end feedback capture and sentiment analysis — from surveys to clear, actionable, data-driven decisions.", src: "sentimetrik.png" },
-      ],
-    },
-    stack: {
+    how: {
       eyebrow: "How we build",
-      title: "An AI-native engineering stack",
-      sub: "We put frontier models in the loop of everyday engineering — planning, generating, reviewing and shipping with agents. Modern, secure and scalable, with last-generation tooling across the whole stack.",
-      loop: ["Plan", "Generate", "Review", "Ship"],
-      loopNote: "The agent loop we run on every feature.",
-      layers: ["AI & Intelligent Systems", "Frontend", "Backend & Data", "Infrastructure & DevOps", "Quality Engineering", "Integrations", "Security", "Performance"],
-      foot: "A modern, secure and scalable stack — AI-native by default, not a traditional software factory.",
+      title: "A product-building loop.",
+      steps: [
+        ["Find", "Find problems worth solving."],
+        ["Test", "Validate before overbuilding."],
+        ["Build", "Prototype and ship."],
+        ["Launch", "Put it in the hands of real users."],
+        ["Scale", "Double down on what works."],
+      ],
+    },
+    ai: {
+      eyebrow: "AI-native",
+      title: "Built differently.",
+      body: "AI-native tools and agents let small, senior teams move from idea to working product faster than ever. We use AI across research, product, engineering and operations — as leverage for builders, not as a replacement for judgment.",
+    },
+    flywheel: {
+      eyebrow: "The model",
+      title: "Everything compounds.",
+      sub: "Our own products and our partnerships aren't separate. They feed the same engine.",
+      loopA: ["Ideas", "Build", "Products", "Users", "Businesses", "Ventures"],
+      loopB: ["Partners", "Products", "Long-term partnerships"],
+      center: "Facilia",
     },
     why: {
-      eyebrow: "Why Latam",
-      title: "Quality software, built in Latin America",
-      sub: "The talent is here. We pair senior engineers who care about craft with real AI leverage — in your timezone, without the coordination tax of far-shore.",
+      eyebrow: "Why Facilia",
+      title: "We build from the inside.",
       points: [
-        ["Real timezone overlap", "We work the same hours as US teams — sync when it matters, not on a 12-hour delay."],
-        ["Senior & product-minded", "Engineers who own outcomes and push back on bad specs — not ticket-takers."],
-        ["AI-native by default", "More shipped per engineer, with agents doing the toil and humans owning the judgment."],
-        ["Skin in the game", "We build and run our own products. We'll build yours like owners, because that's how we build ours."],
+        ["Builders, not vendors", "We care about the product, not just the deliverable."],
+        ["Product + engineering", "We don't separate deciding what to build from building it."],
+        ["AI-native", "Modern AI tooling increases the leverage of small, senior teams."],
+        ["Ownership", "We build our own products, so we know the difference between shipping software and building a business."],
+        ["Long-term", "The best partnerships don't end at launch."],
       ],
     },
-    models: {
-      eyebrow: "How we work together",
-      title: "Three ways to build with us",
-      sub: "Pick the shape that fits your stage. All of them ship real software, fast.",
-      items: [
-        { tag: "01 · Product Studio", name: "Zero to one", desc: "You have an idea or an early product. We take it to a live, revenue-ready build — discovery, design, engineering and launch, end to end.", featured: false },
-        { tag: "02 · Embedded Squad", name: "Staff augmentation, done right", desc: "Senior engineers embedded in your team, AI-native and shipping from week one. You keep the roadmap; we add velocity and craft.", featured: true },
-        { tag: "03 · AI Retrofit", name: "Add AI to what you have", desc: "Copilots, document intelligence, automation and data pipelines layered onto your existing product — without a rewrite.", featured: false },
-      ],
-      cta: "Book a call",
+    about: {
+      eyebrow: "About",
+      body: "Facilia is a product company based in Latin America. We build products of our own and partner with ambitious teams to build theirs. Our ambition is a portfolio of useful products — and the experience, infrastructure and talent to build the next one faster.",
     },
-    final: {
-      title: "Let's build something worth shipping.",
-      sub: "Tell us what you're building. We'll show you how fast quality can move.",
-      btn: "Book a call",
-      alt: "or email us",
-    },
-    footer: {
-      line: "© 2026 Facilia Dev · Built in Latin America",
-      tagline: "AI-native software studio. We design, build and ship production software from Latin America.",
-      explore: "Explore",
-      product: "Product",
-      contact: "Contact",
-    },
-    theme: { light: "Light", dark: "Dark" },
+    final: { title: "Let's build something worth building.", cta: "Build with us", cta2: "See our ventures" },
+    footer: { line: "© 2026 Facilia · Product & venture builder · Built in Latin America", theme: { light: "Light", dark: "Dark" } },
   },
 
   es: {
-    nav: { work: "Proyectos", expertise: "Qué hacemos", stack: "Cómo construimos", why: "Por qué Latam", cta: "Agendar llamada" },
+    nav: { build: "Construimos", ventures: "Ventures", partner: "Alianzas", about: "Nosotros", cta: "Construyamos juntos" },
     hero: {
-      eyebrow: "Estudio de software AI-native · Hecho en Latinoamérica",
-      h1a: "Software de clase mundial,",
-      h1b: "hecho en Latam.",
-      sub: "Facilia.dev ayuda a equipos ambiciosos a lanzar productos AI-native en semanas, no meses. Combinando ingenieros senior latinoamericanos con desarrollo agéntico, convertimos ideas en software listo para producción con velocidad y calidad excepcionales.",
-      cta1: "Agendar llamada",
-      cta2: "Ver proyectos",
-      trust: "Hoy en producción",
-      stats: [
-        ["3", "productos en producción"],
-        ["100%", "equipo de ingeniería senior en Latam"],
-        ["0→1", "de la idea al deploy, AI-native"],
-      ],
-      termTitle: "facilia-dev — zsh",
+      kicker: "Product & venture builder",
+      h1a: "Construimos productos.",
+      h1b: "Algunos se vuelven empresas.",
+      sub: "Facilia es una empresa de producto que construye sus propias ventures y se alía con equipos ambiciosos para convertir ideas en productos, negocios y tecnología que escala.",
+      cta1: "Construyamos juntos",
+      cta2: "Mira lo que estamos construyendo",
     },
-    marquee: "El stack moderno con el que construimos",
-    expertise: {
+    thesis: {
       eyebrow: "Qué hacemos",
-      title: "Vamos a fondo donde la economía real se encuentra con el software",
-      sub: "No somos generalistas de alquiler. Construimos para las industrias que corren sobre operaciones físicas — y lo hacemos AI-native desde el día uno.",
-      items: [
-        { tag: "ConTech", name: "Construcción y obra", desc: "Presupuesto, compras, avance y caja en una sola fuente de verdad. IA que lee facturas y extractos para proteger el margen.", ref: "facilia.app" },
-        { tag: "PropTech", name: "Inmobiliario y entorno construido", desc: "Operación, mantenimiento e inteligencia de activos para edificios, portafolios y los equipos que los operan.", ref: "" },
-        { tag: "InsurTech", name: "Riesgo, siniestros y cumplimiento", desc: "Convertimos inspecciones, auditorías y registros de campo en datos estructurados, listos para decidir y suscribir.", ref: "clinck.io" },
-        { tag: "AI-Native", name: "Productos desde cero", desc: "Copilotos, inteligencia documental, RAG y automatización con agentes en el núcleo — productos diseñados alrededor de la IA, no con la IA pegada encima.", ref: "" },
+      title: "No solo construimos software. Construimos cosas que pueden volverse negocios.",
+      modes: [
+        { k: "Build", d: "Encontramos problemas que vale la pena resolver y creamos productos alrededor de ellos." },
+        { k: "Partner", d: "Trabajamos con quienes conocen a fondo un mercado, cliente o problema, y convertimos ese insight en producto." },
+        { k: "CTO", d: "Damos liderazgo de producto y técnico a empresas que necesitan construir, lanzar o escalar tecnología." },
       ],
     },
-    work: {
-      eyebrow: "Proyectos seleccionados",
-      title: "Productos, vivos en producción",
-      sub: "Software real del que nuestros clientes y miles de usuarios dependen cada día — diseñado, construido y operado por Facilia Dev.",
-      cta: "Visitar",
-      soon: "Pronto en vivo",
+    ventures: {
+      eyebrow: "Ventures",
+      title: "Lo que estamos construyendo.",
+      sub: "Productos propios — algunos operando, otros apenas comenzando.",
+      visit: "Visitar",
+    },
+    builds: {
+      eyebrow: "Construido con socios",
+      title: "Y cosas que hemos construido con otros.",
+      sub: "Productos que hemos diseñado y lanzado junto a founders y equipos.",
+    },
+    partner: {
+      eyebrow: "Alianzas",
+      title: "¿Tienes algo que valga la pena construir?",
+      sub: "Nos aliamos con founders, operadores y empresas que tienen un problema que vale la pena resolver, una idea que vale la pena probar o un producto que vale la pena escalar.",
+      note: "A veces construimos nuestra propia empresa. A veces construimos la tuya contigo. A veces nos volvemos el equipo responsable de hacer que la tecnología pase.",
       items: [
-        {
-          key: "facilia", url: "https://facilia.app", host: "facilia.app", sector: "ConTech",
-          name: "Facilia", tagline: "El sistema operativo con IA para contratistas",
-          desc: "Agentes de IA que cotizan cualquier obra en minutos con precios APU 2026, un Gantt que se regenera desde la cotización, y tableros de finanzas con flujo de caja y EBITDA por obra — una sola fuente de verdad para las constructoras.",
-          role: "Producto · Ingeniería · IA aplicada",
-          stack: ["Next.js", "Supabase", "PostgreSQL", "Claude"],
-          screens: [
-            { src: "facilia-cotizador.png", label: "Cotizador IA", path: "facilia.app/cotizador" },
-            { src: "facilia-gantt.png", label: "Gantt", path: "facilia.app/avance" },
-            { src: "facilia-finanzas.png", label: "Finanzas", path: "facilia.app/finanzas" },
-          ],
-        },
-        {
-          key: "clinck", url: "https://clinck.io", host: "clinck.io", sector: "InsurTech · Ops",
-          name: "Clinck", tagline: "Convierte registros en decisiones operativas",
-          desc: "Plataforma AI-native que convierte inspecciones, checklists y auditorías en tableros en vivo, KPIs y alertas inteligentes para equipos de facilities, mantenimiento y SST. Describe el formulario — la IA lo construye.",
-          role: "Producto · Ingeniería · IA aplicada",
-          stack: ["Next.js", "Supabase", "PostgreSQL", "Claude"],
-          screens: [{ src: "clinck.png", label: "", path: "clinck.io" }],
-        },
-        {
-          key: "shelv", url: "https://shelv.io", host: "shelv.io", sector: "Comunidad · Plataforma",
-          name: "Shelv", tagline: "Donde los creadores lanzan el futuro de LATAM",
-          desc: "Una plataforma de lanzamiento y comunidad para builders latinoamericanos — descubrimiento de productos, perfiles de creadores, un mapa del ecosistema y oportunidades beta que conectan a los founders de la región.",
-          role: "Producto · Ingeniería",
-          stack: ["Next.js", "Supabase", "PostgreSQL"],
-          screens: [{ src: "shelv.png", label: "", path: "shelv.io" }],
-        },
-        {
-          key: "goquipo", url: "", host: "goquipo.co", sector: "Marketplace · Rentas",
-          name: "GoQuipo", tagline: "Compra, vende y renta equipos profesionales",
-          desc: "Un marketplace nacional de equipos y maquinaria profesional — vendedores verificados, pago en escrow y cobertura nacional para construcción, eventos, industria, logística y más.",
-          role: "Producto · Ingeniería",
-          stack: ["Next.js", "Supabase", "PostgreSQL", "Stripe"],
-          screens: [{ src: "goquipo.png", label: "", path: "goquipo.co" }],
-        },
+        { k: "Producto", d: "Ayudamos a convertir una idea en un producto claro." },
+        { k: "Ingeniería", d: "Diseñamos y construimos la tecnología." },
+        { k: "CTO", d: "Damos liderazgo técnico y de producto." },
+        { k: "Venture", d: "Exploramos construir algo juntos a largo plazo." },
       ],
     },
-    mobile: {
-      eyebrow: "Móvil",
-      title: "También desarrollamos móvil",
-      sub: "Apps con sensación nativa y web móvil — desde tiendas para consumidores hasta herramientas de campo que tu equipo usa en obra. La misma ingeniería AI-native, en el bolsillo de tus usuarios.",
-      caption: "Comercio móvil · construido por Facilia Dev",
-      stack: ["React Native", "Expo", "iOS · Swift", "Android · Kotlin", "PWA"],
-    },
-    designwork: {
-      eyebrow: "Producto y diseño",
-      title: "Productos con diseño, de punta a punta",
-      sub: "Más allá de herramientas internas, creamos y diseñamos productos de cara al consumidor — marca, UX e ingeniería juntas. Algunos que hemos lanzado:",
-      items: [
-        { key: "clinck-gastro", name: "Clinck", host: "clinck · gastro", sector: "Gastronomía · Red", tagline: "La red profesional del sector gastronómico", desc: "Conecta talento, restaurantes y marcas en un solo lugar — perfiles, empleos, menús y reseñas para contratar, ser contratado y crecer.", src: "clinck-gastro.png" },
-        { key: "sentimetrik", name: "Sentimetrik", host: "sentimetrik", sector: "CX · Sentiment AI", tagline: "Feedback que se convierte en decisiones", desc: "Captura de feedback y análisis de sentimiento de punta a punta — de las encuestas a decisiones claras, accionables y basadas en datos.", src: "sentimetrik.png" },
-      ],
-    },
-    stack: {
+    how: {
       eyebrow: "Cómo construimos",
-      title: "Un stack de ingeniería AI-native",
-      sub: "Ponemos modelos de frontera dentro del ciclo diario de ingeniería — planear, generar, revisar y desplegar con agentes. Moderno, seguro y escalable, con herramientas de última generación en todo el stack.",
-      loop: ["Planear", "Generar", "Revisar", "Desplegar"],
-      loopNote: "El ciclo de agentes que corremos en cada feature.",
-      layers: ["IA y sistemas inteligentes", "Frontend", "Backend y datos", "Infraestructura y DevOps", "Ingeniería de calidad", "Integraciones", "Seguridad", "Rendimiento"],
-      foot: "Un stack moderno, seguro y escalable — AI-native por defecto, no una software factory tradicional.",
+      title: "Un ciclo de construcción de producto.",
+      steps: [
+        ["Find", "Encontrar problemas que valga la pena resolver."],
+        ["Test", "Validar antes de sobre-construir."],
+        ["Build", "Prototipar y lanzar."],
+        ["Launch", "Ponerlo en manos de usuarios reales."],
+        ["Scale", "Redoblar en lo que funciona."],
+      ],
+    },
+    ai: {
+      eyebrow: "AI-native",
+      title: "Construido distinto.",
+      body: "Las herramientas y agentes AI-native permiten que equipos pequeños y senior pasen de la idea a un producto funcionando más rápido que nunca. Usamos IA en research, producto, ingeniería y operaciones — como apalancamiento para builders, no como reemplazo del criterio.",
+    },
+    flywheel: {
+      eyebrow: "El modelo",
+      title: "Todo se acumula.",
+      sub: "Nuestros productos y nuestras alianzas no van por separado. Alimentan el mismo motor.",
+      loopA: ["Ideas", "Build", "Productos", "Usuarios", "Negocios", "Ventures"],
+      loopB: ["Socios", "Productos", "Alianzas a largo plazo"],
+      center: "Facilia",
     },
     why: {
-      eyebrow: "Por qué Latam",
-      title: "Software de calidad, hecho en Latinoamérica",
-      sub: "El talento está acá. Combinamos ingenieros senior que se preocupan por el oficio con apalancamiento real de IA — en tu zona horaria, sin el impuesto de coordinación del far-shore.",
+      eyebrow: "Por qué Facilia",
+      title: "Construimos desde adentro.",
       points: [
-        ["Misma zona horaria", "Trabajamos las mismas horas que los equipos en EE.UU. — sincronizamos cuando importa, no con 12 horas de retraso."],
-        ["Senior y con mentalidad de producto", "Ingenieros que se apropian del resultado y cuestionan specs malas — no ejecutores de tickets."],
-        ["AI-native por defecto", "Más entregado por ingeniero, con agentes haciendo el trabajo pesado y humanos dueños del criterio."],
-        ["Piel en el juego", "Construimos y operamos nuestros propios productos. El tuyo lo construimos como dueños, porque así construimos los nuestros."],
+        ["Builders, no proveedores", "Nos importa el producto, no solo el entregable."],
+        ["Producto + ingeniería", "No separamos decidir qué construir de construirlo."],
+        ["AI-native", "El tooling moderno de IA aumenta el apalancamiento de equipos pequeños y senior."],
+        ["Ownership", "Construimos productos propios, así que sabemos la diferencia entre entregar software y construir un negocio."],
+        ["Largo plazo", "Las mejores alianzas no terminan en el lanzamiento."],
       ],
     },
-    models: {
-      eyebrow: "Cómo trabajamos juntos",
-      title: "Tres formas de construir con nosotros",
-      sub: "Elige la forma que encaja con tu etapa. Todas entregan software real, rápido.",
-      items: [
-        { tag: "01 · Product Studio", name: "De cero a uno", desc: "Tienes una idea o un producto temprano. Lo llevamos a un build vivo y listo para monetizar — discovery, diseño, ingeniería y lanzamiento, de punta a punta.", featured: false },
-        { tag: "02 · Squad Embebido", name: "Staff augmentation, bien hecho", desc: "Ingenieros senior embebidos en tu equipo, AI-native y entregando desde la semana uno. Tú mantienes el roadmap; nosotros sumamos velocidad y oficio.", featured: true },
-        { tag: "03 · AI Retrofit", name: "Suma IA a lo que ya tienes", desc: "Copilotos, inteligencia documental, automatización y pipelines de datos sobre tu producto actual — sin reescribir todo.", featured: false },
-      ],
-      cta: "Agendar llamada",
+    about: {
+      eyebrow: "Nosotros",
+      body: "Facilia es una empresa de producto con base en Latinoamérica. Construimos productos propios y nos aliamos con equipos ambiciosos para construir los suyos. Nuestra ambición es un portafolio de productos útiles — y la experiencia, infraestructura y talento para construir el siguiente más rápido.",
     },
-    final: {
-      title: "Construyamos algo que valga la pena desplegar.",
-      sub: "Cuéntanos qué estás construyendo. Te mostramos qué tan rápido puede moverse la calidad.",
-      btn: "Agendar llamada",
-      alt: "o escríbenos",
-    },
-    footer: {
-      line: "© 2026 Facilia Dev · Hecho en Latinoamérica",
-      tagline: "Estudio de software AI-native. Diseñamos, construimos y desplegamos software en producción desde Latinoamérica.",
-      explore: "Explorar",
-      product: "Producto",
-      contact: "Contacto",
-    },
-    theme: { light: "Claro", dark: "Oscuro" },
+    final: { title: "Construyamos algo que valga la pena.", cta: "Construyamos juntos", cta2: "Ver nuestras ventures" },
+    footer: { line: "© 2026 Facilia · Product & venture builder · Hecho en Latinoamérica", theme: { light: "Claro", dark: "Oscuro" } },
   },
 } as const;
-
-const TECH = [
-  "Claude Code", "OpenAI Codex", "Cursor", "Windsurf", "MCP", "Supabase",
-  "Next.js", "React", "TypeScript", "Vercel", "PostgreSQL", "Drizzle",
-  "Tailwind CSS", "shadcn/ui", "LangGraph", "Playwright", "Cloudflare",
-  "Stripe", "Resend", "Upstash", "GitHub Actions",
-];
-
-// Shared across languages — tech names are universal; only category titles are localized.
-const STACK_ITEMS: string[][] = [
-  [
-    "Claude Code (Fable 5 · Opus 4.8 · Sonnet 5 · Haiku 4.5)", "OpenAI (GPT-5.5 · Codex)", "Gemini 2.5",
-    "MCP (Model Context Protocol)", "AI Agents & Multi-Agent Systems", "Agentic Workflows",
-    "RAG (Retrieval-Augmented Generation)", "Semantic Search", "Vector Databases", "Prompt Engineering",
-    "AI Evaluations (Evals)", "AI Guardrails", "Structured Outputs", "Tool Calling", "Function Calling",
-    "LLM Orchestration", "LangGraph", "LangChain", "AI Automation", "Computer Vision", "OCR",
-    "Speech-to-Text & Text-to-Speech",
-  ],
-  [
-    "Next.js 15 (App Router)", "React 19", "TypeScript", "Tailwind CSS", "shadcn/ui", "Radix UI",
-    "Framer Motion", "React Query (TanStack Query)", "Zustand", "React Hook Form", "Zod",
-    "Server Components", "Edge Rendering", "SSG", "SSR", "ISR", "Progressive Web Apps (PWA)",
-  ],
-  [
-    "Supabase", "PostgreSQL", "Row-Level Security (RLS)", "Edge Functions", "Realtime", "Authentication",
-    "Storage", "Drizzle ORM", "Prisma", "Redis", "Upstash", "pgvector", "Vector Search",
-    "Background Jobs", "Queues", "Webhooks", "REST APIs", "GraphQL", "tRPC", "OpenAPI", "Database Migrations",
-  ],
-  [
-    "Vercel", "Cloudflare", "Docker", "GitHub Actions", "CI/CD", "Preview Deployments", "Edge Network",
-    "CDN", "Environment Management", "Secrets Management", "Infrastructure as Code", "Automatic Rollbacks",
-    "Performance Monitoring", "Error Tracking", "Logging", "Uptime Monitoring",
-  ],
-  [
-    "Playwright", "Cypress", "Vitest", "Jest", "Testing Library", "End-to-End Testing", "Integration Testing",
-    "Unit Testing", "API Testing", "Accessibility Testing", "Lighthouse", "Performance Audits",
-    "Type Safety", "Code Quality", "ESLint", "Prettier",
-  ],
-  [
-    "Stripe", "Resend", "Twilio", "WhatsApp Business API", "Clerk", "Auth0", "Google Workspace",
-    "Microsoft 365", "Slack", "Discord", "HubSpot", "Salesforce", "Shopify", "Notion", "Airtable",
-    "Zapier", "Make", "n8n", "GitHub API",
-  ],
-  [
-    "OAuth", "JWT", "Passkeys", "Multi-Factor Authentication", "Encryption at Rest", "Encryption in Transit",
-    "Secrets Management", "Role-Based Access Control", "Row-Level Security", "OWASP Best Practices",
-    "Rate Limiting", "Audit Logs", "Secure API Design",
-  ],
-  [
-    "Edge Computing", "CDN", "Image Optimization", "Code Splitting", "Lazy Loading", "Streaming SSR",
-    "Caching Strategies", "Incremental Rendering", "Bundle Optimization", "Database Optimization",
-  ],
-];
-
-const FILMSTRIP = [
-  { src: "facilia-cotizador.png", label: "Facilia · Cotizador" },
-  { src: "clinck.png", label: "Clinck" },
-  { src: "clix.png", label: "CLIX" },
-  { src: "facilia-gantt.png", label: "Facilia · Gantt" },
-  { src: "loncho.png", label: "Loncho" },
-  { src: "goquipo.png", label: "GoQuipo" },
-  { src: "lama.png", label: "Lama" },
-  { src: "facilia-finanzas.png", label: "Facilia · Finanzas" },
-  { src: "shelv.png", label: "Shelv" },
-];
-
-const TERM: { k: "cmd" | "run" | "ok"; t: string }[] = [
-  { k: "cmd", t: "facilia dev --new clinck.io" },
-  { k: "run", t: "claude code · opus 4.8 → planning architecture" },
-  { k: "ok", t: "supabase: 14 tables · RLS policies generated" },
-  { k: "ok", t: "next.js 15 · app router · edge runtime" },
-  { k: "run", t: "codex → inspection engine + unit tests" },
-  { k: "ok", t: "218 tests passing · types clean" },
-  { k: "cmd", t: "git push → vercel" },
-  { k: "ok", t: "deployed to production · 200ms TTFB" },
-];
 
 /* ================= helpers ================= */
 
@@ -382,12 +255,23 @@ function useReveal() {
   }, []);
 }
 
-function Logo({ w = 116, h = 23 }: { w?: number; h?: number }) {
+function useImgStatus() {
+  const ref = useRef<HTMLImageElement>(null);
+  const [ok, setOk] = useState(true);
+  useEffect(() => {
+    const img = ref.current;
+    if (img && img.complete && img.naturalWidth === 0) setOk(false);
+  }, []);
+  return { ref, ok, onError: () => setOk(false) };
+}
+
+function Logo() {
   return (
-    <>
-      <Image src="/facilia_dark.png" alt="Facilia" width={w} height={h} priority className="hidden dark:block" />
-      <Image src="/facilia_light.png" alt="Facilia" width={w} height={h} priority className="block dark:hidden" />
-    </>
+    <span className="flex items-baseline gap-1.5">
+      <Image src="/facilia_dark.png" alt="Facilia" width={104} height={21} priority className="hidden translate-y-[3px] dark:block" />
+      <Image src="/facilia_light.png" alt="Facilia" width={104} height={21} priority className="block translate-y-[3px] dark:hidden" />
+      <span className="font-mono text-[11px] tracking-tight text-muted">.dev</span>
+    </span>
   );
 }
 
@@ -406,261 +290,107 @@ function MoonIcon() {
     </svg>
   );
 }
-function MailIcon() {
+function Arrow() {
   return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-      <rect x="3" y="5" width="18" height="14" rx="2" />
-      <path d="m3 7 9 6 9-6" />
+    <svg className="arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+      <path d="M7 17L17 7M8 7h9v9" />
     </svg>
   );
 }
 
 function ThemeToggle({ labels }: { labels: { light: string; dark: string } }) {
-  const [theme, setTheme] = useState<"dark" | "light">("dark");
+  const [theme, setTheme] = useState<"dark" | "light">("light");
   useEffect(() => {
     const t = (typeof window !== "undefined" ? window.localStorage.getItem("facilia-theme") : null) as "dark" | "light" | null;
-    setTheme(t === "light" ? "light" : "dark");
+    setTheme(t === "dark" ? "dark" : "light");
   }, []);
   const toggle = () => {
     const nt = theme === "dark" ? "light" : "dark";
     setTheme(nt);
     const r = document.documentElement;
     r.classList.toggle("dark", nt === "dark");
-    r.classList.toggle("light", nt === "light");
+    r.classList.toggle("light", nt !== "dark");
     try { window.localStorage.setItem("facilia-theme", nt); } catch {}
   };
   return (
-    <button
-      onClick={toggle}
-      className="btn-min inline-flex items-center gap-2 rounded-lg border border-border px-3 py-2 text-sm text-muted hover:text-foreground hover:border-foreground/30"
-      aria-label="Toggle color theme"
-    >
+    <button onClick={toggle} className="btn-min inline-flex items-center gap-2 rounded-full border border-border px-3 py-1.5 text-sm text-muted hover:text-foreground" aria-label="Toggle theme">
       {theme === "dark" ? <SunIcon /> : <MoonIcon />}
       <span>{theme === "dark" ? labels.light : labels.dark}</span>
     </button>
   );
 }
 
-/* ---------- Signature hero: live Claude Code session ---------- */
-
-function Terminal({ title }: { title: string }) {
+function StatusDot({ status, lang }: { status: Status; lang: Lang }) {
+  const s = STATUS[status];
+  const dot =
+    s.tone === "live" ? "bg-accent" : s.tone === "active" ? "bg-accent/60" : s.tone === "ink" ? "bg-foreground/70" : "bg-muted/50";
   return (
-    <div className="scene relative">
-      <div className="relative overflow-hidden rounded-xl border border-border bg-card shadow-2xl shadow-black/20">
-        <div className="flex items-center gap-2 border-b border-border px-4 py-3">
-          <span className="h-3 w-3 rounded-full bg-[#FF5F57]" />
-          <span className="h-3 w-3 rounded-full bg-[#FEBC2E]" />
-          <span className="h-3 w-3 rounded-full bg-[#28C840]" />
-          <span className="ml-3 font-mono text-[11px] text-muted">{title}</span>
-        </div>
-        <div className="space-y-1.5 px-5 py-5 font-mono text-[12.5px] leading-relaxed sm:text-[13px]">
-          {TERM.map((l, i) => (
-            <div key={i} className="term-line flex gap-2" style={{ "--d": `${0.5 + i * 0.42}s` } as React.CSSProperties}>
-              {l.k === "cmd" && <span className="shrink-0 text-accent">$</span>}
-              {l.k === "run" && <span className="shrink-0 text-accent/70">»</span>}
-              {l.k === "ok" && <span className="shrink-0 text-accent">✓</span>}
-              <span className={l.k === "cmd" ? "text-foreground" : "text-muted"}>{l.t}</span>
-            </div>
-          ))}
-          <div className="term-line flex gap-2 pt-1" style={{ "--d": `${0.5 + TERM.length * 0.42}s` } as React.CSSProperties}>
-            <span className="shrink-0 text-accent">$</span>
-            <span className="caret" />
-          </div>
-        </div>
-      </div>
-      <div className="chip-float absolute -left-4 top-[22%] hidden rounded-lg border border-border bg-background/90 px-3 py-1.5 font-mono text-[11px] text-accent shadow-lg backdrop-blur sm:block" style={{ animationDelay: "0.6s" }}>
-        Claude · Opus 4.8
-      </div>
-      <div className="chip-float absolute -right-4 top-[52%] hidden rounded-lg border border-border bg-background/90 px-3 py-1.5 font-mono text-[11px] text-muted shadow-lg backdrop-blur sm:block" style={{ animationDelay: "1.8s" }}>
-        Supabase · Postgres
-      </div>
-      <div className="chip-float absolute -left-2 bottom-[8%] hidden rounded-lg border border-border bg-background/90 px-3 py-1.5 font-mono text-[11px] text-muted shadow-lg backdrop-blur sm:block" style={{ animationDelay: "2.6s" }}>
-        Codex · tests
-      </div>
-    </div>
+    <span className="inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.14em] text-muted">
+      <span className={`h-1.5 w-1.5 rounded-full ${dot} ${s.tone === "live" ? "animate-pulse" : ""}`} />
+      {s[lang]}
+    </span>
   );
 }
 
-/* ---------- Dynamic product showcase ---------- */
-
-function Tilt({ children }: { children: React.ReactNode }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const onMove = (e: React.MouseEvent) => {
-    const el = ref.current;
-    if (!el) return;
-    const r = el.getBoundingClientRect();
-    const px = (e.clientX - r.left) / r.width - 0.5;
-    const py = (e.clientY - r.top) / r.height - 0.5;
-    el.style.setProperty("--ry", `${(px * 4.5).toFixed(2)}deg`);
-    el.style.setProperty("--rx", `${(-py * 4.5).toFixed(2)}deg`);
-  };
-  const onLeave = () => {
-    const el = ref.current;
-    if (!el) return;
-    el.style.setProperty("--ry", "0deg");
-    el.style.setProperty("--rx", "0deg");
-  };
-  return (
-    <div className="scene" onMouseMove={onMove} onMouseLeave={onLeave}>
-      <div ref={ref} className="scene-inner">
-        {children}
-      </div>
-    </div>
-  );
-}
-
-function useImgStatus() {
-  const ref = useRef<HTMLImageElement>(null);
-  const [ok, setOk] = useState(true);
-  useEffect(() => {
-    const img = ref.current;
-    if (img && img.complete && img.naturalWidth === 0) setOk(false);
-  }, []);
-  return { ref, ok, onError: () => setOk(false) };
-}
-
-function ScreenImg({ src, name, active, kb }: { src: string; name: string; active: boolean; kb: boolean }) {
+function VentureShot({ src, name }: { src: string; name: string }) {
   const { ref, ok, onError } = useImgStatus();
   return (
-    <div className="screen-fade absolute inset-0" style={{ opacity: active ? 1 : 0 }} aria-hidden={!active}>
+    <div className="relative aspect-[16/10] w-full overflow-hidden rounded-lg bg-background">
       {ok ? (
         // eslint-disable-next-line @next/next/no-img-element
-        <img
-          ref={ref}
-          src={`/projects/${src}`}
-          alt={`${name} — ${src.replace(".png", "")}`}
-          onError={onError}
-          className={`h-full w-full object-cover object-top ${kb ? "kenburns" : ""}`}
-          loading="lazy"
-        />
+        <img ref={ref} src={`/projects/${src}`} alt={`${name}`} onError={onError} className="shot kenburns h-full w-full object-cover object-top" loading="lazy" />
       ) : (
-        <div className="flex h-full w-full flex-col items-center justify-center gap-2 bg-card">
-          <span className="text-2xl font-semibold text-accent">{name}</span>
-          <span className="font-mono text-[11px] text-muted">/projects/{src}</span>
+        <div className="flex h-full w-full items-center justify-center bg-card">
+          <span className="display text-3xl text-foreground/70">{name}</span>
         </div>
       )}
     </div>
   );
 }
 
-function Showcase({ item }: { item: { name: string; screens: ReadonlyArray<{ src: string; label: string; path: string }> } }) {
-  const [i, setI] = useState(0);
-  const multi = item.screens.length > 1;
-
-  useEffect(() => {
-    if (!multi) return;
-    const reduce = typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
-    if (reduce) return;
-    const id = setInterval(() => setI((v) => (v + 1) % item.screens.length), 4200);
-    return () => clearInterval(id);
-  }, [multi, item.screens.length]);
-
-  const cur = item.screens[i];
-
+function VentureCard({ v, lang, t }: { v: (typeof VENTURES)[number]; lang: Lang; t: { visit: string } }) {
   return (
-    <div>
-      <Tilt>
-        <div className="overflow-hidden rounded-xl border border-border bg-card shadow-2xl shadow-black/20">
-          <div className="flex items-center gap-2 border-b border-border px-3.5 py-2.5">
-            <span className="h-2.5 w-2.5 rounded-full bg-[#FF5F57]" />
-            <span className="h-2.5 w-2.5 rounded-full bg-[#FEBC2E]" />
-            <span className="h-2.5 w-2.5 rounded-full bg-[#28C840]" />
-            <span className="ml-2 flex-1 truncate rounded-md bg-foreground/[0.04] px-3 py-1 text-center font-mono text-[11px] text-muted">
-              {cur.path}
-            </span>
-          </div>
-          <div className="relative aspect-[16/10] w-full overflow-hidden bg-background">
-            {item.screens.map((s, idx) => (
-              <ScreenImg key={s.src} src={s.src} name={item.name} active={idx === i} kb={idx === i} />
-            ))}
-          </div>
+    <a href={v.href} target="_blank" rel="noopener" className="venture group flex flex-col rounded-2xl border border-border bg-card p-5 sm:p-6">
+      <div className="overflow-hidden rounded-lg">
+        <VentureShot src={v.img} name={v.name} />
+      </div>
+      <div className="mt-6 flex items-start justify-between gap-4">
+        <div>
+          <h3 className="display text-2xl">{v.name}</h3>
+          <p className="mt-1 text-sm text-muted">{v.category[lang]}</p>
         </div>
-      </Tilt>
-      {multi && (
-        <div className="mt-4 flex flex-wrap gap-2">
-          {item.screens.map((s, idx) => (
-            <button
-              key={s.src}
-              onClick={() => setI(idx)}
-              aria-pressed={idx === i}
-              className={`rounded-lg border px-3 py-1.5 font-mono text-[11.5px] transition ${idx === i ? "border-accent/50 bg-accent/10 text-accent" : "border-border text-muted hover:text-foreground"}`}
-            >
-              {s.label}
-            </button>
-          ))}
-        </div>
-      )}
-    </div>
+        <StatusDot status={v.status} lang={lang} />
+      </div>
+      <p className="mt-4 flex-1 leading-relaxed text-muted">{v.blurb[lang]}</p>
+      <span className="mt-6 inline-flex items-center gap-1.5 text-sm font-medium text-foreground">
+        {t.visit} {v.host} <Arrow />
+      </span>
+    </a>
   );
 }
 
-function MiniShot({ src, label }: { src: string; label: string }) {
+function BuildShot({ src, name }: { src: string; name: string }) {
   const { ref, ok, onError } = useImgStatus();
   return (
-    <div className="w-[300px] shrink-0 overflow-hidden rounded-lg border border-border bg-card sm:w-[360px]">
-      <div className="flex items-center gap-1.5 border-b border-border px-3 py-1.5">
-        <span className="h-2 w-2 rounded-full bg-muted/40" />
-        <span className="h-2 w-2 rounded-full bg-muted/40" />
-        <span className="h-2 w-2 rounded-full bg-muted/40" />
-        <span className="ml-1.5 font-mono text-[10px] text-muted">{label}</span>
-      </div>
-      <div className="relative aspect-[16/10] w-full overflow-hidden bg-background">
+    <figure className="w-[260px] shrink-0 sm:w-[320px]">
+      <div className="relative aspect-[16/10] w-full overflow-hidden rounded-lg border border-border bg-card">
         {ok ? (
           // eslint-disable-next-line @next/next/no-img-element
-          <img ref={ref} src={`/projects/${src}`} alt={label} onError={onError} className="h-full w-full object-cover object-top" loading="lazy" />
+          <img ref={ref} src={`/projects/${src}`} alt={name} onError={onError} className="h-full w-full object-cover object-top" loading="lazy" />
         ) : (
-          <div className="flex h-full w-full items-center justify-center bg-card">
-            <span className="text-sm font-semibold text-accent/80">{label}</span>
-          </div>
+          <div className="flex h-full w-full items-center justify-center"><span className="display text-xl text-foreground/60">{name}</span></div>
         )}
       </div>
-    </div>
+      <figcaption className="mt-2 font-mono text-[11px] uppercase tracking-[0.12em] text-muted">{name}</figcaption>
+    </figure>
   );
 }
 
-function ScreenStrip() {
-  return (
-    <div className="marquee-mask overflow-hidden">
-      <div className="marquee-track flex w-max gap-4">
-        {[0, 1].map((g) => (
-          <div key={g} className="flex gap-4 pr-4">
-            {FILMSTRIP.map((f, idx) => (
-              <MiniShot key={g + f.src + idx} src={f.src} label={f.label} />
-            ))}
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function PhoneFrame({ src, label }: { src: string; label: string }) {
-  const { ref, ok, onError } = useImgStatus();
-  return (
-    <div className="relative mx-auto w-[248px] sm:w-[288px]">
-      <div className="relative overflow-hidden rounded-[2.6rem] border-[7px] border-[#111318] bg-background shadow-2xl shadow-black/40">
-        <div className="absolute left-1/2 top-0 z-10 h-5 w-24 -translate-x-1/2 rounded-b-2xl bg-[#111318]" />
-        <div className="relative aspect-[9/19] w-full overflow-hidden bg-card">
-          {ok ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img ref={ref} src={`/projects/${src}`} alt={label} onError={onError} className="h-full w-full object-cover object-top" loading="lazy" />
-          ) : (
-            <div className="flex h-full w-full flex-col items-center justify-center gap-2 bg-card px-5 text-center">
-              <span className="text-sm font-semibold text-accent">{label}</span>
-              <span className="font-mono text-[10px] text-muted">/projects/{src}</span>
-            </div>
-          )}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-/* Shared bits */
-const eyebrow = "font-mono text-xs uppercase tracking-[0.2em] text-accent";
-const h2cls = "mt-3 text-3xl font-medium tracking-[-0.02em] sm:text-4xl";
-const subcls = "mt-4 max-w-2xl text-muted";
-const btnPrimary = "btn-min rounded-lg bg-foreground px-5 py-3 text-sm font-medium text-background hover:opacity-90";
+/* Shared class helpers */
+const eyebrow = "font-mono text-[11px] uppercase tracking-[0.24em] text-muted";
+const h2cls = "display mt-5 text-4xl leading-[1.03] sm:text-5xl";
+const btnInk = "btn-min inline-flex items-center gap-2 rounded-full bg-foreground px-6 py-3 text-[15px] font-medium text-background hover:opacity-90";
+const btnGhost = "btn-min inline-flex items-center gap-2 rounded-full border border-foreground/25 px-6 py-3 text-[15px] font-medium text-foreground hover:border-foreground/60";
 
 /* ================= page ================= */
 
@@ -672,7 +402,6 @@ export default function Page() {
     const saved = typeof window !== "undefined" ? (window.localStorage.getItem("facilia-lang") as Lang | null) : null;
     if (saved === "es" || saved === "en") setLang(saved);
   }, []);
-
   useEffect(() => {
     document.documentElement.lang = lang;
     try { window.localStorage.setItem("facilia-lang", lang); } catch {}
@@ -681,35 +410,27 @@ export default function Page() {
   const t = T[lang];
 
   return (
-    <main className="relative">
-      <DottedSurface />
+    <main className="bg-background">
       {/* ===================== NAV ===================== */}
       <header className="sticky top-0 z-50 border-b border-border bg-background/80 backdrop-blur">
-        <nav className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-5 py-3.5">
-          <a href="#top" className="flex items-center gap-2" aria-label="Facilia Dev">
-            <Logo />
-            <span className="rounded-full border border-accent/25 bg-accent/10 px-2.5 py-0.5 font-mono text-[11px] font-medium text-accent">dev</span>
-          </a>
-          <div className="hidden items-center gap-7 text-sm text-muted md:flex">
-            <a href="#work" className="transition hover:text-foreground">{t.nav.work}</a>
-            <a href="#expertise" className="transition hover:text-foreground">{t.nav.expertise}</a>
-            <a href="#stack" className="transition hover:text-foreground">{t.nav.stack}</a>
-            <a href="#why" className="transition hover:text-foreground">{t.nav.why}</a>
+        <nav className="mx-auto flex max-w-[1180px] items-center justify-between gap-3 px-5 py-4 sm:px-8">
+          <a href="#top" aria-label="Facilia.dev"><Logo /></a>
+          <div className="hidden items-center gap-8 text-sm text-muted md:flex">
+            <a href="#thesis" className="transition hover:text-foreground">{t.nav.build}</a>
+            <a href="#ventures" className="transition hover:text-foreground">{t.nav.ventures}</a>
+            <a href="#partner" className="transition hover:text-foreground">{t.nav.partner}</a>
+            <a href="#about" className="transition hover:text-foreground">{t.nav.about}</a>
           </div>
           <div className="flex items-center gap-3">
-            <div className="flex rounded-lg border border-border p-0.5" role="group" aria-label="Language / Idioma">
+            <div className="hidden rounded-full border border-border p-0.5 sm:flex" role="group" aria-label="Language">
               {(["en", "es"] as const).map((k) => (
-                <button
-                  key={k}
-                  onClick={() => setLang(k)}
-                  aria-pressed={lang === k}
-                  className={`rounded-md px-2.5 py-1 font-mono text-xs font-medium uppercase transition ${lang === k ? "bg-foreground text-background" : "text-muted hover:text-foreground"}`}
-                >
+                <button key={k} onClick={() => setLang(k)} aria-pressed={lang === k}
+                  className={`rounded-full px-2.5 py-1 font-mono text-[11px] font-medium uppercase transition ${lang === k ? "bg-foreground text-background" : "text-muted hover:text-foreground"}`}>
                   {k}
                 </button>
               ))}
             </div>
-            <a href={CAL} target="_blank" rel="noopener" className="btn-min hidden rounded-lg bg-foreground px-4 py-2 text-sm font-medium text-background hover:opacity-90 sm:block">
+            <a href={CAL} target="_blank" rel="noopener" className="btn-min rounded-full bg-foreground px-4 py-2 text-sm font-medium text-background hover:opacity-90">
               {t.nav.cta}
             </a>
           </div>
@@ -717,325 +438,226 @@ export default function Page() {
       </header>
 
       {/* ===================== HERO ===================== */}
-      <section id="top" className="relative overflow-hidden">
-        <div className="relative mx-auto grid max-w-6xl items-center gap-14 px-5 pb-20 pt-16 lg:grid-cols-[1.05fr_0.95fr] lg:pb-28 lg:pt-24">
-          <div>
-            <p className="rise mb-5 inline-flex items-center gap-2 rounded-full border border-border bg-card px-3.5 py-1.5 font-mono text-xs text-muted" style={{ animationDelay: "0.05s" }}>
-              <span className="text-accent" aria-hidden>»</span> {t.hero.eyebrow}
-            </p>
-            <h1 className="rise text-4xl font-medium leading-[1.05] tracking-[-0.03em] sm:text-5xl lg:text-[3.7rem]" style={{ animationDelay: "0.15s" }}>
-              {t.hero.h1a} <span className="text-accent">{t.hero.h1b}</span>
-            </h1>
-            <p className="rise mt-6 max-w-xl text-lg leading-relaxed text-muted" style={{ animationDelay: "0.3s" }}>
-              {t.hero.sub}
-            </p>
-            <div className="rise mt-8 flex flex-wrap items-center gap-4" style={{ animationDelay: "0.45s" }}>
-              <a href={CAL} target="_blank" rel="noopener" className="btn-min rounded-lg bg-foreground px-6 py-3.5 font-medium text-background hover:opacity-90">
-                {t.hero.cta1}
-              </a>
-              <a href="#work" className="font-medium text-foreground/80 transition hover:text-foreground">
-                {t.hero.cta2} <span className="text-accent">»</span>
-              </a>
-            </div>
-            <div className="rise mt-12 grid max-w-lg grid-cols-3 gap-6 border-t border-border pt-7" style={{ animationDelay: "0.6s" }}>
-              {t.hero.stats.map(([n, l]) => (
-                <div key={l}>
-                  <p className="text-3xl font-medium tracking-tight text-foreground">{n}</p>
-                  <p className="mt-1 text-[12.5px] leading-snug text-muted">{l}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="rise" style={{ animationDelay: "0.35s" }}>
-            <Terminal title={t.hero.termTitle} />
+      <section id="top" className="mx-auto max-w-[1180px] px-5 pb-16 pt-16 sm:px-8 sm:pb-24 sm:pt-24">
+        <p className="rise text-sm text-muted" style={{ animationDelay: "0.05s" }}>{t.hero.kicker}</p>
+        <h1 className="rise display mt-6 text-5xl leading-[1.0] tracking-[-0.02em] sm:text-7xl lg:text-[5.4rem]" style={{ animationDelay: "0.12s" }}>
+          {t.hero.h1a}<br />
+          <span className="text-muted">{t.hero.h1b}</span>
+        </h1>
+        <div className="mt-10 grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-end">
+          <p className="rise max-w-xl text-lg leading-relaxed text-muted" style={{ animationDelay: "0.24s" }}>{t.hero.sub}</p>
+          <div className="rise flex flex-wrap items-center gap-3 lg:justify-end" style={{ animationDelay: "0.32s" }}>
+            <a href={CAL} target="_blank" rel="noopener" className={btnInk}>{t.hero.cta1} <Arrow /></a>
+            <a href="#ventures" className={btnGhost}>{t.hero.cta2}</a>
           </div>
         </div>
       </section>
 
-      {/* ===================== TECH MARQUEE ===================== */}
-      <div className="border-y border-border py-6">
-        <p className="mb-4 text-center font-mono text-[11px] uppercase tracking-[0.25em] text-muted">{t.marquee}</p>
-        <div className="marquee-mask overflow-hidden">
-          <div className="marquee-slow flex w-max gap-3">
-            {[0, 1].map((g) => (
-              <div key={g} className="flex gap-3 pr-3">
-                {TECH.map((tech, i) => (
-                  <span key={g + tech + i} className="whitespace-nowrap rounded-lg border border-border bg-card px-4 py-2 font-mono text-[12.5px] text-muted">
-                    {tech}
-                  </span>
-                ))}
+      {/* ===================== THESIS / WHAT WE DO ===================== */}
+      <section id="thesis" className="border-t border-border">
+        <div className="mx-auto max-w-[1180px] px-5 py-20 sm:px-8 sm:py-28">
+          <p className={`reveal ${eyebrow}`}>{t.thesis.eyebrow}</p>
+          <h2 className={`reveal ${h2cls} max-w-4xl`} style={{ "--d": "0.08s" } as React.CSSProperties}>{t.thesis.title}</h2>
+          <div className="mt-16 divide-y divide-border border-y border-border">
+            {t.thesis.modes.map((m, i) => (
+              <div key={m.k} className="reveal grid gap-3 py-8 sm:grid-cols-[220px_1fr] sm:gap-10" style={{ "--d": `${0.06 * i}s` } as React.CSSProperties}>
+                <div className="flex items-baseline gap-3">
+                  <span className="font-mono text-xs text-muted">0{i + 1}</span>
+                  <span className="display text-2xl">{m.k}</span>
+                </div>
+                <p className="max-w-2xl text-lg leading-relaxed text-muted">{m.d}</p>
               </div>
             ))}
           </div>
         </div>
-      </div>
+      </section>
 
-      {/* ===================== WHAT WE BUILD ===================== */}
-      <section id="expertise" className="mx-auto max-w-6xl px-5 py-24">
-        <p className={`reveal ${eyebrow}`}>{t.expertise.eyebrow}</p>
-        <h2 className={`reveal ${h2cls} max-w-3xl`} style={{ "--d": "0.08s" } as React.CSSProperties}>{t.expertise.title}</h2>
-        <p className={`reveal ${subcls}`} style={{ "--d": "0.16s" } as React.CSSProperties}>{t.expertise.sub}</p>
-        <div className="mt-12 grid gap-5 md:grid-cols-2">
-          {t.expertise.items.map((it, i) => (
-            <div key={it.tag} className="reveal lift group relative overflow-hidden rounded-xl border border-border bg-card p-7" style={{ "--d": `${0.06 * i}s` } as React.CSSProperties}>
-              <div className="flex items-center justify-between">
-                <span className="rounded-md border border-accent/20 bg-accent/10 px-2.5 py-1 font-mono text-[11px] font-medium text-accent">{it.tag}</span>
-                {it.ref && <span className="font-mono text-[11px] text-muted">↳ {it.ref}</span>}
-              </div>
-              <h3 className="mt-5 text-xl font-semibold tracking-tight">{it.name}</h3>
-              <p className="mt-2 text-[14px] leading-relaxed text-muted">{it.desc}</p>
-              <div className="pointer-events-none absolute -right-8 -top-8 text-[7rem] font-semibold text-foreground/[0.03] transition-transform duration-500 group-hover:scale-110" aria-hidden>»</div>
+      {/* ===================== VENTURES ===================== */}
+      <section id="ventures" className="border-t border-border">
+        <div className="mx-auto max-w-[1180px] px-5 py-20 sm:px-8 sm:py-28">
+          <div className="flex flex-wrap items-end justify-between gap-6">
+            <div>
+              <p className={`reveal ${eyebrow}`}>{t.ventures.eyebrow}</p>
+              <h2 className={`reveal ${h2cls}`} style={{ "--d": "0.08s" } as React.CSSProperties}>{t.ventures.title}</h2>
             </div>
-          ))}
+            <p className="reveal max-w-sm text-muted" style={{ "--d": "0.14s" } as React.CSSProperties}>{t.ventures.sub}</p>
+          </div>
+          <div className="mt-14 grid gap-6 md:grid-cols-2">
+            {VENTURES.map((v, i) => (
+              <div key={v.key} className="reveal" style={{ "--d": `${0.08 * i}s` } as React.CSSProperties}>
+                <VentureCard v={v} lang={lang} t={{ visit: t.ventures.visit }} />
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
-      {/* ===================== WORK ===================== */}
-      <section id="work" className="border-t border-border py-24">
-        <div className="mx-auto max-w-6xl px-5">
-          <p className={`reveal ${eyebrow}`}>{t.work.eyebrow}</p>
-          <h2 className={`reveal ${h2cls}`} style={{ "--d": "0.08s" } as React.CSSProperties}>{t.work.title}</h2>
-          <p className={`reveal ${subcls}`} style={{ "--d": "0.16s" } as React.CSSProperties}>{t.work.sub}</p>
+      {/* ===================== BUILT WITH PARTNERS (proof) ===================== */}
+      <section className="border-t border-border">
+        <div className="mx-auto max-w-[1180px] px-5 pt-20 sm:px-8 sm:pt-28">
+          <p className={`reveal ${eyebrow}`}>{t.builds.eyebrow}</p>
+          <h2 className={`reveal ${h2cls} max-w-3xl`} style={{ "--d": "0.08s" } as React.CSSProperties}>{t.builds.title}</h2>
+          <p className="reveal mt-5 max-w-xl text-muted" style={{ "--d": "0.14s" } as React.CSSProperties}>{t.builds.sub}</p>
         </div>
-
-        <div className="reveal mt-12">
-          <ScreenStrip />
-        </div>
-
-        <div className="mx-auto mt-16 max-w-6xl px-5">
-          <div className="space-y-20 lg:space-y-24">
-            {t.work.items.map((p, i) => (
-              <div key={p.key} className={`grid items-center gap-10 lg:grid-cols-2 lg:gap-14 ${i % 2 === 1 ? "lg:[&>*:first-child]:order-2" : ""}`}>
-                <div className="reveal" style={{ "--d": "0.05s" } as React.CSSProperties}>
-                  <Showcase item={p} />
+        <div className="reveal mt-14 pb-20 sm:pb-28">
+          <div className="marquee-mask overflow-hidden">
+            <div className="marquee-track flex w-max gap-6 px-3">
+              {[0, 1].map((g) => (
+                <div key={g} className="flex gap-6">
+                  {BUILDS.map((b, i) => <BuildShot key={g + b.img + i} src={b.img} name={b.name} />)}
                 </div>
-                <div className="reveal" style={{ "--d": "0.12s" } as React.CSSProperties}>
-                  <div className="flex flex-wrap items-center gap-3">
-                    <span className="text-2xl font-semibold tracking-tight">{p.name}</span>
-                    <span className="rounded-full border border-accent/25 bg-accent/10 px-2.5 py-0.5 font-mono text-[11px] text-accent">{p.sector}</span>
-                  </div>
-                  <p className="mt-1.5 font-mono text-sm text-accent/80">{p.tagline}</p>
-                  <p className="mt-4 leading-relaxed text-muted">{p.desc}</p>
-                  <p className="mt-5 font-mono text-[12px] uppercase tracking-wider text-muted/80">{p.role}</p>
-                  <div className="mt-3 flex flex-wrap gap-2">
-                    {p.stack.map((s) => (
-                      <span key={s} className="rounded-md border border-border bg-card px-2.5 py-1 font-mono text-[11.5px] text-muted">{s}</span>
-                    ))}
-                  </div>
-                  {p.url ? (
-                    <a href={p.url} target="_blank" rel="noopener" className="btn-min mt-6 inline-flex items-center gap-1.5 rounded-lg border border-border px-4 py-2 text-sm font-medium text-foreground hover:border-accent/50 hover:text-accent">
-                      {t.work.cta} {p.host} »
-                    </a>
-                  ) : (
-                    <span className="mt-6 inline-flex items-center gap-1.5 rounded-lg border border-border px-4 py-2 text-sm font-medium text-muted">
-                      {p.host} · {t.work.soon}
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ===================== PARTNER / BUILD WITH US ===================== */}
+      <section id="partner" className="border-t border-border">
+        <div className="mx-auto max-w-[1180px] px-5 py-20 sm:px-8 sm:py-28">
+          <p className={`reveal ${eyebrow}`}>{t.partner.eyebrow}</p>
+          <h2 className={`reveal ${h2cls} max-w-3xl`} style={{ "--d": "0.08s" } as React.CSSProperties}>{t.partner.title}</h2>
+          <p className="reveal mt-5 max-w-xl text-lg leading-relaxed text-muted" style={{ "--d": "0.14s" } as React.CSSProperties}>{t.partner.sub}</p>
+
+          <div className="mt-14 grid gap-px overflow-hidden rounded-2xl border border-border bg-border sm:grid-cols-2 lg:grid-cols-4">
+            {t.partner.items.map((it, i) => (
+              <div key={it.k} className="reveal flex flex-col gap-3 bg-card p-7" style={{ "--d": `${0.05 * i}s` } as React.CSSProperties}>
+                <span className="font-mono text-[11px] uppercase tracking-[0.16em] text-muted">0{i + 1}</span>
+                <h3 className="display text-xl">{it.k}</h3>
+                <p className="text-[14px] leading-relaxed text-muted">{it.d}</p>
+              </div>
+            ))}
+          </div>
+
+          <p className="reveal mt-10 max-w-2xl text-lg leading-relaxed text-foreground/80" style={{ "--d": "0.1s" } as React.CSSProperties}>{t.partner.note}</p>
+          <div className="reveal mt-8" style={{ "--d": "0.16s" } as React.CSSProperties}>
+            <a href={CAL} target="_blank" rel="noopener" className={btnInk}>{t.nav.cta} <Arrow /></a>
+          </div>
+        </div>
+      </section>
+
+      {/* ===================== HOW WE BUILD ===================== */}
+      <section className="border-t border-border">
+        <div className="mx-auto max-w-[1180px] px-5 py-20 sm:px-8 sm:py-28">
+          <p className={`reveal ${eyebrow}`}>{t.how.eyebrow}</p>
+          <h2 className={`reveal ${h2cls}`} style={{ "--d": "0.08s" } as React.CSSProperties}>{t.how.title}</h2>
+          <div className="mt-14 grid gap-px overflow-hidden rounded-2xl border border-border bg-border sm:grid-cols-2 lg:grid-cols-5">
+            {t.how.steps.map(([k, d], i) => (
+              <div key={k} className="reveal flex flex-col gap-3 bg-card p-6" style={{ "--d": `${0.05 * i}s` } as React.CSSProperties}>
+                <span className="font-mono text-xs text-accent">0{i + 1}</span>
+                <h3 className="display text-xl">{k}</h3>
+                <p className="text-[13.5px] leading-relaxed text-muted">{d}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ===================== BUILT DIFFERENTLY (AI) ===================== */}
+      <section className="border-t border-border">
+        <div className="mx-auto grid max-w-[1180px] gap-10 px-5 py-20 sm:px-8 sm:py-28 lg:grid-cols-[0.9fr_1.1fr]">
+          <div>
+            <p className={`reveal ${eyebrow}`}>{t.ai.eyebrow}</p>
+            <h2 className={`reveal ${h2cls}`} style={{ "--d": "0.08s" } as React.CSSProperties}>{t.ai.title}</h2>
+          </div>
+          <p className="reveal self-end text-xl leading-relaxed text-foreground/80" style={{ "--d": "0.14s" } as React.CSSProperties}>{t.ai.body}</p>
+        </div>
+      </section>
+
+      {/* ===================== FLYWHEEL ===================== */}
+      <section className="border-t border-border">
+        <div className="mx-auto max-w-[1180px] px-5 py-20 sm:px-8 sm:py-28">
+          <p className={`reveal ${eyebrow}`}>{t.flywheel.eyebrow}</p>
+          <h2 className={`reveal ${h2cls} max-w-2xl`} style={{ "--d": "0.08s" } as React.CSSProperties}>{t.flywheel.title}</h2>
+          <p className="reveal mt-5 max-w-xl text-muted" style={{ "--d": "0.14s" } as React.CSSProperties}>{t.flywheel.sub}</p>
+
+          <div className="reveal mt-14 grid items-center gap-8 lg:grid-cols-[1fr_auto_1fr]" style={{ "--d": "0.1s" } as React.CSSProperties}>
+            {/* Loop A */}
+            <div className="rounded-2xl border border-border bg-card p-7">
+              <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-muted">Own products</p>
+              <div className="mt-5 flex flex-wrap items-center gap-x-2 gap-y-3">
+                {t.flywheel.loopA.map((s, i) => (
+                  <span key={s} className="inline-flex items-center gap-2">
+                    <span className="display text-lg text-foreground">{s}</span>
+                    {i < t.flywheel.loopA.length - 1 && <span className="text-muted">→</span>}
+                  </span>
+                ))}
+              </div>
+              <div className="mt-6 border-t border-border pt-5">
+                <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-muted">Partnerships</p>
+                <div className="mt-4 flex flex-wrap items-center gap-x-2 gap-y-3">
+                  {t.flywheel.loopB.map((s, i) => (
+                    <span key={s} className="inline-flex items-center gap-2">
+                      <span className="display text-lg text-foreground">{s}</span>
+                      {i < t.flywheel.loopB.length - 1 && <span className="text-muted">→</span>}
                     </span>
-                  )}
+                  ))}
                 </div>
               </div>
-            ))}
-          </div>
-        </div>
-      </section>
+            </div>
 
-      {/* ===================== PRODUCT & DESIGN ===================== */}
-      <section id="design" className="border-t border-border py-24">
-        <div className="mx-auto max-w-6xl px-5">
-          <p className={`reveal ${eyebrow}`}>{t.designwork.eyebrow}</p>
-          <h2 className={`reveal ${h2cls}`} style={{ "--d": "0.08s" } as React.CSSProperties}>{t.designwork.title}</h2>
-          <p className={`reveal ${subcls}`} style={{ "--d": "0.16s" } as React.CSSProperties}>{t.designwork.sub}</p>
-          <div className="mt-12 grid gap-10 md:grid-cols-2">
-            {t.designwork.items.map((it, i) => (
-              <div key={it.key} className="reveal" style={{ "--d": `${0.06 * i}s` } as React.CSSProperties}>
-                <Showcase item={{ name: it.name, screens: [{ src: it.src, label: "", path: it.host }] }} />
-                <div className="mt-5 flex flex-wrap items-center gap-3">
-                  <span className="text-xl font-semibold tracking-tight">{it.name}</span>
-                  <span className="rounded-full border border-accent/25 bg-accent/10 px-2.5 py-0.5 font-mono text-[11px] text-accent">{it.sector}</span>
-                </div>
-                <p className="mt-1.5 font-mono text-sm text-accent/80">{it.tagline}</p>
-                <p className="mt-3 leading-relaxed text-muted">{it.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+            {/* Converge */}
+            <div className="hidden text-muted lg:block" aria-hidden>→</div>
 
-      {/* ===================== MOBILE ===================== */}
-      <section id="mobile" className="border-t border-border py-24">
-        <div className="mx-auto grid max-w-6xl items-center gap-12 px-5 lg:grid-cols-2">
-          <div>
-            <p className={`reveal ${eyebrow}`}>{t.mobile.eyebrow}</p>
-            <h2 className={`reveal ${h2cls}`} style={{ "--d": "0.08s" } as React.CSSProperties}>{t.mobile.title}</h2>
-            <p className={`reveal ${subcls}`} style={{ "--d": "0.16s" } as React.CSSProperties}>{t.mobile.sub}</p>
-            <div className="reveal mt-6 flex flex-wrap gap-2" style={{ "--d": "0.22s" } as React.CSSProperties}>
-              {t.mobile.stack.map((s) => (
-                <span key={s} className="rounded-md border border-border bg-card px-2.5 py-1 font-mono text-[11.5px] text-muted">{s}</span>
-              ))}
+            {/* Center */}
+            <div className="flex items-center justify-center rounded-2xl border border-foreground/20 bg-foreground p-10 text-background">
+              <span className="display text-4xl sm:text-5xl">{t.flywheel.center}</span>
             </div>
           </div>
-          <div className="reveal" style={{ "--d": "0.1s" } as React.CSSProperties}>
-            <Tilt>
-              <PhoneFrame src="mobile-store.png" label={t.mobile.caption} />
-            </Tilt>
-          </div>
         </div>
       </section>
 
-      {/* ===================== HOW WE BUILD / STACK ===================== */}
-      <section id="stack" className="mx-auto max-w-6xl border-t border-border px-5 py-24">
-        <p className={`reveal ${eyebrow}`}>{t.stack.eyebrow}</p>
-        <h2 className={`reveal ${h2cls}`} style={{ "--d": "0.08s" } as React.CSSProperties}>{t.stack.title}</h2>
-        <p className={`reveal ${subcls}`} style={{ "--d": "0.16s" } as React.CSSProperties}>{t.stack.sub}</p>
-
-        <div className="reveal mt-10 flex flex-col gap-2" style={{ "--d": "0.2s" } as React.CSSProperties}>
-          <div className="flex flex-wrap gap-1.5">
-            {t.stack.loop.map((step, i) => (
-              <div
-                key={step}
-                className={`${i === 0 ? "chev-first" : "chev"} flex h-14 min-w-[9rem] flex-1 items-center justify-center text-lg font-medium transition-transform duration-300 hover:-translate-y-1`}
-                style={{
-                  background: i === 3 ? "rgb(var(--accent))" : `rgb(var(--accent) / ${0.12 + i * 0.14})`,
-                  color: i === 3 ? "rgb(var(--accent-contrast))" : "rgb(var(--fg))",
-                }}
-              >
-                {step}
-              </div>
-            ))}
-          </div>
-          <p className="font-mono text-[11.5px] text-muted">{t.stack.loopNote}</p>
-        </div>
-
-        <div className="mt-10 grid items-start gap-5 sm:grid-cols-2">
-          {t.stack.layers.map((title, i) => (
-            <div key={title} className="reveal lift rounded-xl border border-border bg-card p-6" style={{ "--d": `${0.05 * i}s` } as React.CSSProperties}>
-              <div className="flex items-center gap-2">
-                <span className="font-mono text-[11px] text-accent">0{i + 1}</span>
-                <h3 className="text-[15px] font-semibold tracking-tight">{title}</h3>
-              </div>
-              <div className="mt-4 flex flex-wrap gap-1.5">
-                {STACK_ITEMS[i].map((it) => (
-                  <span key={it} className="rounded-md border border-border bg-background/50 px-2 py-1 font-mono text-[11px] text-muted">
-                    {it}
-                  </span>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
-        <p className="reveal mt-8 max-w-2xl text-sm text-muted" style={{ "--d": "0.1s" } as React.CSSProperties}>{t.stack.foot}</p>
-      </section>
-
-      {/* ===================== WHY LATAM ===================== */}
-      <section id="why" className="border-t border-border py-24">
-        <div className="mx-auto grid max-w-6xl items-start gap-12 px-5 lg:grid-cols-[0.85fr_1.15fr]">
-          <div className="lg:sticky lg:top-24">
-            <p className={`reveal ${eyebrow}`}>{t.why.eyebrow}</p>
-            <h2 className={`reveal ${h2cls}`} style={{ "--d": "0.08s" } as React.CSSProperties}>{t.why.title}</h2>
-            <p className="reveal mt-4 leading-relaxed text-muted" style={{ "--d": "0.16s" } as React.CSSProperties}>{t.why.sub}</p>
-          </div>
-          <div className="grid gap-5 sm:grid-cols-2">
+      {/* ===================== WHY FACILIA ===================== */}
+      <section className="border-t border-border">
+        <div className="mx-auto max-w-[1180px] px-5 py-20 sm:px-8 sm:py-28">
+          <p className={`reveal ${eyebrow}`}>{t.why.eyebrow}</p>
+          <h2 className={`reveal ${h2cls}`} style={{ "--d": "0.08s" } as React.CSSProperties}>{t.why.title}</h2>
+          <div className="mt-14 grid gap-x-12 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
             {t.why.points.map(([ti, d], i) => (
-              <div key={ti} className="reveal lift rounded-xl border border-border bg-card p-6" style={{ "--d": `${0.06 * i}s` } as React.CSSProperties}>
-                <span className="flex h-9 w-9 items-center justify-center rounded-lg border border-accent/20 bg-accent/10 font-medium text-accent">0{i + 1}</span>
-                <h3 className="mt-4 text-base font-semibold tracking-tight">{ti}</h3>
-                <p className="mt-2 text-[13.5px] leading-relaxed text-muted">{d}</p>
+              <div key={ti} className="reveal border-t border-border pt-5" style={{ "--d": `${0.05 * i}s` } as React.CSSProperties}>
+                <h3 className="text-lg font-medium tracking-tight">{ti}</h3>
+                <p className="mt-2 leading-relaxed text-muted">{d}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ===================== ENGAGEMENT MODELS ===================== */}
-      <section className="mx-auto max-w-6xl border-t border-border px-5 py-24">
-        <p className={`reveal ${eyebrow}`}>{t.models.eyebrow}</p>
-        <h2 className={`reveal ${h2cls}`} style={{ "--d": "0.08s" } as React.CSSProperties}>{t.models.title}</h2>
-        <p className="reveal mt-3 max-w-xl text-muted" style={{ "--d": "0.16s" } as React.CSSProperties}>{t.models.sub}</p>
-
-        <div className="mt-12 grid gap-6 lg:grid-cols-3">
-          {t.models.items.map((m, i) => (
-            <div
-              key={m.name}
-              className={`reveal lift relative flex flex-col rounded-xl border p-7 ${m.featured ? "border-accent/40 bg-accent/[0.04]" : "border-border bg-card"}`}
-              style={{ "--d": `${0.08 * i}s` } as React.CSSProperties}
-            >
-              <p className="font-mono text-[11px] uppercase tracking-wider text-accent">{m.tag}</p>
-              <h3 className="mt-2 text-xl font-semibold tracking-tight">{m.name}</h3>
-              <p className="mt-4 flex-1 text-[14px] leading-relaxed text-muted">{m.desc}</p>
-              <a href={CAL} target="_blank" rel="noopener" className={`${btnPrimary} mt-7 text-center`}>
-                {t.models.cta}
-              </a>
-            </div>
-          ))}
+      {/* ===================== ABOUT ===================== */}
+      <section id="about" className="border-t border-border">
+        <div className="mx-auto max-w-[1180px] px-5 py-20 sm:px-8 sm:py-28">
+          <p className={`reveal ${eyebrow}`}>{t.about.eyebrow}</p>
+          <p className="reveal display mt-6 max-w-4xl text-2xl leading-[1.4] sm:text-[2rem]" style={{ "--d": "0.08s" } as React.CSSProperties}>
+            {t.about.body}
+          </p>
         </div>
       </section>
 
       {/* ===================== FINAL CTA ===================== */}
-      <section className="relative overflow-hidden border-t border-border">
-        <div className="relative mx-auto max-w-6xl px-5 py-24 text-center">
-          <div className="mx-auto flex w-fit items-center gap-2">
-            <Logo w={150} h={30} />
-            <span className="rounded-full border border-accent/25 bg-accent/10 px-2.5 py-0.5 font-mono text-[11px] font-medium text-accent">dev</span>
-          </div>
-          <h2 className="reveal mx-auto mt-6 max-w-2xl text-3xl font-medium tracking-[-0.02em] sm:text-4xl">{t.final.title}</h2>
-          <p className="reveal mx-auto mt-4 max-w-xl text-muted" style={{ "--d": "0.1s" } as React.CSSProperties}>{t.final.sub}</p>
-          <div className="reveal mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row" style={{ "--d": "0.2s" } as React.CSSProperties}>
-            <a href={CAL} target="_blank" rel="noopener" className="btn-min inline-flex w-full items-center justify-center rounded-lg bg-foreground px-8 py-3.5 font-medium text-background hover:opacity-90 sm:w-auto">
-              {t.final.btn} »
-            </a>
-            <a href={`mailto:${MAIL}`} className="btn-min inline-flex w-full items-center justify-center gap-2 rounded-lg border border-border px-8 py-3.5 font-medium text-foreground hover:border-accent/50 hover:text-accent sm:w-auto">
-              <MailIcon /> {MAIL}
-            </a>
+      <section className="border-t border-border">
+        <div className="mx-auto max-w-[1180px] px-5 py-24 text-center sm:px-8 sm:py-36">
+          <h2 className="reveal display mx-auto max-w-3xl text-4xl leading-[1.05] sm:text-6xl">{t.final.title}</h2>
+          <div className="reveal mt-10 flex flex-wrap items-center justify-center gap-3" style={{ "--d": "0.1s" } as React.CSSProperties}>
+            <a href={CAL} target="_blank" rel="noopener" className={btnInk}>{t.final.cta} <Arrow /></a>
+            <a href="#ventures" className={btnGhost}>{t.final.cta2}</a>
           </div>
         </div>
       </section>
 
       {/* ===================== FOOTER ===================== */}
       <footer className="border-t border-border">
-        <div className="mx-auto max-w-6xl px-5 py-14">
-          <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-[1.6fr_1fr_1fr]">
-            {/* brand */}
-            <div>
-              <div className="flex items-center gap-2">
-                <Logo />
-                <span className="rounded-full border border-accent/25 bg-accent/10 px-2.5 py-0.5 font-mono text-[11px] font-medium text-accent">dev</span>
-              </div>
-              <p className="mt-4 max-w-xs text-sm leading-relaxed text-muted">{t.footer.tagline}</p>
-              <a href={CAL} target="_blank" rel="noopener" className="btn-min mt-5 inline-flex rounded-lg bg-foreground px-4 py-2 text-sm font-medium text-background hover:opacity-90">
-                {t.nav.cta}
-              </a>
-            </div>
-
-            {/* explore */}
-            <nav>
-              <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-muted">{t.footer.explore}</p>
-              <ul className="mt-4 space-y-2.5 text-sm">
-                <li><a href="#work" className="text-muted transition hover:text-foreground">{t.nav.work}</a></li>
-                <li><a href="#expertise" className="text-muted transition hover:text-foreground">{t.nav.expertise}</a></li>
-                <li><a href="#stack" className="text-muted transition hover:text-foreground">{t.nav.stack}</a></li>
-                <li><a href="#why" className="text-muted transition hover:text-foreground">{t.nav.why}</a></li>
-              </ul>
-            </nav>
-
-            {/* product + contact */}
-            <div>
-              <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-muted">{t.footer.product}</p>
-              <ul className="mt-4 space-y-2.5 text-sm">
-                <li><a href="https://facilia.app" target="_blank" rel="noopener" className="text-muted transition hover:text-foreground">facilia.app</a></li>
-              </ul>
-              <p className="mt-6 font-mono text-[11px] uppercase tracking-[0.2em] text-muted">{t.footer.contact}</p>
-              <ul className="mt-4 space-y-2.5 text-sm">
-                <li><a href={`mailto:${MAIL}`} className="text-muted transition hover:text-foreground">{MAIL}</a></li>
-                <li><a href={CAL} target="_blank" rel="noopener" className="text-muted transition hover:text-foreground">{t.nav.cta}</a></li>
-              </ul>
-            </div>
+        <div className="mx-auto flex max-w-[1180px] flex-col gap-6 px-5 py-10 text-sm text-muted sm:flex-row sm:items-center sm:justify-between sm:px-8">
+          <div className="flex items-center gap-4">
+            <Logo />
           </div>
-
-          <div className="mt-12 flex flex-col gap-4 border-t border-border pt-6 text-sm text-muted sm:flex-row sm:items-center sm:justify-between">
-            <p>{t.footer.line}</p>
-            <ThemeToggle labels={t.theme} />
+          <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
+            <a href="https://facilia.app" target="_blank" rel="noopener" className="transition hover:text-foreground">facilia.app</a>
+            <a href="https://decua.co" target="_blank" rel="noopener" className="transition hover:text-foreground">decua.co</a>
+            <a href={`mailto:${MAIL}`} className="transition hover:text-foreground">{MAIL}</a>
+            <ThemeToggle labels={t.footer.theme} />
           </div>
         </div>
+        <div className="mx-auto max-w-[1180px] px-5 pb-8 text-xs text-muted sm:px-8">{t.footer.line}</div>
       </footer>
     </main>
   );

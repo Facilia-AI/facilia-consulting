@@ -15,11 +15,9 @@ const config: Config = {
         "accent-contrast": "rgb(var(--accent-contrast) / <alpha-value>)",
       },
       fontFamily: {
+        serif: ["Zodiak", "ui-serif", "Georgia", "Cambria", "serif"],
         sans: ["General Sans", "ui-sans-serif", "system-ui", "-apple-system", "Segoe UI", "sans-serif"],
         mono: ["ui-monospace", "SFMono-Regular", "Menlo", "Consolas", "monospace"],
-      },
-      borderRadius: {
-        DEFAULT: "0.5rem",
       },
     },
   },

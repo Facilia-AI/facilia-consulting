@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og";
 
 export const runtime = "edge";
-export const alt = "Facilia Dev — AI-native software studio, built in Latin America";
+export const alt = "Facilia — We build products. Some become companies.";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -60,19 +60,19 @@ export default function OpengraphImage() {
 
         {/* headline */}
         <div style={{ display: "flex", flexDirection: "column" }}>
-          <span style={{ fontSize: 78, fontWeight: 600, color: "#fafafa", lineHeight: 1.04, letterSpacing: -2 }}>
-            World-class software,
+          <span style={{ fontSize: 76, fontWeight: 600, color: "#fafafa", lineHeight: 1.06, letterSpacing: -2 }}>
+            We build products.
           </span>
-          <span style={{ fontSize: 78, fontWeight: 600, color: "#2EC98E", lineHeight: 1.04, letterSpacing: -2 }}>
-            engineered in Latam.
+          <span style={{ fontSize: 76, fontWeight: 600, color: "#9b9ba4", lineHeight: 1.06, letterSpacing: -2 }}>
+            Some become companies.
           </span>
         </div>
 
         {/* footer */}
         <div style={{ display: "flex", alignItems: "center", gap: 16, fontSize: 26, color: "#9b9ba4" }}>
-          <span style={{ display: "flex" }}>AI-native software studio</span>
+          <span style={{ display: "flex" }}>Product &amp; venture builder</span>
           <span style={{ display: "flex", color: "#3a3a40" }}>·</span>
-          <span style={{ display: "flex" }}>ConTech · PropTech · InsurTech</span>
+          <span style={{ display: "flex" }}>Built in Latin America</span>
         </div>
       </div>
     ),

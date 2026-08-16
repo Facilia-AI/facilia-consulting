@@ -7,39 +7,40 @@ const url = process.env.VERCEL_PROJECT_PRODUCTION_URL
 
 export const metadata: Metadata = {
   metadataBase: new URL(url),
-  title: "Facilia Dev — AI-native software studio, built in Latin America",
+  title: "Facilia — We build products. Some become companies.",
   description:
-    "Facilia Dev designs, builds and ships production software for ConTech, PropTech and InsurTech. Senior Latin American engineers + agentic tools like Claude Code and Codex. Makers of facilia.app, clinck.io and shelv.io.",
+    "Facilia is a product company that builds its own ventures and partners with ambitious teams to turn ideas into products, businesses and technology that scales.",
   keywords: [
-    "software development", "AI-native", "ConTech", "PropTech", "InsurTech",
-    "Latin America", "Claude Code", "Next.js", "Supabase", "nearshore engineering",
+    "product studio", "venture builder", "product development", "software development partner",
+    "fractional CTO", "AI-native product development", "startup product development", "venture building",
+    "Facilia", "Latin America",
   ],
   openGraph: {
-    title: "Facilia Dev — AI-native software studio",
+    title: "Facilia — We build products. Some become companies.",
     description:
-      "World-class software, engineered in Latam. Production apps for ConTech, PropTech and InsurTech, built AI-native with Claude Code and Codex.",
+      "A product company that builds its own ventures and partners with ambitious teams to turn ideas into products, businesses and technology that scales.",
     url,
-    siteName: "Facilia Dev",
+    siteName: "Facilia",
     locale: "en_US",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Facilia Dev — AI-native software studio",
-    description: "World-class software, engineered in Latam.",
+    title: "Facilia — We build products. Some become companies.",
+    description: "A product company that builds its own ventures and partners with ambitious teams.",
   },
 };
 
-const themeScript = `try{var t=localStorage.getItem('facilia-theme')||'dark';var d=document.documentElement;d.classList.toggle('dark',t!=='light');d.classList.toggle('light',t==='light');}catch(e){document.documentElement.classList.add('dark');}`;
+const themeScript = `try{var t=localStorage.getItem('facilia-theme')||'light';var d=document.documentElement;d.classList.toggle('dark',t==='dark');d.classList.toggle('light',t!=='dark');}catch(e){document.documentElement.classList.add('light');}`;
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className="dark" suppressHydrationWarning>
+    <html lang="en" className="light" suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
         <link rel="preconnect" href="https://api.fontshare.com" crossOrigin="anonymous" />
         <link
-          href="https://api.fontshare.com/v2/css?f[]=general-sans@300,400,500,600,700&display=swap"
+          href="https://api.fontshare.com/v2/css?f[]=zodiak@400,500,600&f[]=general-sans@400,500,600&display=swap"
           rel="stylesheet"
         />
       </head>
