@@ -40,7 +40,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
         <link rel="preconnect" href="https://api.fontshare.com" crossOrigin="anonymous" />
         <link
-          href="https://api.fontshare.com/v2/css?f[]=zodiak@400,500,600&f[]=general-sans@400,500,600&display=swap"
+          href="https://api.fontshare.com/v2/css?f[]=switzer@300,400,500,600&display=swap"
           rel="stylesheet"
         />
       </head>

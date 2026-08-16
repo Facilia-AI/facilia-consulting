@@ -15,8 +15,8 @@ const config: Config = {
         "accent-contrast": "rgb(var(--accent-contrast) / <alpha-value>)",
       },
       fontFamily: {
-        serif: ["Zodiak", "ui-serif", "Georgia", "Cambria", "serif"],
-        sans: ["General Sans", "ui-sans-serif", "system-ui", "-apple-system", "Segoe UI", "sans-serif"],
+        sans: ["Switzer", "ui-sans-serif", "system-ui", "-apple-system", "Segoe UI", "sans-serif"],
+        serif: ["Switzer", "ui-sans-serif", "system-ui", "sans-serif"],
         mono: ["ui-monospace", "SFMono-Regular", "Menlo", "Consolas", "monospace"],
       },
     },

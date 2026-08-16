@@ -515,18 +515,33 @@ export default function Page() {
         </nav>
       </header>
 
-      {/* ===================== HERO ===================== */}
-      <section id="top" className="mx-auto max-w-[1180px] px-5 pb-16 pt-16 sm:px-8 sm:pb-24 sm:pt-24">
+      {/* ===================== HERO (compact) ===================== */}
+      <section id="top" className="mx-auto max-w-[1180px] px-5 pb-10 pt-12 sm:px-8 sm:pb-12 sm:pt-16">
         <p className="rise text-sm text-muted" style={{ animationDelay: "0.05s" }}>{t.hero.kicker}</p>
-        <h1 className="rise display mt-6 text-5xl leading-[1.0] tracking-[-0.02em] sm:text-7xl lg:text-[5.4rem]" style={{ animationDelay: "0.12s" }}>
-          {t.hero.h1a}<br />
-          <span className="text-muted">{t.hero.h1b}</span>
+        <h1 className="rise display display-light mt-5 text-4xl leading-[1.04] sm:text-5xl lg:text-[4rem]" style={{ animationDelay: "0.12s" }}>
+          {t.hero.h1a} <span className="text-muted">{t.hero.h1b}</span>
         </h1>
-        <div className="mt-10 grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-end">
-          <p className="rise max-w-xl text-lg leading-relaxed text-muted" style={{ animationDelay: "0.24s" }}>{t.hero.sub}</p>
+        <div className="mt-7 grid gap-6 lg:grid-cols-[1.15fr_0.85fr] lg:items-end">
+          <p className="rise max-w-xl text-[17px] leading-relaxed text-muted" style={{ animationDelay: "0.24s" }}>{t.hero.sub}</p>
           <div className="rise flex flex-wrap items-center gap-3 lg:justify-end" style={{ animationDelay: "0.32s" }}>
             <a href={CAL} target="_blank" rel="noopener" className={btnInk}>{t.hero.cta1} <Arrow /></a>
             <a href="#ventures" className={btnGhost}>{t.hero.cta2}</a>
+          </div>
+        </div>
+      </section>
+
+      {/* ===================== VENTURES (second — right after hero) ===================== */}
+      <section id="ventures" className="border-t border-border">
+        <div className="mx-auto max-w-[1180px] px-5 pb-20 pt-12 sm:px-8 sm:pb-28 sm:pt-14">
+          <div className="flex flex-wrap items-end justify-between gap-6">
+            <div>
+              <p className={`reveal ${eyebrow}`}>{t.ventures.eyebrow}</p>
+              <h2 className={`reveal ${h2cls}`} style={{ "--d": "0.08s" } as React.CSSProperties}>{t.ventures.title}</h2>
+            </div>
+            <p className="reveal max-w-sm text-muted" style={{ "--d": "0.14s" } as React.CSSProperties}>{t.ventures.sub}</p>
+          </div>
+          <div className="reveal mt-12">
+            <VenturesCarousel lang={lang} t={{ visit: t.ventures.visit }} />
           </div>
         </div>
       </section>
@@ -546,22 +561,6 @@ export default function Page() {
                 <p className="max-w-2xl text-lg leading-relaxed text-muted">{m.d}</p>
               </div>
             ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ===================== VENTURES ===================== */}
-      <section id="ventures" className="border-t border-border">
-        <div className="mx-auto max-w-[1180px] px-5 py-20 sm:px-8 sm:py-28">
-          <div className="flex flex-wrap items-end justify-between gap-6">
-            <div>
-              <p className={`reveal ${eyebrow}`}>{t.ventures.eyebrow}</p>
-              <h2 className={`reveal ${h2cls}`} style={{ "--d": "0.08s" } as React.CSSProperties}>{t.ventures.title}</h2>
-            </div>
-            <p className="reveal max-w-sm text-muted" style={{ "--d": "0.14s" } as React.CSSProperties}>{t.ventures.sub}</p>
-          </div>
-          <div className="reveal mt-14">
-            <VenturesCarousel lang={lang} t={{ visit: t.ventures.visit }} />
           </div>
         </div>
       </section>
