@@ -363,22 +363,18 @@ function VentureShot({ src, name }: { src: string; name: string }) {
 
 function VentureCard({ v, lang, t }: { v: (typeof VENTURES)[number]; lang: Lang; t: { visit: string } }) {
   return (
-    <a href={v.href} target="_blank" rel="noopener" className="venture group relative block overflow-hidden rounded-2xl border border-border">
-      <VentureShot src={v.img} name={v.name} />
-
-      {/* status — always visible, top-right */}
-      <div className="absolute right-4 top-4 rounded-full bg-background/80 px-3 py-1.5 backdrop-blur">
+    <a href={v.href} target="_blank" rel="noopener" className="venture group flex h-full flex-col rounded-2xl border border-border bg-card p-4 sm:p-5">
+      <div className="overflow-hidden rounded-xl">
+        <VentureShot src={v.img} name={v.name} />
+      </div>
+      <div className="mt-6 flex items-start justify-between gap-4 px-1">
+        <p className="text-sm text-muted">{v.category[lang]}</p>
         <StatusDot status={v.status} lang={lang} />
       </div>
-
-      {/* info — revealed on hover (desktop), always shown on touch */}
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 flex flex-col gap-2 bg-gradient-to-t from-black/85 via-black/45 to-transparent p-6 pt-24 opacity-100 transition-opacity duration-500 md:opacity-0 md:group-hover:opacity-100">
-        <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-white/70">{v.category[lang]}</p>
-        <p className="max-w-sm text-sm leading-relaxed text-white/90">{v.blurb[lang]}</p>
-        <span className="mt-1 inline-flex items-center gap-1.5 text-sm font-medium text-white">
-          {t.visit} {v.host} <Arrow />
-        </span>
-      </div>
+      <p className="mt-3 flex-1 px-1 leading-relaxed text-muted">{v.blurb[lang]}</p>
+      <span className="mt-6 inline-flex items-center gap-1.5 px-1 pb-1 text-sm font-medium text-foreground transition group-hover:text-accent">
+        {t.visit} {v.host} <Arrow />
+      </span>
     </a>
   );
 }
@@ -399,13 +395,38 @@ function CarouselArrow({ dir, onClick }: { dir: "prev" | "next"; onClick: () => 
 
 function VenturesCarousel({ lang, t }: { lang: Lang; t: { visit: string } }) {
   const ref = useRef<HTMLDivElement>(null);
-  const scroll = (dir: 1 | -1) => {
+  const step = (dir: 1 | -1) => {
     const el = ref.current;
     if (!el) return;
     const card = el.querySelector<HTMLElement>("[data-card]");
-    const step = card ? card.offsetWidth + 24 : el.clientWidth * 0.8;
-    el.scrollBy({ left: step * dir, behavior: "smooth" });
+    const amt = card ? card.offsetWidth + 24 : el.clientWidth * 0.8;
+    if (dir === 1 && el.scrollLeft + el.clientWidth >= el.scrollWidth - 12) {
+      el.scrollTo({ left: 0, behavior: "smooth" });
+    } else {
+      el.scrollBy({ left: amt * dir, behavior: "smooth" });
+    }
   };
+
+  // Auto-advance — pauses on hover / touch, respects reduced motion.
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return;
+    let paused = false;
+    const on = () => (paused = true);
+    const off = () => (paused = false);
+    el.addEventListener("mouseenter", on);
+    el.addEventListener("mouseleave", off);
+    el.addEventListener("touchstart", on, { passive: true });
+    const id = setInterval(() => { if (!paused) step(1); }, 3800);
+    return () => {
+      clearInterval(id);
+      el.removeEventListener("mouseenter", on);
+      el.removeEventListener("mouseleave", off);
+      el.removeEventListener("touchstart", on);
+    };
+  }, []);
+
   return (
     <div>
       <div
@@ -419,8 +440,8 @@ function VenturesCarousel({ lang, t }: { lang: Lang; t: { visit: string } }) {
         ))}
       </div>
       <div className="mt-8 flex gap-2">
-        <CarouselArrow dir="prev" onClick={() => scroll(-1)} />
-        <CarouselArrow dir="next" onClick={() => scroll(1)} />
+        <CarouselArrow dir="prev" onClick={() => step(-1)} />
+        <CarouselArrow dir="next" onClick={() => step(1)} />
       </div>
     </div>
   );
