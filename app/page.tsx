@@ -34,7 +34,7 @@ const VENTURES = [
     status: "building" as Status,
     href: "https://facilia.app",
     host: "facilia.app",
-    img: "facilia-cotizador.png",
+    img: "facilia-venture.png",
     blurb: {
       en: "Software that helps construction contractors quote projects faster and operate with better control — from budgets to progress and cash.",
       es: "Software que ayuda a los contratistas de construcción a cotizar obras más rápido y operar con mejor control — del presupuesto al avance y la caja.",
@@ -51,6 +51,19 @@ const VENTURES = [
     blurb: {
       en: "Intelligent remodeling — plan, quote and remodel a home or office from a single place, with design, estimates, execution and live project tracking.",
       es: "Remodelación inteligente — planea, cotiza y remodela tu hogar u oficina desde un solo lugar, con diseño, cotización, ejecución y seguimiento en vivo.",
+    },
+  },
+  {
+    key: "shelv",
+    name: "Shelv",
+    category: { en: "Builder Community · LATAM", es: "Comunidad de builders · LATAM" },
+    status: "launching" as Status,
+    href: "https://shelv.io",
+    host: "shelv.io",
+    img: "shelv-venture.png",
+    blurb: {
+      en: "A launchpad and community where Latin American builders discover products, connect and launch what they're building.",
+      es: "Una plataforma de lanzamiento y comunidad donde los builders latinoamericanos descubren productos, se conectan y lanzan lo que están construyendo.",
     },
   },
 ];
@@ -335,13 +348,13 @@ function StatusDot({ status, lang }: { status: Status; lang: Lang }) {
 function VentureShot({ src, name }: { src: string; name: string }) {
   const { ref, ok, onError } = useImgStatus();
   return (
-    <div className="relative aspect-[16/10] w-full overflow-hidden rounded-lg bg-background">
+    <div className="relative aspect-square w-full overflow-hidden bg-card">
       {ok ? (
         // eslint-disable-next-line @next/next/no-img-element
-        <img ref={ref} src={`/projects/${src}`} alt={`${name}`} onError={onError} className="shot kenburns h-full w-full object-cover object-top" loading="lazy" />
+        <img ref={ref} src={`/projects/${src}`} alt={`${name}`} onError={onError} className="shot h-full w-full object-cover object-center" loading="lazy" />
       ) : (
         <div className="flex h-full w-full items-center justify-center bg-card">
-          <span className="display text-3xl text-foreground/70">{name}</span>
+          <span className="display text-4xl text-foreground/70">{name}</span>
         </div>
       )}
     </div>
@@ -350,22 +363,66 @@ function VentureShot({ src, name }: { src: string; name: string }) {
 
 function VentureCard({ v, lang, t }: { v: (typeof VENTURES)[number]; lang: Lang; t: { visit: string } }) {
   return (
-    <a href={v.href} target="_blank" rel="noopener" className="venture group flex flex-col rounded-2xl border border-border bg-card p-5 sm:p-6">
-      <div className="overflow-hidden rounded-lg">
-        <VentureShot src={v.img} name={v.name} />
-      </div>
-      <div className="mt-6 flex items-start justify-between gap-4">
-        <div>
-          <h3 className="display text-2xl">{v.name}</h3>
-          <p className="mt-1 text-sm text-muted">{v.category[lang]}</p>
-        </div>
+    <a href={v.href} target="_blank" rel="noopener" className="venture group relative block overflow-hidden rounded-2xl border border-border">
+      <VentureShot src={v.img} name={v.name} />
+
+      {/* status — always visible, top-right */}
+      <div className="absolute right-4 top-4 rounded-full bg-background/80 px-3 py-1.5 backdrop-blur">
         <StatusDot status={v.status} lang={lang} />
       </div>
-      <p className="mt-4 flex-1 leading-relaxed text-muted">{v.blurb[lang]}</p>
-      <span className="mt-6 inline-flex items-center gap-1.5 text-sm font-medium text-foreground">
-        {t.visit} {v.host} <Arrow />
-      </span>
+
+      {/* info — revealed on hover (desktop), always shown on touch */}
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 flex flex-col gap-2 bg-gradient-to-t from-black/85 via-black/45 to-transparent p-6 pt-24 opacity-100 transition-opacity duration-500 md:opacity-0 md:group-hover:opacity-100">
+        <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-white/70">{v.category[lang]}</p>
+        <p className="max-w-sm text-sm leading-relaxed text-white/90">{v.blurb[lang]}</p>
+        <span className="mt-1 inline-flex items-center gap-1.5 text-sm font-medium text-white">
+          {t.visit} {v.host} <Arrow />
+        </span>
+      </div>
     </a>
+  );
+}
+
+function CarouselArrow({ dir, onClick }: { dir: "prev" | "next"; onClick: () => void }) {
+  return (
+    <button
+      onClick={onClick}
+      aria-label={dir === "prev" ? "Previous" : "Next"}
+      className="btn-min flex h-11 w-11 items-center justify-center rounded-full border border-border text-foreground hover:border-foreground/60"
+    >
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden style={{ transform: dir === "prev" ? "scaleX(-1)" : "none" }}>
+        <path d="M5 12h14M13 6l6 6-6 6" />
+      </svg>
+    </button>
+  );
+}
+
+function VenturesCarousel({ lang, t }: { lang: Lang; t: { visit: string } }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const scroll = (dir: 1 | -1) => {
+    const el = ref.current;
+    if (!el) return;
+    const card = el.querySelector<HTMLElement>("[data-card]");
+    const step = card ? card.offsetWidth + 24 : el.clientWidth * 0.8;
+    el.scrollBy({ left: step * dir, behavior: "smooth" });
+  };
+  return (
+    <div>
+      <div
+        ref={ref}
+        className="flex snap-x snap-mandatory gap-6 overflow-x-auto pb-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+      >
+        {VENTURES.map((v) => (
+          <div key={v.key} data-card className="w-[86vw] max-w-[560px] shrink-0 snap-start sm:w-[520px]">
+            <VentureCard v={v} lang={lang} t={t} />
+          </div>
+        ))}
+      </div>
+      <div className="mt-8 flex gap-2">
+        <CarouselArrow dir="prev" onClick={() => scroll(-1)} />
+        <CarouselArrow dir="next" onClick={() => scroll(1)} />
+      </div>
+    </div>
   );
 }
 
@@ -482,12 +539,8 @@ export default function Page() {
             </div>
             <p className="reveal max-w-sm text-muted" style={{ "--d": "0.14s" } as React.CSSProperties}>{t.ventures.sub}</p>
           </div>
-          <div className="mt-14 grid gap-6 md:grid-cols-2">
-            {VENTURES.map((v, i) => (
-              <div key={v.key} className="reveal" style={{ "--d": `${0.08 * i}s` } as React.CSSProperties}>
-                <VentureCard v={v} lang={lang} t={{ visit: t.ventures.visit }} />
-              </div>
-            ))}
+          <div className="reveal mt-14">
+            <VenturesCarousel lang={lang} t={{ visit: t.ventures.visit }} />
           </div>
         </div>
       </section>
