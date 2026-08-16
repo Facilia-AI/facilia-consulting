@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { DottedSurface } from "@/components/ui/dotted-surface";
 
 /* ========================================================================
    Facilia — We build products. Some become companies.
@@ -140,14 +141,6 @@ const T = {
       title: "Built differently.",
       body: "AI-native tools and agents let small, senior teams move from idea to working product faster than ever. We use AI across research, product, engineering and operations — as leverage for builders, not as a replacement for judgment.",
     },
-    flywheel: {
-      eyebrow: "The model",
-      title: "Everything compounds.",
-      sub: "Our own products and our partnerships aren't separate. They feed the same engine.",
-      loopA: ["Ideas", "Build", "Products", "Users", "Businesses", "Ventures"],
-      loopB: ["Partners", "Products", "Long-term partnerships"],
-      center: "Facilia",
-    },
     why: {
       eyebrow: "Why Facilia",
       title: "We build from the inside.",
@@ -224,14 +217,6 @@ const T = {
       eyebrow: "AI-native",
       title: "Construido distinto.",
       body: "Las herramientas y agentes AI-native permiten que equipos pequeños y senior pasen de la idea a un producto funcionando más rápido que nunca. Usamos IA en research, producto, ingeniería y operaciones — como apalancamiento para builders, no como reemplazo del criterio.",
-    },
-    flywheel: {
-      eyebrow: "El modelo",
-      title: "Todo se acumula.",
-      sub: "Nuestros productos y nuestras alianzas no van por separado. Alimentan el mismo motor.",
-      loopA: ["Ideas", "Build", "Productos", "Usuarios", "Negocios", "Ventures"],
-      loopB: ["Socios", "Productos", "Alianzas a largo plazo"],
-      center: "Facilia",
     },
     why: {
       eyebrow: "Por qué Facilia",
@@ -490,7 +475,8 @@ export default function Page() {
   const t = T[lang];
 
   return (
-    <main className="bg-background">
+    <main className="relative">
+      <DottedSurface />
       {/* ===================== NAV ===================== */}
       <header className="sticky top-0 z-50 border-b border-border bg-background/80 backdrop-blur">
         <nav className="mx-auto flex max-w-[1180px] items-center justify-between gap-3 px-5 py-4 sm:px-8">
@@ -636,55 +622,6 @@ export default function Page() {
             <h2 className={`reveal ${h2cls}`} style={{ "--d": "0.08s" } as React.CSSProperties}>{t.ai.title}</h2>
           </div>
           <p className="reveal self-end text-xl leading-relaxed text-foreground/80" style={{ "--d": "0.14s" } as React.CSSProperties}>{t.ai.body}</p>
-        </div>
-      </section>
-
-      {/* ===================== FLYWHEEL ===================== */}
-      <section className="border-t border-border">
-        <div className="mx-auto max-w-[1180px] px-5 py-20 sm:px-8 sm:py-28">
-          <p className={`reveal ${eyebrow}`}>{t.flywheel.eyebrow}</p>
-          <h2 className={`reveal ${h2cls} max-w-2xl`} style={{ "--d": "0.08s" } as React.CSSProperties}>{t.flywheel.title}</h2>
-          <p className="reveal mt-5 max-w-xl text-muted" style={{ "--d": "0.14s" } as React.CSSProperties}>{t.flywheel.sub}</p>
-
-          <div className="reveal mt-14 grid items-center gap-8 lg:grid-cols-[1fr_auto_1fr]" style={{ "--d": "0.1s" } as React.CSSProperties}>
-            {/* Loop A */}
-            <div className="rounded-2xl border border-border bg-card p-7">
-              <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-muted">Own products</p>
-              <div className="mt-5 flex flex-wrap items-center gap-x-2 gap-y-3">
-                {t.flywheel.loopA.map((s, i) => (
-                  <span key={s} className="inline-flex items-center gap-2">
-                    <span className="flow-step display text-lg text-foreground" style={{ animationDelay: `${i * 0.3}s` }}>{s}</span>
-                    {i < t.flywheel.loopA.length - 1 && <span className="text-muted">→</span>}
-                  </span>
-                ))}
-              </div>
-              <div className="mt-6 border-t border-border pt-5">
-                <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-muted">Partnerships</p>
-                <div className="mt-4 flex flex-wrap items-center gap-x-2 gap-y-3">
-                  {t.flywheel.loopB.map((s, i) => (
-                    <span key={s} className="inline-flex items-center gap-2">
-                      <span className="flow-step display text-lg text-foreground" style={{ animationDelay: `${0.9 + i * 0.3}s` }}>{s}</span>
-                      {i < t.flywheel.loopB.length - 1 && <span className="text-muted">→</span>}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            {/* Converge */}
-            <div className="hidden items-center justify-center lg:flex" aria-hidden>
-              <span className="flow-arrow text-2xl text-muted">→</span>
-            </div>
-
-            {/* Center — animated chevron */}
-            <div className="center-glow relative flex flex-col items-center justify-center gap-4 rounded-2xl border border-foreground/20 bg-foreground p-10 text-background">
-              <div className="relative h-16 w-16" aria-hidden>
-                <Chevron className="absolute inset-0 h-16 w-16 text-background" />
-                <Chevron className="chev-echo absolute inset-0 h-16 w-16 text-background" />
-              </div>
-              <span className="display text-2xl">{t.flywheel.center}</span>
-            </div>
-          </div>
         </div>
       </section>
 

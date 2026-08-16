@@ -69,10 +69,10 @@ export function DottedSurface({ className, ...props }: DottedSurfaceProps) {
     geometry.setAttribute("color", new THREE.Float32BufferAttribute(colors, 3));
 
     const material = new THREE.PointsMaterial({
-      size: 7,
+      size: 6,
       vertexColors: true,
       transparent: true,
-      opacity: isDark ? 0.5 : 0.35,
+      opacity: isDark ? 0.5 : 0.2,
       sizeAttenuation: true,
     });
 
