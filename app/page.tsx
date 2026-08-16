@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 
 /* ========================================================================
@@ -278,14 +277,17 @@ function useImgStatus() {
   return { ref, ok, onError: () => setOk(false) };
 }
 
-function Logo() {
+function Chevron({ className }: { className?: string }) {
   return (
-    <span className="flex items-baseline gap-1.5">
-      <Image src="/facilia_dark.png" alt="Facilia" width={104} height={21} priority className="hidden translate-y-[3px] dark:block" />
-      <Image src="/facilia_light.png" alt="Facilia" width={104} height={21} priority className="block translate-y-[3px] dark:hidden" />
-      <span className="font-mono text-[11px] tracking-tight text-muted">.dev</span>
-    </span>
+    <svg viewBox="0 0 48 48" fill="none" className={className} aria-hidden>
+      <path d="M9 11 L24 24 L9 37" stroke="currentColor" strokeWidth="9" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M25 11 L40 24 L25 37" stroke="currentColor" strokeWidth="9" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
   );
+}
+
+function Logo({ className }: { className?: string }) {
+  return <Chevron className={className ?? "h-8 w-8 text-foreground sm:h-9 sm:w-9"} />;
 }
 
 function SunIcon() {
@@ -651,7 +653,7 @@ export default function Page() {
               <div className="mt-5 flex flex-wrap items-center gap-x-2 gap-y-3">
                 {t.flywheel.loopA.map((s, i) => (
                   <span key={s} className="inline-flex items-center gap-2">
-                    <span className="display text-lg text-foreground">{s}</span>
+                    <span className="flow-step display text-lg text-foreground" style={{ animationDelay: `${i * 0.3}s` }}>{s}</span>
                     {i < t.flywheel.loopA.length - 1 && <span className="text-muted">→</span>}
                   </span>
                 ))}
@@ -661,7 +663,7 @@ export default function Page() {
                 <div className="mt-4 flex flex-wrap items-center gap-x-2 gap-y-3">
                   {t.flywheel.loopB.map((s, i) => (
                     <span key={s} className="inline-flex items-center gap-2">
-                      <span className="display text-lg text-foreground">{s}</span>
+                      <span className="flow-step display text-lg text-foreground" style={{ animationDelay: `${0.9 + i * 0.3}s` }}>{s}</span>
                       {i < t.flywheel.loopB.length - 1 && <span className="text-muted">→</span>}
                     </span>
                   ))}
@@ -670,11 +672,17 @@ export default function Page() {
             </div>
 
             {/* Converge */}
-            <div className="hidden text-muted lg:block" aria-hidden>→</div>
+            <div className="hidden items-center justify-center lg:flex" aria-hidden>
+              <span className="flow-arrow text-2xl text-muted">→</span>
+            </div>
 
-            {/* Center */}
-            <div className="flex items-center justify-center rounded-2xl border border-foreground/20 bg-foreground p-10 text-background">
-              <span className="display text-4xl sm:text-5xl">{t.flywheel.center}</span>
+            {/* Center — animated chevron */}
+            <div className="center-glow relative flex flex-col items-center justify-center gap-4 rounded-2xl border border-foreground/20 bg-foreground p-10 text-background">
+              <div className="relative h-16 w-16" aria-hidden>
+                <Chevron className="absolute inset-0 h-16 w-16 text-background" />
+                <Chevron className="chev-echo absolute inset-0 h-16 w-16 text-background" />
+              </div>
+              <span className="display text-2xl">{t.flywheel.center}</span>
             </div>
           </div>
         </div>
