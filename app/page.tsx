@@ -88,8 +88,8 @@ const VENTURES = [
     host: "",
     img: "combo-venture.png",
     blurb: {
-      en: "An AI-powered platform for planning unforgettable group experiences.",
-      es: "Una plataforma con IA para planear experiencias grupales inolvidables.",
+      en: "An agentic platform for planning unforgettable group experiences.",
+      es: "Una plataforma agéntica para planear experiencias grupales inolvidables.",
     },
   },
 ];
