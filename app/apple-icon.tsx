@@ -18,8 +18,8 @@ export default function AppleIcon() {
         }}
       >
         <svg width="120" height="120" viewBox="0 0 48 48" fill="none">
-          <path d="M8 10 L22 24 L8 38" stroke="#4ADE80" strokeWidth="7" strokeLinecap="round" strokeLinejoin="round" />
-          <path d="M26 10 L40 24 L26 38" stroke="#10B981" strokeWidth="7" strokeLinecap="round" strokeLinejoin="round" />
+          <path d="M9 11 L24 24 L9 37" stroke="#F5F5F6" strokeWidth="9" strokeLinecap="round" strokeLinejoin="round" />
+          <path d="M25 11 L40 24 L25 37" stroke="#F5F5F6" strokeWidth="9" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
       </div>
     ),

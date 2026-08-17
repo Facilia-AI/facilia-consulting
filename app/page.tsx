@@ -460,7 +460,7 @@ function VenturesCarousel({ lang, t }: { lang: Lang; t: { visit: string; soon: s
         className="flex snap-x snap-mandatory gap-6 overflow-x-auto pb-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
       >
         {VENTURES.map((v) => (
-          <div key={v.key} data-card className="w-[86vw] max-w-[560px] shrink-0 snap-start sm:w-[520px]">
+          <div key={v.key} data-card className="w-[78vw] max-w-[380px] shrink-0 snap-start sm:w-[320px] lg:w-[360px]">
             <VentureCard v={v} lang={lang} t={t} />
           </div>
         ))}
