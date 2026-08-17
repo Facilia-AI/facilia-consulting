@@ -92,6 +92,19 @@ const VENTURES = [
       es: "Una plataforma agéntica para planear experiencias grupales inolvidables.",
     },
   },
+  {
+    key: "clinck",
+    name: "Clinck",
+    category: { en: "Advertising · Print Production", es: "Publicidad · Producción gráfica" },
+    status: "building" as Status,
+    href: "",
+    host: "",
+    img: "clinck-venture.png",
+    blurb: {
+      en: "The operating system for advertising and graphic-production companies.",
+      es: "El sistema operativo para empresas de publicidad y producción gráfica.",
+    },
+  },
 ];
 
 /* Products built with partners — proof of the build capability (real, shipped). */
