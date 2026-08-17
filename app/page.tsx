@@ -66,6 +66,32 @@ const VENTURES = [
       es: "Una plataforma de lanzamiento y comunidad donde los builders latinoamericanos descubren productos, se conectan y lanzan lo que están construyendo.",
     },
   },
+  {
+    key: "monitor",
+    name: "Monitor",
+    category: { en: "Industrial · Predictive Maintenance", es: "Industrial · Mantenimiento predictivo" },
+    status: "building" as Status,
+    href: "",
+    host: "",
+    img: "monitor-venture.png",
+    blurb: {
+      en: "AI-powered predictive maintenance systems that help industrial companies prevent failures, reduce downtime and extend asset life.",
+      es: "Sistemas de mantenimiento predictivo con IA que ayudan a las empresas industriales a prevenir fallas, reducir el downtime y extender la vida de sus activos.",
+    },
+  },
+  {
+    key: "combo",
+    name: "Combo",
+    category: { en: "Experiences · AI Planning", es: "Experiencias · Planeación con IA" },
+    status: "building" as Status,
+    href: "",
+    host: "",
+    img: "combo-venture.png",
+    blurb: {
+      en: "An AI-powered platform for planning unforgettable group experiences.",
+      es: "Una plataforma con IA para planear experiencias grupales inolvidables.",
+    },
+  },
 ];
 
 /* Products built with partners — proof of the build capability (real, shipped). */
@@ -107,6 +133,7 @@ const T = {
       title: "Things we're building.",
       sub: "Products of our own — some operating, some just getting started.",
       visit: "Visit",
+      soon: "Coming soon",
     },
     builds: {
       eyebrow: "Built with partners",
@@ -184,6 +211,7 @@ const T = {
       title: "Lo que estamos construyendo.",
       sub: "Productos propios — algunos operando, otros apenas comenzando.",
       visit: "Visitar",
+      soon: "Pronto",
     },
     builds: {
       eyebrow: "Construido con socios",
@@ -348,9 +376,10 @@ function VentureShot({ src, name }: { src: string; name: string }) {
   );
 }
 
-function VentureCard({ v, lang, t }: { v: (typeof VENTURES)[number]; lang: Lang; t: { visit: string } }) {
-  return (
-    <a href={v.href} target="_blank" rel="noopener" className="venture group flex h-full flex-col rounded-2xl border border-border bg-card p-4 sm:p-5">
+function VentureCard({ v, lang, t }: { v: (typeof VENTURES)[number]; lang: Lang; t: { visit: string; soon: string } }) {
+  const linked = v.href.length > 0;
+  const inner = (
+    <>
       <div className="overflow-hidden rounded-xl">
         <VentureShot src={v.img} name={v.name} />
       </div>
@@ -359,10 +388,20 @@ function VentureCard({ v, lang, t }: { v: (typeof VENTURES)[number]; lang: Lang;
         <StatusDot status={v.status} lang={lang} />
       </div>
       <p className="mt-3 flex-1 px-1 leading-relaxed text-muted">{v.blurb[lang]}</p>
-      <span className="mt-6 inline-flex items-center gap-1.5 px-1 pb-1 text-sm font-medium text-foreground transition group-hover:text-accent">
-        {t.visit} {v.host} <Arrow />
-      </span>
-    </a>
+      {linked ? (
+        <span className="mt-6 inline-flex items-center gap-1.5 px-1 pb-1 text-sm font-medium text-foreground transition group-hover:text-accent">
+          {t.visit} {v.host} <Arrow />
+        </span>
+      ) : (
+        <span className="mt-6 px-1 pb-1 font-mono text-[11px] uppercase tracking-[0.14em] text-muted">{t.soon}</span>
+      )}
+    </>
+  );
+  const cls = "venture group flex h-full flex-col rounded-2xl border border-border bg-card p-4 sm:p-5";
+  return linked ? (
+    <a href={v.href} target="_blank" rel="noopener" className={cls}>{inner}</a>
+  ) : (
+    <div className={cls}>{inner}</div>
   );
 }
 
@@ -380,7 +419,7 @@ function CarouselArrow({ dir, onClick }: { dir: "prev" | "next"; onClick: () => 
   );
 }
 
-function VenturesCarousel({ lang, t }: { lang: Lang; t: { visit: string } }) {
+function VenturesCarousel({ lang, t }: { lang: Lang; t: { visit: string; soon: string } }) {
   const ref = useRef<HTMLDivElement>(null);
   const step = (dir: 1 | -1) => {
     const el = ref.current;
@@ -529,7 +568,7 @@ export default function Page() {
             <p className="reveal max-w-sm text-muted" style={{ "--d": "0.14s" } as React.CSSProperties}>{t.ventures.sub}</p>
           </div>
           <div className="reveal mt-12">
-            <VenturesCarousel lang={lang} t={{ visit: t.ventures.visit }} />
+            <VenturesCarousel lang={lang} t={{ visit: t.ventures.visit, soon: t.ventures.soon }} />
           </div>
         </div>
       </section>
