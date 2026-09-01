@@ -316,17 +316,17 @@ function useImgStatus() {
   return { ref, ok, onError: () => setOk(false) };
 }
 
-function Chevron({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 48 48" fill="none" className={className} aria-hidden>
-      <path d="M9 11 L24 24 L9 37" stroke="currentColor" strokeWidth="9" strokeLinecap="round" strokeLinejoin="round" />
-      <path d="M25 11 L40 24 L25 37" stroke="currentColor" strokeWidth="9" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  );
-}
-
 function Logo({ className }: { className?: string }) {
-  return <Chevron className={className ?? "h-8 w-8 text-foreground sm:h-9 sm:w-9"} />;
+  // Brand mark (black on transparent): inverted to white on the dark theme.
+  return (
+    <img
+      src="/facilia_dark.png"
+      alt="Facilia"
+      width={313}
+      height={313}
+      className={`${className ?? "h-8 w-8 sm:h-9 sm:w-9"} object-contain dark:invert`}
+    />
+  );
 }
 
 function SunIcon() {
