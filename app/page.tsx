@@ -122,14 +122,10 @@ const VENTURES = [
 
 /* Products built with partners — proof of the build capability (real, shipped). */
 const BUILDS = [
-  { img: "clinck.png", name: "Clinck" },
-  { img: "shelv.png", name: "Shelv" },
-  { img: "goquipo.png", name: "GoQuipo" },
-  { img: "sentimetrik.png", name: "Sentimetrik" },
-  { img: "clix.png", name: "CLIX" },
-  { img: "loncho.png", name: "Loncho" },
-  { img: "lama.png", name: "Lama" },
-  { img: "clinck-gastro.png", name: "Clinck · Gastro" },
+  { img: "brizzo.png", name: "Brizzo" },
+  { img: "lumon.png", name: "Lumen" },
+  { img: "mantix.png", name: "Mantix" },
+  { img: "pixel_dev.png", name: "Pixel Dev" },
 ];
 
 /* ================= i18n ================= */
@@ -240,7 +236,7 @@ const T = {
       soon: "Pronto",
     },
     builds: {
-      eyebrow: "Construido con socios",
+      eyebrow: "Construido con partners",
       title: "Y cosas que hemos construido con otros.",
       sub: "Productos que hemos diseñado y lanzado junto a founders y equipos.",
     },
