@@ -114,8 +114,8 @@ const VENTURES = [
     host: "",
     img: "muevo-venture.png",
     blurb: {
-      en: "A vertical platform for Colombia's electric mobility market — an EV marketplace built on intelligence around the vehicle: valuation, residual value, battery health and cost of ownership, so buying used stops feeling like a bet.",
-      es: "Una plataforma vertical para el mercado de movilidad eléctrica en Colombia — un marketplace de vehículos eléctricos con inteligencia alrededor del vehículo: valoración, valor residual, estado de batería y costo de propiedad, para que comprar un usado deje de sentirse como una apuesta.",
+      en: "A vertical platform for Colombia's electric mobility market — an EV marketplace built on intelligence around the vehicle: valuation, residual value, battery health and cost of ownership, so buying a used EV stops feeling like a bet.",
+      es: "Una plataforma vertical para el mercado de movilidad eléctrica en Colombia — un marketplace de vehículos eléctricos con inteligencia alrededor del vehículo: valoración, valor residual, estado de batería y costo de propiedad, para que comprar un eléctrico usado deje de sentirse como una apuesta.",
     },
   },
 ];
