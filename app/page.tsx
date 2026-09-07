@@ -185,10 +185,20 @@ const T = {
         ["Scale", "Double down on what works."],
       ],
     },
-    ai: {
-      eyebrow: "AI-native",
-      title: "Built differently.",
-      body: "AI-native tools and agents let small, senior teams move from idea to working product faster than ever. We use AI across research, product, engineering and operations — as leverage for builders, not as a replacement for judgment.",
+    system: {
+      eyebrow: "The build system",
+      title: "Humans and specialized agents, on the same team.",
+      body: "We're building the system that builds software. Senior people set direction and hold the standard. Specialized agents — one per job, not one generalist trying to do everything — do the work at scale. Every project runs on specs, evals and telemetry, and you see all of it.",
+      humansLabel: "Humans own",
+      humans: "Direction, architecture, trade-offs and judgment — and the bar the work has to clear.",
+      agentsLabel: "Agents own",
+      agents: "Scale and repetition: research, first drafts, implementation, tests, review passes and documentation.",
+      pillars: [
+        ["Specs", "Work starts written. We resolve ambiguity before anyone writes code."],
+        ["Evals", "Output is measured against defined criteria before it ships. If it doesn't pass, it doesn't ship."],
+        ["Telemetry", "The work is instrumented: what was built, what changed, how long it took. Measurable, not anecdotal."],
+        ["Access", "You follow the process the whole way — not just the deliverable at the end."],
+      ],
     },
     why: {
       eyebrow: "Why Facilia",
@@ -263,10 +273,20 @@ const T = {
         ["Scale", "Redoblar en lo que funciona."],
       ],
     },
-    ai: {
-      eyebrow: "AI-native",
-      title: "Construido distinto.",
-      body: "Las herramientas y agentes AI-native permiten que equipos pequeños y senior pasen de la idea a un producto funcionando más rápido que nunca. Usamos IA en research, producto, ingeniería y operaciones — como apalancamiento para builders, no como reemplazo del criterio.",
+    system: {
+      eyebrow: "El sistema de construcción",
+      title: "Humanos y agentes especializados, en el mismo equipo.",
+      body: "Estamos construyendo el sistema que construye software. La gente senior marca la dirección y sostiene el estándar. Los agentes especializados — uno por tarea, no un generalista tratando de hacerlo todo — hacen el trabajo a escala. Cada proyecto corre sobre specs, evals y telemetría, y tú lo ves todo.",
+      humansLabel: "Los humanos",
+      humans: "Dirección, arquitectura, trade-offs y criterio — y el estándar que el trabajo tiene que cumplir.",
+      agentsLabel: "Los agentes",
+      agents: "Escala y repetición: research, primeros borradores, implementación, pruebas, revisiones y documentación.",
+      pillars: [
+        ["Specs", "El trabajo empieza escrito. Resolvemos la ambigüedad antes de que alguien escriba código."],
+        ["Evals", "Cada resultado se mide contra criterios definidos antes de salir. Si no pasa, no sale."],
+        ["Telemetría", "El trabajo está instrumentado: qué se construyó, qué cambió, cuánto tomó. Medible, no anecdótico."],
+        ["Acceso", "Sigues el proceso completo — no solo el entregable al final."],
+      ],
     },
     why: {
       eyebrow: "Por qué Facilia",
@@ -675,14 +695,38 @@ export default function Page() {
         </div>
       </section>
 
-      {/* ===================== BUILT DIFFERENTLY (AI) ===================== */}
-      <section className="border-t border-border">
-        <div className="mx-auto grid max-w-[1180px] gap-10 px-5 py-20 sm:px-8 sm:py-28 lg:grid-cols-[0.9fr_1.1fr]">
-          <div>
-            <p className={`reveal ${eyebrow}`}>{t.ai.eyebrow}</p>
-            <h2 className={`reveal ${h2cls}`} style={{ "--d": "0.08s" } as React.CSSProperties}>{t.ai.title}</h2>
+      {/* ===================== THE BUILD SYSTEM (humans + agents) ===================== */}
+      <section id="system" className="border-t border-border">
+        <div className="mx-auto max-w-[1180px] px-5 py-20 sm:px-8 sm:py-28">
+          <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr]">
+            <div>
+              <p className={`reveal ${eyebrow}`}>{t.system.eyebrow}</p>
+              <h2 className={`reveal ${h2cls}`} style={{ "--d": "0.08s" } as React.CSSProperties}>{t.system.title}</h2>
+            </div>
+            <p className="reveal self-end text-xl leading-relaxed text-foreground/80" style={{ "--d": "0.14s" } as React.CSSProperties}>{t.system.body}</p>
           </div>
-          <p className="reveal self-end text-xl leading-relaxed text-foreground/80" style={{ "--d": "0.14s" } as React.CSSProperties}>{t.ai.body}</p>
+
+          {/* who owns what */}
+          <div className="mt-16 grid gap-px overflow-hidden rounded-2xl border border-border bg-border md:grid-cols-2">
+            <div className="reveal bg-card p-8">
+              <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-muted">{t.system.humansLabel}</p>
+              <p className="mt-4 text-lg leading-relaxed text-foreground/85">{t.system.humans}</p>
+            </div>
+            <div className="reveal bg-card p-8" style={{ "--d": "0.08s" } as React.CSSProperties}>
+              <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-accent">{t.system.agentsLabel}</p>
+              <p className="mt-4 text-lg leading-relaxed text-foreground/85">{t.system.agents}</p>
+            </div>
+          </div>
+
+          {/* the four pillars */}
+          <div className="mt-10 grid gap-x-12 gap-y-10 sm:grid-cols-2 lg:grid-cols-4">
+            {t.system.pillars.map(([k, d], i) => (
+              <div key={k} className="reveal border-t border-border pt-5" style={{ "--d": `${0.05 * i}s` } as React.CSSProperties}>
+                <h3 className="display text-xl">{k}</h3>
+                <p className="mt-2 text-[14px] leading-relaxed text-muted">{d}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
