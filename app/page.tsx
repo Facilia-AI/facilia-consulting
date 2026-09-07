@@ -709,10 +709,12 @@ export default function Page() {
           {/* who owns what */}
           <div className="mt-16 grid gap-px overflow-hidden rounded-2xl border border-border bg-border md:grid-cols-2">
             <div className="reveal bg-card p-8">
+              <div className="grad-humans mb-7 h-32 rounded-xl border border-border/70" aria-hidden />
               <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-muted">{t.system.humansLabel}</p>
               <p className="mt-4 text-lg leading-relaxed text-foreground/85">{t.system.humans}</p>
             </div>
             <div className="reveal bg-card p-8" style={{ "--d": "0.08s" } as React.CSSProperties}>
+              <div className="grad-agents mb-7 h-32 rounded-xl border border-border/70" aria-hidden />
               <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-accent">{t.system.agentsLabel}</p>
               <p className="mt-4 text-lg leading-relaxed text-foreground/85">{t.system.agents}</p>
             </div>
