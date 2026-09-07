@@ -36,8 +36,8 @@ const VENTURES = [
     host: "facilia.app",
     img: "facilia-venture.png",
     blurb: {
-      en: "Software that helps construction contractors quote projects faster and operate with better control — from budgets to progress and cash.",
-      es: "Software que ayuda a los contratistas de construcción a cotizar obras más rápido y operar con mejor control — del presupuesto al avance y la caja.",
+      en: "Software that helps construction contractors quote projects faster and operate with better control, from budgets to progress and cash.",
+      es: "Software que ayuda a los contratistas de construcción a cotizar obras más rápido y operar con mejor control, del presupuesto al avance y la caja.",
     },
   },
   {
@@ -49,8 +49,8 @@ const VENTURES = [
     host: "decua.co",
     img: "decua.png",
     blurb: {
-      en: "Intelligent remodeling — plan, quote and remodel a home or office from a single place, with design, estimates, execution and live project tracking.",
-      es: "Remodelación inteligente — planea, cotiza y remodela tu hogar u oficina desde un solo lugar, con diseño, cotización, ejecución y seguimiento en vivo.",
+      en: "Intelligent remodeling. Plan, quote and remodel a home or office from a single place, with design, estimates, execution and live project tracking.",
+      es: "Remodelación inteligente. Planea, cotiza y remodela tu hogar u oficina desde un solo lugar, con diseño, cotización, ejecución y seguimiento en vivo.",
     },
   },
   {
@@ -114,8 +114,8 @@ const VENTURES = [
     host: "",
     img: "muevo-venture.png",
     blurb: {
-      en: "A vertical platform for Colombia's electric mobility market — an EV marketplace built on intelligence around the vehicle: valuation, residual value, battery health and cost of ownership, so buying a used EV stops feeling like a bet.",
-      es: "Una plataforma vertical para el mercado de movilidad eléctrica en Colombia — un marketplace de vehículos eléctricos con inteligencia alrededor del vehículo: valoración, valor residual, estado de batería y costo de propiedad, para que comprar un eléctrico usado deje de sentirse como una apuesta.",
+      en: "A vertical platform for Colombia's electric mobility market, an EV marketplace built on intelligence around the vehicle: valuation, residual value, battery health and cost of ownership, so buying a used EV stops feeling like a bet.",
+      es: "Una plataforma vertical para el mercado de movilidad eléctrica en Colombia, un marketplace de vehículos eléctricos con inteligencia alrededor del vehículo: valoración, valor residual, estado de batería y costo de propiedad, para que comprar un eléctrico usado deje de sentirse como una apuesta.",
     },
   },
 ];
@@ -153,7 +153,7 @@ const T = {
     ventures: {
       eyebrow: "Ventures",
       title: "Things we're building.",
-      sub: "Products of our own — some operating, some just getting started.",
+      sub: "Products of our own, some operating, some just getting started.",
       visit: "Visit",
       soon: "Coming soon",
     },
@@ -188,16 +188,18 @@ const T = {
     system: {
       eyebrow: "The build system",
       title: "Humans and specialized agents, on the same team.",
-      body: "We're building the system that builds software. Senior people set direction and hold the standard. Specialized agents — one per job, not one generalist trying to do everything — do the work at scale. Every project runs on specs, evals and telemetry, and you see all of it.",
+      body: "We're building the system that builds software. Experienced builders set the direction, make the key architectural decisions, and hold the standard. Specialized agents, one for each job, rather than one generalist trying to do everything, execute the work at scale. Every project runs on specs, evals, and telemetry, and you have full visibility into all of it.",
       humansLabel: "Humans own",
-      humans: "Direction, architecture, trade-offs and judgment — and the bar the work has to clear.",
+      humans: "Direction, architecture, trade-offs, judgment and the bar the work has to clear.",
+      humansArt: "Woman Holding a Balance, Johannes Vermeer, c. 1664",
       agentsLabel: "Agents own",
       agents: "Scale and repetition: research, first drafts, implementation, tests, review passes and documentation.",
+      agentsArt: "La fragua (The Forge), Francisco de Goya, c. 1815–1820",
       pillars: [
         ["Specs", "Work starts written. We resolve ambiguity before anyone writes code."],
         ["Evals", "Output is measured against defined criteria before it ships. If it doesn't pass, it doesn't ship."],
         ["Telemetry", "The work is instrumented: what was built, what changed, how long it took. Measurable, not anecdotal."],
-        ["Access", "You follow the process the whole way — not just the deliverable at the end."],
+        ["Access", "You follow the process the whole way, not just the deliverable at the end."],
       ],
     },
     why: {
@@ -213,7 +215,7 @@ const T = {
     },
     about: {
       eyebrow: "About",
-      body: "Facilia is a product company based in Latin America. We build products of our own and partner with ambitious teams to build theirs. Our ambition is a portfolio of useful products — and the experience, infrastructure and talent to build the next one faster.",
+      body: "Facilia is a product company based in Latin America. We build products of our own and partner with ambitious teams to build theirs. Our ambition is a portfolio of useful products, plus the experience, infrastructure and talent to build the next one faster.",
     },
     final: { title: "Let's build something worth building.", cta: "Build with us", cta2: "See our ventures" },
     footer: { line: "© 2026 Facilia · Product & venture builder · Built in Latin America", theme: { light: "Light", dark: "Dark" } },
@@ -241,7 +243,7 @@ const T = {
     ventures: {
       eyebrow: "Ventures",
       title: "Lo que estamos construyendo.",
-      sub: "Productos propios — algunos operando, otros apenas comenzando.",
+      sub: "Productos propios, algunos operando, otros apenas comenzando.",
       visit: "Visitar",
       soon: "Pronto",
     },
@@ -276,16 +278,18 @@ const T = {
     system: {
       eyebrow: "El sistema de construcción",
       title: "Humanos y agentes especializados, en el mismo equipo.",
-      body: "Estamos construyendo el sistema que construye software. La gente senior marca la dirección y sostiene el estándar. Los agentes especializados — uno por tarea, no un generalista tratando de hacerlo todo — hacen el trabajo a escala. Cada proyecto corre sobre specs, evals y telemetría, y tú lo ves todo.",
+      body: "Estamos construyendo el sistema que construye software. Builders con experiencia marcan la dirección, toman las decisiones clave de arquitectura y sostienen el estándar. Los agentes especializados, uno para cada tarea en lugar de un generalista tratando de hacerlo todo, ejecutan el trabajo a escala. Cada proyecto corre sobre specs, evals y telemetría, y tienes visibilidad total de todo.",
       humansLabel: "Los humanos",
-      humans: "Dirección, arquitectura, trade-offs y criterio — y el estándar que el trabajo tiene que cumplir.",
+      humans: "Dirección, arquitectura, trade-offs, criterio y el estándar que el trabajo tiene que cumplir.",
+      humansArt: "Mujer sosteniendo una balanza, Johannes Vermeer, c. 1664",
       agentsLabel: "Los agentes",
       agents: "Escala y repetición: research, primeros borradores, implementación, pruebas, revisiones y documentación.",
+      agentsArt: "La fragua, Francisco de Goya, c. 1815–1820",
       pillars: [
         ["Specs", "El trabajo empieza escrito. Resolvemos la ambigüedad antes de que alguien escriba código."],
         ["Evals", "Cada resultado se mide contra criterios definidos antes de salir. Si no pasa, no sale."],
         ["Telemetría", "El trabajo está instrumentado: qué se construyó, qué cambió, cuánto tomó. Medible, no anecdótico."],
-        ["Acceso", "Sigues el proceso completo — no solo el entregable al final."],
+        ["Acceso", "Sigues el proceso completo, no solo el entregable al final."],
       ],
     },
     why: {
@@ -301,7 +305,7 @@ const T = {
     },
     about: {
       eyebrow: "Nosotros",
-      body: "Facilia es una empresa de producto con base en Latinoamérica. Construimos productos propios y nos aliamos con equipos ambiciosos para construir los suyos. Nuestra ambición es un portafolio de productos útiles — y la experiencia, infraestructura y talento para construir el siguiente más rápido.",
+      body: "Facilia es una empresa de producto con base en Latinoamérica. Construimos productos propios y nos aliamos con equipos ambiciosos para construir los suyos. Nuestra ambición es un portafolio de productos útiles, más la experiencia, infraestructura y talento para construir el siguiente más rápido.",
     },
     final: { title: "Construyamos algo que valga la pena.", cta: "Construyamos juntos", cta2: "Ver nuestras ventures" },
     footer: { line: "© 2026 Facilia · Product & venture builder · Hecho en Latinoamérica", theme: { light: "Claro", dark: "Oscuro" } },
@@ -708,14 +712,30 @@ export default function Page() {
 
           {/* who owns what */}
           <div className="mt-16 grid gap-px overflow-hidden rounded-2xl border border-border bg-border md:grid-cols-2">
-            <div className="reveal bg-card p-8">
-              <div className="grad-humans mb-7 h-32 rounded-xl border border-border/70" aria-hidden />
-              <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-muted">{t.system.humansLabel}</p>
+            <div className="art-card reveal bg-card p-8">
+              <figure>
+                <div className="relative aspect-[3/2] overflow-hidden rounded-xl border border-border/70">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src="/projects/art-humans.jpg" alt={t.system.humansArt} className="art h-full w-full object-cover object-center" loading="lazy" />
+                  <span className="art-tint art-tint-ink" aria-hidden />
+                  <span className="art-veil" aria-hidden />
+                </div>
+                <figcaption className="mt-3 font-mono text-[10.5px] uppercase tracking-[0.14em] text-muted">{t.system.humansArt}</figcaption>
+              </figure>
+              <p className="mt-7 font-mono text-[11px] uppercase tracking-[0.2em] text-muted">{t.system.humansLabel}</p>
               <p className="mt-4 text-lg leading-relaxed text-foreground/85">{t.system.humans}</p>
             </div>
-            <div className="reveal bg-card p-8" style={{ "--d": "0.08s" } as React.CSSProperties}>
-              <div className="grad-agents mb-7 h-32 rounded-xl border border-border/70" aria-hidden />
-              <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-accent">{t.system.agentsLabel}</p>
+            <div className="art-card reveal bg-card p-8" style={{ "--d": "0.08s" } as React.CSSProperties}>
+              <figure>
+                <div className="relative aspect-[3/2] overflow-hidden rounded-xl border border-border/70">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src="/projects/art-agents.jpg" alt={t.system.agentsArt} className="art h-full w-full object-cover object-center" loading="lazy" />
+                  <span className="art-tint art-tint-accent" aria-hidden />
+                  <span className="art-veil" aria-hidden />
+                </div>
+                <figcaption className="mt-3 font-mono text-[10.5px] uppercase tracking-[0.14em] text-muted">{t.system.agentsArt}</figcaption>
+              </figure>
+              <p className="mt-7 font-mono text-[11px] uppercase tracking-[0.2em] text-accent">{t.system.agentsLabel}</p>
               <p className="mt-4 text-lg leading-relaxed text-foreground/85">{t.system.agents}</p>
             </div>
           </div>
